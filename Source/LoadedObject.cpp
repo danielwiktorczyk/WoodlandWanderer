@@ -29,15 +29,16 @@ LoadedObject::LoadedObject(const std::string& path) {
 }
 
 void LoadedObject::draw(Shader& shader, const glm::vec3& objColor) {
-	glCullFace(GL_FRONT);
 	shader.use();
 
 	shader.setVec3("objColor", objColor);
 
+	// prevent the model from partially disappears when looked at from differing angles
+	glDisable(GL_CULL_FACE);
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glDrawArrays(GL_TRIANGLES, 0, vertexValues.vertices.size());
+	glDrawArrays(GL_TRIANGLES, 0, vertexValues.vertices.size() / 3);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
 }

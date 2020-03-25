@@ -1,28 +1,20 @@
-﻿  Main.cpp
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(24,1): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+﻿  LoadedObject.cpp
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(25,1): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message : see declaration of 'fopen'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(35,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(36,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1197): message : see declaration of 'fscanf'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(43,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(44,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1197): message : see declaration of 'fscanf'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(48,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(49,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1197): message : see declaration of 'fscanf'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(54,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(55,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1197): message : see declaration of 'fscanf'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(64,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(65,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(67,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(68,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(70,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(71,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(73,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(74,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(105,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(106,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(110,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(111,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(112,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(113,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(139,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(163,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   Labs.vcxproj -> C:\Users\claul\Documents\Projects\WoodlandWanderer\VS2017\/../Bin/Labs-Debug.exe
