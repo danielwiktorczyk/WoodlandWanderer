@@ -2,13 +2,13 @@
 
 EnvironmentPlane::EnvironmentPlane() {
 	this->vertices = {
-		glm::vec3 { 1.0f,  0.0f,  1.0f },
-		glm::vec3 { 1.0f,  0.0f, -1.0f },
-		glm::vec3 {-1.0f,  0.0f,  1.0f },
+		glm::vec3 { 2.0f,  0.0f,  2.0f },
+		glm::vec3 { 2.0f,  0.0f, -2.0f },
+		glm::vec3 {-2.0f,  0.0f,  2.0f },
 
-		glm::vec3 { 1.0f,  0.0f, -1.0f },
-		glm::vec3 {-1.0f,  0.0f, -1.0f },
-		glm::vec3 {-1.0f,  0.0f,  1.0f }
+		glm::vec3 { 2.0f,  0.0f, -2.0f },
+		glm::vec3 {-2.0f,  0.0f, -2.0f },
+		glm::vec3 {-2.0f,  0.0f,  2.0f }
 	};
 
 	glGenVertexArrays(1, &VAO);
@@ -28,7 +28,7 @@ EnvironmentPlane::EnvironmentPlane() {
 void EnvironmentPlane::draw(Shader& shader) {
 	shader.use();
 	
-	shader.setVec3("objColor", { 0.17f, 0.69f, 0.22f });
+	shader.setVec3("objColor", { 0.09f, 0.45f, 0.13f });
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);

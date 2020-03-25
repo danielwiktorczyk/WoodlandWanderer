@@ -11,6 +11,7 @@
 
 class Commands {
 public:
-	static void processInput(GLFWwindow* window);
+	static void processCloseWindow(GLFWwindow* window);
+	static void processCameraMovement(GLFWwindow* window, glm::vec3& cameraPos, glm::vec3& cameraFront, glm::vec3& cameraUp, float& deltaTime);
 };
 
