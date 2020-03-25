@@ -1,12 +1,28 @@
-﻿  EnvironmentPlane.cpp
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-LINK : warning LNK4286: symbol '___glewBindBuffer' defined in 'glew32s.lib(glew.obj)' is imported by 'EnvironmentPlane.obj'
-LINK : warning LNK4286: symbol '___glewBufferData' defined in 'glew32s.lib(glew.obj)' is imported by 'EnvironmentPlane.obj'
-LINK : warning LNK4286: symbol '___glewGenBuffers' defined in 'glew32s.lib(glew.obj)' is imported by 'EnvironmentPlane.obj'
-LINK : warning LNK4286: symbol '___glewEnableVertexAttribArray' defined in 'glew32s.lib(glew.obj)' is imported by 'EnvironmentPlane.obj'
-LINK : warning LNK4286: symbol '___glewVertexAttribPointer' defined in 'glew32s.lib(glew.obj)' is imported by 'EnvironmentPlane.obj'
-LINK : warning LNK4286: symbol '___glewBindVertexArray' defined in 'glew32s.lib(glew.obj)' is imported by 'EnvironmentPlane.obj'
-LINK : warning LNK4286: symbol '___glewGenVertexArrays' defined in 'glew32s.lib(glew.obj)' is imported by 'EnvironmentPlane.obj'
-glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\claul\Documents\Projects\WoodlandWanderer\Bin\vc120.pdb'; linking object as if no debug info
+﻿  Main.cpp
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(24,1): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message : see declaration of 'fopen'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(35,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1197): message : see declaration of 'fscanf'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(43,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1197): message : see declaration of 'fscanf'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(48,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1197): message : see declaration of 'fscanf'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(54,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1197): message : see declaration of 'fscanf'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(64,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(67,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(70,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(73,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(105,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(106,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(110,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(111,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(112,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(113,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(139,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(163,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   Labs.vcxproj -> C:\Users\claul\Documents\Projects\WoodlandWanderer\VS2017\/../Bin/Labs-Debug.exe

@@ -11,7 +11,7 @@ float lastY = 1200 / 2.0;
 float fov = 45.0f;
 
 // camera
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 1.5f);
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.1f, 1.5f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -52,6 +52,8 @@ int main() {
         return -1;
     }
 
+    glEnable(GL_CULL_FACE);
+
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(MessageCallback, 0);
     
@@ -66,27 +68,23 @@ int main() {
 	//----------------------------------------------------------------------
 
     EnvironmentPlane env = EnvironmentPlane();
+	LoadedObject grass = LoadedObject("../Assets/simple-grass.obj");
     
 	//----------------------------------------------------------------------
 	//------------------------------ Render --------------------------------
 	//----------------------------------------------------------------------
     while(!glfwWindowShouldClose(window)) {
+
         setTime();
-
-		glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-		glm::mat4 projection = glm::perspective(glm::radians(fov), 1600.0f / 1200.0f, 0.1f, 100.0f);
-		glm::mat4 model = glm::mat4(1.0f);
-
-		shader.setMat4("view", view);
-		shader.setMat4("projection", projection);
-		shader.setMat4("model", model);
+		setWorld(shader);
 
 		Commands::processCloseWindow(window);
 		Commands::processCameraMovement(window, cameraPos, cameraFront, cameraUp, deltaTime);
 
         glClear(GL_COLOR_BUFFER_BIT);
      		
-        env.draw(shader);
+		env.draw(shader);
+		grass.draw(shader, { 1.0f, 1.0f, 1.0f });
 
         glfwSwapBuffers(window); 
         glfwPollEvents();
@@ -148,6 +146,16 @@ void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
 	}
 }
 
+void setWorld(Shader& shader) {
+	glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	glm::mat4 projection = glm::perspective(glm::radians(fov), 1600.0f / 1200.0f, 0.1f, 100.0f);
+	glm::mat4 model = glm::mat4(1.0f);
+
+	shader.setMat4("view", view);
+	shader.setMat4("projection", projection);
+	shader.setMat4("model", model);
+}
+
 /*
 * per-frame time logic
 */
@@ -157,9 +165,49 @@ void setTime() {
 	lastFrame = currentFrame;
 }
 
+/**
+* Prints errors in the console
+*/
 void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity,
     GLsizei length, const GLchar* message, const void* userParam) {
-    fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-        (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-        type, severity, message);
+    std::cout << "---------------------opengl-callback-start------------" << std::endl;
+    std::cout << "message: " << message << std::endl;
+    std::cout << "type: ";
+    switch (type) {
+    case GL_DEBUG_TYPE_ERROR:
+        std::cout << "ERROR";
+        break;
+    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+        std::cout << "DEPRECATED_BEHAVIOR";
+        break;
+    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+        std::cout << "UNDEFINED_BEHAVIOR";
+        break;
+    case GL_DEBUG_TYPE_PORTABILITY:
+        std::cout << "PORTABILITY";
+        break;
+    case GL_DEBUG_TYPE_PERFORMANCE:
+        std::cout << "PERFORMANCE";
+        break;
+    case GL_DEBUG_TYPE_OTHER:
+        std::cout << "OTHER";
+        break;
+    }
+    std::cout << std::endl;
+
+    std::cout << "id: " << id << std::endl;
+    std::cout << "severity: ";
+    switch (severity) {
+    case GL_DEBUG_SEVERITY_LOW:
+        std::cout << "LOW";
+        break;
+    case GL_DEBUG_SEVERITY_MEDIUM:
+        std::cout << "MEDIUM";
+        break;
+    case GL_DEBUG_SEVERITY_HIGH:
+        std::cout << "HIGH";
+        break;
+    }
+    std::cout << std::endl;
+    std::cout << "---------------------opengl-callback-end--------------" << std::endl;
 };

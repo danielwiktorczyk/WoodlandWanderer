@@ -42,6 +42,9 @@
     <ClCompile Include="..\Source\EnvironmentPlane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\LoadedObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Main.h">
@@ -57,6 +60,12 @@
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\EnvironmentPlane.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Vertex.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\LoadedObject.h">
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>
