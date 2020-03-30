@@ -11,11 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="..\Source\Main.cpp" />
+    <ClCompile Include="..\Source\Snowman.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OBJloader.h" />
-    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="..\Include\Main.h" />
+    <ClInclude Include="..\Include\OBJloader.h" />
+    <ClInclude Include="..\Include\Snowman.h" />
+    <ClInclude Include="..\Include\stb_image.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{277EAE68-9EED-4EFF-BAD3-2A70787A3E8D}</ProjectGuid>

@@ -1,52 +1,15 @@
-//
-//
-// COMP 371 Project
-//
-//
-// Adapted from template code:
-//   COMP 371 Labs Framework
-// 
-// Used lab tutorials from class and learnopengl.com tutorials 
-//
+/*
+*
+* COMP 371 Project
+*
+*
+* Adapted from template code:
+*   COMP 371 Labs Framework
+* 
+* Used lab tutorials from class and learnopengl.com tutorials 
+*/
 
-#include <iostream>
-#include <list>
-#include <cstdlib>   // Random
-#include <ctime>     // Time for Random Seeding
-
-#define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
-#include <GL/glew.h>    // Include GLEW - OpenGL Extension Wrangler
-
-#include <GLFW/glfw3.h> // cross-platform interface for creating a graphical context,
-// initializing OpenGL and binding inputs
-
-#include <glm/glm.hpp>  // GLM is an optimized math library with syntax to similar to OpenGL Shading Language
-#include <glm/gtc/matrix_transform.hpp> // include this to create transformation matrices
-#include <glm/common.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <vector>
-#include "OBJloader.h"  //For loading .obj files
-
-// for textures: 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-#define M_PI 3.1415926535897932384626433832795
-
-
-using namespace glm;
-using namespace std;
-
-GLuint loadTexture(const char* filename);
-
-const char* getVertexShaderSource();
-
-const char* getFragmentShaderSource();
-
-const char* getTexturedVertexShaderSource();
-
-const char* getTexturedFragmentShaderSource();
-
-int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentShaderSource);
+#include "../Include/Main.h"
 
 const char* getVertexShaderSource()
 {
@@ -177,7 +140,7 @@ const char* getTexturedFragmentShaderSource()
 		"	vec3 specularLight = specularStrength * spec * lightColor;"
 		""
 		// Result of Phong Point Lighting: 
-		"	vec3 result = (ambientLight + diffusedLight + specularLight) * vec3(textureColor.r, textureColor.g, textureColor.b);"
+		"	vec3 result = (ambientLight + diffusedLight + specularLight) * glm::vec3(textureColor.r, textureColor.g, textureColor.b);"
 		"   FragColor = vec4(result, textureColor.g);"
 		"}";
 }
@@ -235,207 +198,7 @@ int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentSh
 	return shaderProgram;
 }
 
-// The Snowman class encapsulates the parts of the snowman made from the cube model via transformations. 
-// I chose the class based approach since this would make hiercal modeling possible. 
-class Snowman {
-
-	public:
-		vec3 origin;
-		vec3 offset;
-		float scaleFactor;
-		float rotation; // degrees
-
-		vec3 const snowmanColor = vec3(0.97, 0.97, 1.0);
-		vec3 const snowmanBranchColor = vec3(0.87f, 0.72f, 0.53f);
-		vec3 const buttonColor = vec3(0.5f, 0.2f, 0.0f);
-
-		vec3 const carrotColor = vec3(1.0f, 0.647f, 0.00f);
-		vec3 const hatColor = vec3(0.0f, 0.0f, 0.0f);
-
-		GLuint worldMatrixLocationColor;
-		GLuint worldMatrixLocationTexture;
-		GLuint colorLocation;
-
-		int colorShaderProgram;
-		int textureShaderProgram;
-
-		int carrotTexture;
-		int metalTexture;
-
-		int sphereVertices;
-		GLuint sphereVAO;
-		GLuint cubeVAO;
-
-		mat4 leftFoot;
-		mat4 rightFoot;
-
-		mat4 base;
-		mat4 middle;
-		mat4 head;
-
-		mat4 button1;
-		mat4 button2;
-		mat4 button3;
-
-		mat4 leftArm;
-		mat4 leftArmBranch1;
-		mat4 leftArmBranch2;
-		mat4 rightArm;
-		mat4 rightArmBranch1;
-		mat4 rightArmBranch2;
-
-		mat4 hatBrim;
-		mat4 hatBody;
-
-		mat4 leftEye;
-		mat4 rightEye;
-		mat4 carrot;
-		mat4 mouth;
-
-		float animate;
-		float animateHat;
-
-		Snowman(GLuint worldMatrixColorLoc, GLuint worldMatrixTextureLoc, GLuint colorLoc, int colshader, int texshader, int theSphereVertices, GLuint theCubeVAO, GLuint theSphereVAO,
-			int theCarrotTexture, int theMetalTexture ) {
-			origin = vec3(0.0f, 0.0f, 0.0f);
-			scaleFactor = 1.0f;
-			rotation = 0.0f;
-			worldMatrixLocationColor = worldMatrixColorLoc;
-			worldMatrixLocationTexture = worldMatrixTextureLoc;
-			colorLocation = colorLoc;
-			colorShaderProgram = colshader;
-			textureShaderProgram = texshader;
-			sphereVertices = theSphereVertices;
-			cubeVAO = theCubeVAO;
-			sphereVAO = theSphereVAO;
-
-			carrotTexture = theCarrotTexture;
-			metalTexture = theMetalTexture;
-			
-			animate = 0.0f;
-			animateHat = 0.0f;
-
-			update();
-		}
-
-		void update() {
-			mat4 partRotation = rotate(mat4(1.0f), rotation, vec3(0.0f, 1.0f, 0.0f));
-			mat4 groupTranslation = translate(mat4(1.0f), origin);
-			mat4 groupScaling = scale(mat4(1.0f), vec3(scaleFactor));
-
-			float chubbyFactor = 1.3f;
-			leftFoot = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(-1.0f, 0.25f, 0.5f * sin(animate)))) * rotate(mat4(1.0f), 0.25f * sin(animate), vec3(1.0f, 125.0f, 0.0f)) * scale(mat4(1.0f), chubbyFactor * scaleFactor * vec3(1.0, 0.5, 1.0));
-			rightFoot = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(+1.0f, 0.25f, 0.5f * -sin(animate)))) * rotate(mat4(1.0f), 0.25f * -sin(animate), vec3(1.0f, 125.0f, 0.0f)) * scale(mat4(1.0f), chubbyFactor * scaleFactor * vec3(1.0, 0.5, 1.0));
-
-			base = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(0.0f, 3.0f, 0.0f))) * scale(mat4(1.0f), chubbyFactor * scaleFactor * vec3(4.0, 4.0, 4.0));
-			middle = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(0.0f, 5.5f, 0.0f))) * scale(mat4(1.0f), chubbyFactor * scaleFactor * vec3(3.0, 3.0, 3.0));
-			head = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(0.0f, 8.0f, 0.0f))) * scale(mat4(1.0f), chubbyFactor * scaleFactor * vec3(2.0, 2.0, 2.0));
-
-			button1 = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(0.0f, 6.0f, 0.92f * chubbyFactor * 1.55f))) * scale(mat4(1.0f), scaleFactor * vec3(0.3, 0.3, 0.1));
-			button2 = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(0.0f, 3.0f, chubbyFactor * 2.05f))) * scale(mat4(1.0f), scaleFactor * vec3(0.3, 0.3, 0.1));
-			button3 = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(0.0f, 4.5f, 0.82f * chubbyFactor * 2.05f))) * scale(mat4(1.0f), scaleFactor * vec3(0.3, 0.3, 0.1));
-
-			mat4 leftArmPivot = translate(mat4(1.0f), scaleFactor * (vec3(-1.5f, 5.5f, 0.0f))) * rotate(mat4(1.0f), 0.75f * sin(animate), vec3(0.0f, 0.0f, 1.0f)) * translate(mat4(1.0f), scaleFactor * (vec3(1.5f, -5.5f, 0.0f)));
-			leftArm = groupTranslation * groupScaling * partRotation * leftArmPivot * translate(mat4(1.0f), scaleFactor * (vec3(-2.5f, 5.5f, 0.0f))) * scale(mat4(1.0f), scaleFactor * vec3(2.5, 0.3, 0.3));
-			leftArmBranch1 = groupTranslation * groupScaling * partRotation * leftArmPivot * translate(mat4(1.0f), scaleFactor * (vec3(-3.25f, 5.20f, 0.0f))) * rotate(mat4(1.0f), radians(-130.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), scaleFactor * vec3(1.0, 0.25, 0.25));
-			leftArmBranch2 = groupTranslation * groupScaling * partRotation * leftArmPivot * translate(mat4(1.0f), scaleFactor * (vec3(-2.0f, 5.65f, 0.0f))) * rotate(mat4(1.0f), radians(150.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), scaleFactor * vec3(0.5, 0.25, 0.25));
-			
-			mat4 rightArmPivot = translate(mat4(1.0f), scaleFactor * (vec3(+1.5f, +4.5f, 0.0f))) * rotate(mat4(1.0f), 0.75f * sin(animate), vec3(0.0f, 0.0f, 1.0f)) * translate(mat4(1.0f), scaleFactor * (vec3(-1.5f, -4.5f, 0.0f)));
-			rightArm = groupTranslation * groupScaling * partRotation * rightArmPivot * translate(mat4(1.0f), scaleFactor * (vec3(+2.5f, 5.5f, 0.0f))) * scale(mat4(1.0f), scaleFactor * vec3(2.5, 0.3, 0.5));
-			rightArmBranch1 = groupTranslation * groupScaling * partRotation * rightArmPivot * translate(mat4(1.0f), scaleFactor * (vec3(+2.0f, 5.65f, 0.0f))) * rotate(mat4(1.0f), radians(-50.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), scaleFactor * vec3(0.5, 0.25, 0.25));
-			rightArmBranch2 = groupTranslation * groupScaling * partRotation * rightArmPivot * translate(mat4(1.0f), scaleFactor * (vec3(+3.25f, 5.20f, 0.0f))) * rotate(mat4(1.0f), radians(140.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), scaleFactor * vec3(1.0, 0.25, 0.25));
-
-			hatBrim = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(0.0f, 9.5f - 0.5f * cos(2.0f * animate), 0.0f))) * rotate(mat4(1.0f), sin(animateHat), vec3(0.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), scaleFactor * vec3(4.0, 1.0, 4.0));
-			hatBody = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(0.0f, 12.0f - 0.5f * cos(2.0f * animate), 0.0f))) * rotate(mat4(1.0f), sin(animateHat), vec3(0.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), scaleFactor * vec3(2.0, 4.0, 2.0));
-		
-			leftEye = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(-0.5f, 8.0f, chubbyFactor * 0.95f))) * scale(mat4(1.0f), scaleFactor * vec3(0.25, 0.25, 0.1));
-			rightEye = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(+0.5f, 8.0f, chubbyFactor * 0.95f))) * scale(mat4(1.0f), scaleFactor * vec3(0.25, 0.25, 0.1));
-			carrot = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(0.0f, 7.75f, chubbyFactor * 1.05f))) * scale(mat4(1.0f), scaleFactor * vec3(0.25, 0.25, 1.64));
-			mouth = groupTranslation * groupScaling * partRotation * translate(mat4(1.0f), scaleFactor * (vec3(0.0f, 7.25f, chubbyFactor * 0.84f))) * scale(mat4(1.0f), scaleFactor * vec3(0.25, 0.125, 0.1));
-		}
-
-		void draw(bool texturing) {		
-
-			draw(leftArm, snowmanBranchColor);
-			draw(leftArmBranch1, snowmanBranchColor);
-			draw(leftArmBranch2, snowmanBranchColor);
-			draw(rightArm, snowmanBranchColor);
-			draw(rightArmBranch1, snowmanBranchColor);
-			draw(rightArmBranch2, snowmanBranchColor);
-
-			draw(button1, buttonColor);
-			draw(button2, buttonColor);
-			draw(button3, buttonColor);
-
-			draw(leftEye, hatColor);
-			draw(rightEye, hatColor);
-			draw(mouth, hatColor);
-
-			drawBody(leftFoot, snowmanColor);
-			drawBody(rightFoot, snowmanColor);
-			drawBody(base, snowmanColor);
-			drawBody(middle, snowmanColor);
-			drawBody(head, snowmanColor);
-			
-			if (texturing) {
-				drawTexture(hatBrim, metalTexture);
-				drawTexture(hatBody, metalTexture);
-				
-				drawTexture(carrot, carrotTexture);
-			}
-			else {
-				draw(hatBrim, hatColor);
-				draw(hatBody, hatColor);
-				
-				draw(carrot, carrotColor);
-			}
-
-		}
-
-	private: 
-		void draw(mat4 part, vec3 color) {
-			glUseProgram(colorShaderProgram);
-
-			glBindVertexArray(0);
-			glBindVertexArray(cubeVAO);
-			glBindBuffer(GL_ARRAY_BUFFER, cubeVAO);
-
-			glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &part[0][0]);
-			glUniform3fv(colorLocation, 1, value_ptr(color));
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-
-		void drawTexture(mat4 part, int texture) {
-			glUseProgram(textureShaderProgram);
-
-			glActiveTexture(GL_TEXTURE0);
-			GLuint textureLocation = glGetUniformLocation(textureShaderProgram, "textureSampler");
-			glBindTexture(GL_TEXTURE_2D, texture);
-			glUniform1i(textureLocation, 0);
-
-			glBindVertexArray(0);
-			glBindVertexArray(cubeVAO);
-			glBindBuffer(GL_ARRAY_BUFFER, cubeVAO);
-
-			glUniformMatrix4fv(worldMatrixLocationTexture, 1, GL_FALSE, &part[0][0]);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-
-		void drawBody(mat4 part, vec3 color) {
-			glUseProgram(colorShaderProgram);
-
-			glBindVertexArray(0);
-			glBindVertexArray(sphereVAO);
-			glBindBuffer(GL_ARRAY_BUFFER, sphereVAO);
-
-			glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &part[0][0]);
-			glUniform3fv(colorLocation, 1, value_ptr(color));
-			glDrawArrays(GL_TRIANGLES, 0, sphereVertices);
-		}
-
-};
-
-GLuint setupModelVBO(string path, int& vertexCount) {
+GLuint setupModelVBO(std::string path, int& vertexCount) {
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> UVs;
@@ -517,28 +280,28 @@ GLuint loadTexture(const char* filename)
 	return textureId;
 }
 
-void setProjectionMatrix(int shaderProgram, mat4 projectionMatrix)
+void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix)
 {
 	glUseProgram(shaderProgram);
 	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
 	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
 }
 
-void setViewMatrix(int shaderProgram, mat4 viewMatrix)
+void setViewMatrix(int shaderProgram, glm::mat4 viewMatrix)
 {
 	glUseProgram(shaderProgram);
 	GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
 	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
 }
 
-void setWorldMatrix(int shaderProgram, mat4 worldMatrix)
+void setWorldMatrix(int shaderProgram, glm::mat4 worldMatrix)
 {
 	glUseProgram(shaderProgram);
 	GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
 	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
 }
 
-void setWorldRotationMatrix(int shaderProgram, mat4 worldRotationMatrix) 
+void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix) 
 {
 	glUseProgram(shaderProgram);
 	GLuint worldRotationMatrixLocation = glGetUniformLocation(shaderProgram, "worldRotationMatrix");
@@ -587,9 +350,9 @@ int main(int argc, char*argv[])
 	string cubePath = "Models/cube.obj";
 	string heraclesPath = "Models/heracles.obj";
 #else
-	string cubePath = "../Assets/Models/cube.obj";
-	string spherePath = "../Assets/Models/sphere.obj";
-	string treePath = "../Assets/Models/low-poly-trees-pack.obj";
+	std::string cubePath = "../Assets/Models/cube.obj";
+	std::string spherePath = "../Assets/Models/sphere.obj";
+	std::string treePath = "../Assets/Models/low-poly-trees-pack.obj";
 #endif
 	int cubeVertices;
 	GLuint cubeVAO = setupModelVBO(cubePath, cubeVertices);
@@ -617,25 +380,25 @@ int main(int argc, char*argv[])
 	int texturedShaderProgram = compileAndLinkShaders(getTexturedVertexShaderSource(), getTexturedFragmentShaderSource());
 
 	// Camera parameters for view transform
-	vec3 cameraPosition(3.0f, 5.0f, 25.0f);
-	//vec3 cameraPosition(0.0f, 0.0f, 0.0f);
-	vec3 cameraLookAt(0.0f, 0.0f, -1.0f);
-	vec3 cameraUp(0.0f, 1.0f, 0.0f);
+	glm::vec3 cameraPosition(3.0f, 5.0f, 25.0f);
+	//glm::vec3 cameraPosition(0.0f, 0.0f, 0.0f);
+	glm::vec3 cameraLookAt(0.0f, 0.0f, -1.0f);
+	glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
 
 	// Other camera parameters
 	float cameraSpeed = 0.05f;
 	float cameraHorizontalAngle = 90.0f;
 	float cameraVerticalAngle = 0.0f;
-	vec3 cameraSideVector = vec3(1.0f);
+	glm::vec3 cameraSideVector = glm::vec3(1.0f);
 
 	// Set projection matrix for shader
 	float currentFOV = 70.0f;
-	mat4 projectionMatrix = perspective(currentFOV,            // field of view in degrees
+	glm::mat4 projectionMatrix = glm::perspective(currentFOV,            // field of view in degrees
 		1024.0f / 768.0f,  // aspect ratio
 		0.01f, 100.0f);   // near and far (near > 0)
 
 	// Set initial view matrix
-	mat4 viewMatrix = lookAt(cameraPosition,  // eye
+	glm::mat4 viewMatrix = lookAt(cameraPosition,  // eye
 		cameraPosition + cameraLookAt,  // center
 		cameraUp); // up
 	
@@ -667,7 +430,7 @@ int main(int argc, char*argv[])
 		carrotTextureID, metalTextureID);
 
 	// World rotation
-	mat4 worldRotationMatrix = mat4(1.0f);
+	glm::mat4 worldRotationMatrix = glm::mat4(1.0f);
 	float worldRotationAboutXAxis = 0.0f;
 	float worldRotationAboutYAxis = 0.0f;
 
@@ -682,7 +445,7 @@ int main(int argc, char*argv[])
 	bool canRandomPlacement = true;
 
 	// Set lighting point source location
-	vec3 lightPosition = vec3(0.0f, 30.0f, 0.0f);
+	glm::vec3 lightPosition = glm::vec3(0.0f, 30.0f, 0.0f);
 	glUniform3fv(lightLocationColor, 1, value_ptr(lightPosition));
 	glUniform3fv(lightLocationTexture, 1, value_ptr(lightPosition));
 
@@ -708,13 +471,13 @@ int main(int argc, char*argv[])
 		glBindBuffer(GL_ARRAY_BUFFER, cubeVAO);
 
 		// some colors to work with
-		vec3 const red = vec3(1.0f, 0.0f, 0.0f);
-		vec3 const blue = vec3(0.0f, 0.0f, 1.0f);
-		vec3 const turquoise = vec3(0.0f, 1.0f, 1.0f);
-		vec3 const green = vec3(0.0f, 1.0f, 0.0f);
-		vec3 const purple = vec3(1.0f, 1.0f, 0.0f);
-		vec3 const yellow = vec3(1.0f, 1.0f, 0.0f);
-		vec3 const gridColor = vec3(0.678, 0.847, 0.902);
+		glm::vec3 const red = glm::vec3(1.0f, 0.0f, 0.0f);
+		glm::vec3 const blue = glm::vec3(0.0f, 0.0f, 1.0f);
+		glm::vec3 const turquoise = glm::vec3(0.0f, 1.0f, 1.0f);
+		glm::vec3 const green = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::vec3 const purple = glm::vec3(1.0f, 1.0f, 0.0f);
+		glm::vec3 const yellow = glm::vec3(1.0f, 1.0f, 0.0f);
+		glm::vec3 const gridColor = glm::vec3(0.678, 0.847, 0.902);
 
 		// Draw Grid
 		if (texturing) {
@@ -725,11 +488,11 @@ int main(int argc, char*argv[])
 			glBindTexture(GL_TEXTURE_2D, snowTextureID);
 			glUniform1i(textureLocation, 0);
 
-			mat4 groundPatch = scale(mat4(1.0f), vec3(10.0f, 0.02f, 10.0f));
-			mat4 currentGroundPatch;
+			glm::mat4 groundPatch = scale(glm::mat4(1.0f), glm::vec3(10.0f, 0.02f, 10.0f));
+			glm::mat4 currentGroundPatch;
 			for (int i = -5; i < 5; i++) {
 				for (int j = -5; j < 5; j++) {
-					currentGroundPatch = translate(mat4(1.0f), vec3(i * 10.0f, -0.01f, j * 10.0f)) * groundPatch;
+					currentGroundPatch = translate(glm::mat4(1.0f), glm::vec3(i * 10.0f, -0.01f, j * 10.0f)) * groundPatch;
 					glUniformMatrix4fv(worldMatrixLocationTexture, 1, GL_FALSE, &currentGroundPatch[0][0]);
 					glDrawArrays(GL_TRIANGLES, 12, 18);
 				}	
@@ -738,18 +501,18 @@ int main(int argc, char*argv[])
 		else {
 			glUseProgram(colorShaderProgram);
 
-			mat4 gridLineMatrix = scale(mat4(1.0f), vec3(100.0f, 0.02f, 0.05f));
-			mat4 currentGridLineMatrix;
+			glm::mat4 gridLineMatrix = scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
+			glm::mat4 currentGridLineMatrix;
 			for (int i = -50; i < 50; i++) {
-				currentGridLineMatrix = translate(mat4(1.0f), vec3(0.0f, -0.01f, i * 1.0f)) * gridLineMatrix;
+				currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, i * 1.0f)) * gridLineMatrix;
 				glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
 				glUniform3fv(colorLocation, 1, value_ptr(gridColor));
 				glDrawArrays(GL_TRIANGLES, 12, 18);
 				glDrawArrays(GL_TRIANGLES, 30, 36);
 			}
-			gridLineMatrix = scale(mat4(1.0f), vec3(0.05f, 0.02f, 100.0f));
+			gridLineMatrix = scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.02f, 100.0f));
 			for (int i = -50; i < 50; i++) {
-				currentGridLineMatrix = translate(mat4(1.0f), vec3(i * 1.0f, -0.01f, 0.0f)) * gridLineMatrix;
+				currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(i * 1.0f, -0.01f, 0.0f)) * gridLineMatrix;
 				glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
 				glUniform3fv(colorLocation, 1, value_ptr(gridColor));
 				glDrawArrays(GL_TRIANGLES, 12, 18);
@@ -763,24 +526,24 @@ int main(int argc, char*argv[])
 		float const axisWidth = 0.1f;
 		float const axisLength = 5.0f;
 
-		mat4 xAxisMatrix = translate(mat4(1.0f), vec3(axisLength / 2, 0.0f, 0.0f)) * scale(mat4(1.0f), vec3(axisLength, axisWidth, axisWidth));
+		glm::mat4 xAxisMatrix = translate(glm::mat4(1.0f), glm::vec3(axisLength / 2, 0.0f, 0.0f)) * scale(glm::mat4(1.0f), glm::vec3(axisLength, axisWidth, axisWidth));
 		glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &xAxisMatrix[0][0]);
 		glUniform3fv(colorLocation, 1, value_ptr(red));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		mat4 yAxisMatrix = translate(mat4(1.0f), vec3(0.0f, axisLength / 2, 0.0f)) * scale(mat4(1.0f), vec3(axisWidth, axisLength, axisWidth));
+		glm::mat4 yAxisMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, axisLength / 2, 0.0f)) * scale(glm::mat4(1.0f), glm::vec3(axisWidth, axisLength, axisWidth));
 		glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &yAxisMatrix[0][0]);
 		glUniform3fv(colorLocation, 1, value_ptr(blue));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		mat4 zAxisMatrix = translate(mat4(1.0f), vec3(0.0f, 0.0f, axisLength / 2)) * scale(mat4(1.0f), vec3(axisWidth, axisWidth, axisLength));
+		glm::mat4 zAxisMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, axisLength / 2)) * scale(glm::mat4(1.0f), glm::vec3(axisWidth, axisWidth, axisLength));
 		glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &zAxisMatrix[0][0]);
 		glUniform3fv(colorLocation, 1, value_ptr(green));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// Draw an object representing the light source
-		mat4 lightBulbMatrix = translate(mat4(1.0f), lightPosition) * scale(mat4(1.0f), vec3(0.5f, 0.5f, 0.5f));
-		vec3 lightBulbColor = vec3(1.0f, 1.0f, 1.0f);
+		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+		glm::vec3 lightBulbColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
 		glUseProgram(colorShaderProgram);
 
@@ -797,7 +560,7 @@ int main(int argc, char*argv[])
 		glBindVertexArray(0);
 		glBindVertexArray(treeVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, treeVAO);
-		mat4 base = scale(mat4(1.0f), vec3(5.0f, 5.0f, 5.0f));
+		glm::mat4 base = scale(glm::mat4(1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &base[0][0]);
 		glUniform3fv(colorLocation, 1, value_ptr(turquoise));
 		glDrawArrays(GL_TRIANGLES, 0, treeVertices);
@@ -946,7 +709,7 @@ int main(int argc, char*argv[])
 			if (!shift || canRandomPlacement) {
 				float randx = (rand() % randomBounds) - randomBounds / 2.0f;
 				float randy = (rand() % randomBounds) - randomBounds / 2.0f;
-				snowman.origin = vec3(randx, 0.0f, randy);
+				snowman.origin = glm::vec3(randx, 0.0f, randy);
 			}
 		}
 		canRandomPlacement = !randomPlacement;
@@ -966,12 +729,12 @@ int main(int argc, char*argv[])
 		lastMousePosX = mousePosX;
 		lastMousePosY = mousePosY;
 
-		const float cameraAngularSpeed = radians(5.0f);
-		float theta = radians(cameraHorizontalAngle);
-		float phi = radians(cameraVerticalAngle);
+		const float cameraAngularSpeed = glm::radians(5.0f);
+		float theta = glm::radians(cameraHorizontalAngle);
+		float phi = glm::radians(cameraVerticalAngle);
 
 		// Clamp vertical angle to [-85, 85] degrees
-		cameraVerticalAngle = max(-85.0f, min(85.0f, cameraVerticalAngle));
+		cameraVerticalAngle = glm::max(-85.0f, glm::min(85.0f, cameraVerticalAngle));
 
 		// Allow camera to rotate about horizontally
 		if (cameraHorizontalAngle > 360)
@@ -979,8 +742,8 @@ int main(int argc, char*argv[])
 		else if (cameraHorizontalAngle < -360)
 			cameraHorizontalAngle += 360;
 		
-		cameraLookAt = vec3(cosf(phi)*cosf(theta), sinf(phi), -cosf(phi)*sinf(theta));
-		cameraSideVector = cross(cameraLookAt, vec3(0.0f, 1.0f, 0.0f));
+		cameraLookAt = glm::vec3(cosf(phi)*cosf(theta), sinf(phi), -cosf(phi)*sinf(theta));
+		cameraSideVector = cross(cameraLookAt, glm::vec3(0.0f, 1.0f, 0.0f));
 		normalize(cameraSideVector);
 
 		// Camera Panning
@@ -997,7 +760,7 @@ int main(int argc, char*argv[])
 		{
 			currentFOV += cameraZoomSpeed * dy;
 
-			projectionMatrix = perspective(currentFOV,            // field of view in degrees
+			projectionMatrix = glm::perspective(currentFOV,            // field of view in degrees
 				1024.0f / 768.0f,  // aspect ratio
 				0.01f, 100.0f);   // near and far (near > 0)
 			
@@ -1005,7 +768,7 @@ int main(int argc, char*argv[])
 			setProjectionMatrix(texturedShaderProgram, projectionMatrix);
 		}
 
-		mat4 viewMatrix(1.0f);		
+		glm::mat4 viewMatrix(1.0f);		
 		viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
 		setViewMatrix(colorShaderProgram, viewMatrix);
 		setViewMatrix(texturedShaderProgram, viewMatrix);
@@ -1028,7 +791,7 @@ int main(int argc, char*argv[])
 			worldRotationAboutXAxis = 0.0f;
 			worldRotationAboutYAxis = 0.0f;
 		}
-		worldRotationMatrix = rotate(mat4(1.0f), worldRotationAboutYAxis, vec3(0.0f, 1.0f, 0.0f)) * rotate(mat4(1.0f), worldRotationAboutXAxis, vec3(1.0f, 0.0f, 0.0f));
+		worldRotationMatrix = rotate(glm::mat4(1.0f), worldRotationAboutYAxis, glm::vec3(0.0f, 1.0f, 0.0f)) * rotate(glm::mat4(1.0f), worldRotationAboutXAxis, glm::vec3(1.0f, 0.0f, 0.0f));
 		setWorldRotationMatrix(colorShaderProgram, worldRotationMatrix);
 		setWorldRotationMatrix(texturedShaderProgram, worldRotationMatrix);
 	
