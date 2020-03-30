@@ -10,6 +10,13 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="OBJloader.h" />
+    <ClInclude Include="stb_image.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{277EAE68-9EED-4EFF-BAD3-2A70787A3E8D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -98,26 +105,6 @@
       </Path>
     </BuildLog>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Source\Commands.cpp" />
-    <ClCompile Include="..\Source\EnvironmentPlane.cpp" />
-    <ClCompile Include="..\Source\LoadedObject.cpp" />
-    <ClCompile Include="..\Source\Main.cpp" />
-    <ClCompile Include="..\Source\Shader.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Include\Commands.h" />
-    <ClInclude Include="..\Include\EnvironmentPlane.h" />
-    <ClInclude Include="..\Include\LoadedObject.h" />
-    <ClInclude Include="..\Include\Main.h" />
-    <ClInclude Include="..\Include\OBJloader.h" />
-    <ClInclude Include="..\Include\Shader.h" />
-    <ClInclude Include="..\Include\Vertex.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\References\Shaders\3.3.shader.fs" />
-    <None Include="..\References\Shaders\3.3.shader.vs" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

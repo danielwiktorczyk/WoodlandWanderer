@@ -22,51 +22,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\References\Shaders\3.3.shader.vs">
-      <Filter>References\Shaders</Filter>
-    </None>
-    <None Include="..\References\Shaders\3.3.shader.fs">
-      <Filter>References\Shaders</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Source\Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Commands.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\EnvironmentPlane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\LoadedObject.cpp">
+    <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Include\Main.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="OBJloader.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\Shader.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Include\Commands.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Include\OBJloader.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Include\EnvironmentPlane.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Include\Vertex.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Include\LoadedObject.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="stb_image.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
