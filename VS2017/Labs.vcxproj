@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\Acre.cpp" />
     <ClCompile Include="..\Source\CollidableObject.cpp" />
     <ClCompile Include="..\Source\Commands.cpp" />
     <ClCompile Include="..\Source\Forest.cpp" />
@@ -20,6 +21,7 @@
     <ClCompile Include="..\Source\Snowman.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\Acre.h" />
     <ClInclude Include="..\Include\CollidableObject.h" />
     <ClInclude Include="..\Include\Colours.h" />
     <ClInclude Include="..\Include\Commands.h" />

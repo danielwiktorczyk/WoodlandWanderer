@@ -24,6 +24,7 @@
 #include "../Include/CollidableObject.h"
 #include "../Include/NonCollidableObject.h"
 #include "../Include/Forest.h"
+#include "../Include/Acre.h"
 
 // for textures: 
 #define STB_IMAGE_IMPLEMENTATION

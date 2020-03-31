@@ -9,9 +9,9 @@
 class LoadedObject {
 public:
 	LoadedObject(GLuint VAO);
-	void draw(const GLfloat* value4fv,
-			  const GLfloat* value3fv,
-			  GLuint& worldMatrixLocationColor,
+	void draw(const GLfloat* objLocation,
+			  const GLfloat* objColor,
+			  GLuint& worldMatrixLocation,
 			  GLuint colorLocation,
 			  const int& vertices);
 

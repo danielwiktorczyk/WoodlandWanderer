@@ -23,10 +23,10 @@ void main() {
 	vec3 diffusedLight = diff * lightColor; // Diffuse impact
 		
 // Add Specular lighting, part 3/3 for Phong Point Lighting
-	float specularStrength = 0.5;
+	float specularStrength = 0.8;
 	vec3 viewDirection = normalize(viewPosition - FragPos);
 	vec3 reflectDirection = reflect(-lightDirection, norm);
-	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), 24);
+	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), 16);
 	vec3 specularLight = specularStrength * spec * lightColor;
 		
 // Result of Phong Point Lighting: 

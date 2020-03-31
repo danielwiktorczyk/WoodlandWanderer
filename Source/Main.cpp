@@ -138,9 +138,10 @@ int main(int argc, char*argv[]) {
 							  carrotTextureID, 
 							  metalTextureID);
 
-	 LoadedObject light = LoadedObject(cubeVAO);
+	 LoadedObject light       = LoadedObject(cubeVAO);
 	 NonCollidableObject tree = NonCollidableObject(treeVAO);
-	 Forest forest = Forest();
+	 Forest forest            = Forest();
+	 Acre testAcre            = Acre();
 
 	 // Baby Blue Background
 	 glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
@@ -149,7 +150,7 @@ int main(int argc, char*argv[]) {
 	 //////////////////////////// Light ////////////////////////////////
 	 ///////////////////////////////////////////////////////////////////
 
-	glm::vec3 lightPosition = glm::vec3(0.0f, 30.0f, 0.0f);
+	glm::vec3 lightPosition = glm::vec3(15.0f, 20.0f, 5.0f);
 	glUniform3fv(lightLocationColor, 1, value_ptr(lightPosition));
 	glUniform3fv(lightLocationTexture, 1, value_ptr(lightPosition));
 
@@ -171,11 +172,18 @@ int main(int argc, char*argv[]) {
 		// Forest
 		bind(colorShaderProgram, forest.getVAO());
 		glm::mat4 forestLocation(1.0f);
-		forest.draw(&forestLocation[0][0], value_ptr(purple), worldMatrixLocationColor, colorLocation);
+		forest.draw(&forestLocation[0][0], value_ptr(green), worldMatrixLocationColor, colorLocation);
+
+		// Acre
+		bind(colorShaderProgram, testAcre.getVAO());
+		glm::mat4 acreLocation(1.0f);
+		acreLocation = translate(acreLocation, glm::vec3(2.0f, 0.0f, 5.0f ));
+		testAcre.draw(&forestLocation[0][0], value_ptr(orange), worldMatrixLocationColor, colorLocation);
 
 		// Light
 		bind(colorShaderProgram, sphereVAO);
 		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+		glUniform3fv(lightLocationColor, 1, value_ptr(lightPosition));
 		light.draw(&lightBulbMatrix[0][0], value_ptr(white), worldMatrixLocationColor, colorLocation, sphereVertices);
 
 		// Tree!
