@@ -17,5 +17,4 @@ C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(66,1): wa
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
 C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(69,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(200,38): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
   Labs.vcxproj -> C:\Users\claul\Documents\Projects\WoodlandWanderer\VS2017\/../Bin/Labs-Debug.exe

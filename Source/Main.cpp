@@ -7,6 +7,13 @@
 *   COMP 371 Labs Framework
 * 
 * Used lab tutorials from class and learnopengl.com tutorials 
+
+
+
+WE NEED TO SOURCE THE OBJECT FILES !!!
+
+
+
 */
 
 #include "../Include/Main.h"
@@ -25,8 +32,7 @@ int main(int argc, char*argv[]) {
 #endif
 
 	GLFWwindow* window = glfwCreateWindow(1024, 768, "Comp371 - Final Project", NULL, NULL);
-	if (window == NULL)
-	{
+	if (window == NULL) {
 		std::cerr << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
@@ -119,31 +125,30 @@ int main(int argc, char*argv[]) {
 	 LoadedObject light = LoadedObject(cubeVAO);
 	 LoadedObject tree = LoadedObject(treeVAO);
 
-	// Set lighting point source location
+	 ///////////////////////////////////////////////////////////////////
+	 //////////////////////////// Light ////////////////////////////////
+	 ///////////////////////////////////////////////////////////////////
+
 	glm::vec3 lightPosition = glm::vec3(0.0f, 30.0f, 0.0f);
 	glUniform3fv(lightLocationColor, 1, value_ptr(lightPosition));
 	glUniform3fv(lightLocationTexture, 1, value_ptr(lightPosition));
 
-
-	// Entering Main Loop
-	while (!glfwWindowShouldClose(window))
-	{
-		// Each frame, reset color of each pixel to glClearColor
+	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		Commands::areTexturesToggled(window, canToggleTexturing, texturing);
 
+		// Light
 		bind(colorShaderProgram, sphereVAO);
-
 		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
-
 		light.draw(&lightBulbMatrix[0][0], value_ptr(white), worldMatrixLocationColor, colorLocation, sphereVertices);
 
 		// Tree!
 		bind(colorShaderProgram, treeVAO);
 		glm::mat4 base = scale(glm::mat4(1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
-
 		tree.draw(&base[0][0], value_ptr(turquoise), worldMatrixLocationColor, colorLocation, treeVertices);
+		
+		//Snowman
 		snowman.draw(texturing);
 
 		// Handle inputs
@@ -161,70 +166,21 @@ int main(int argc, char*argv[]) {
 		// Snowman Update
 		snowman.update();
 
-		/*
-			Camera controls
-		*/
-		double mousePosX, mousePosY;
-		glfwGetCursorPos(window, &mousePosX, &mousePosY);
-
-		double dx = mousePosX - lastMousePosX;
-		double dy = mousePosY - lastMousePosY;
-
-		lastMousePosX = mousePosX;
-		lastMousePosY = mousePosY;
-
-		constexpr float cameraAngularSpeed = glm::radians(5.0f);
-		float theta = glm::radians(cameraHorizontalAngle);
-		float phi = glm::radians(cameraVerticalAngle);
-
-		// Clamp vertical angle to [-85, 85] degrees
-		cameraVerticalAngle = glm::max(-85.0f, glm::min(85.0f, cameraVerticalAngle));
-
-		// Allow camera to rotate about horizontally
-		if (cameraHorizontalAngle > 360)
-			cameraHorizontalAngle -= 360;
-		else if (cameraHorizontalAngle < -360)
-			cameraHorizontalAngle += 360;
-		
-		cameraLookAt = glm::vec3(cosf(phi)*cosf(theta), sinf(phi), -cosf(phi)*sinf(theta));
-		cameraSideVector = cross(cameraLookAt, glm::vec3(0.0f, 1.0f, 0.0f));
-		normalize(cameraSideVector);
+		setCameraVariables(window, mousePosX, mousePosY, lastMousePosX, lastMousePosY, cameraHorizontalAngle, cameraVerticalAngle, cameraLookAt, cameraSideVector);
 
 		Commands::panCamera(window, cameraHorizontalAngle, dx, cameraAngularSpeed);
 		Commands::tiltCamera(window, cameraVerticalAngle, dy, cameraAngularSpeed);
+		Commands::zoomCamera(window, currentFOV, dy, projectionMatrix, colorShaderProgram, texturedShaderProgram, setProjectionMatrix);
 
-		// Camera Zooming
-		float cameraZoomSpeed = 0.001f;
-		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) // 
-		{
-			currentFOV += cameraZoomSpeed * dy;
-
-			projectionMatrix = glm::perspective(currentFOV,            // field of view in degrees
-				1024.0f / 768.0f,  // aspect ratio
-				0.01f, 100.0f);   // near and far (near > 0)
-			
-			setProjectionMatrix(colorShaderProgram, projectionMatrix);
-			setProjectionMatrix(texturedShaderProgram, projectionMatrix);
-		}
-
-		glm::mat4 viewMatrix(1.0f);		
-		viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
-		setViewMatrix(colorShaderProgram, viewMatrix);
-		setViewMatrix(texturedShaderProgram, viewMatrix);
-		glUniform3fv(viewLocationColor, 1, value_ptr(cameraPosition));
-		glUniform3fv(viewLocationTexture, 1, value_ptr(cameraPosition));
+		sendViewMatrixToShader(cameraPosition, cameraLookAt, cameraUp, colorShaderProgram, texturedShaderProgram, viewLocationColor, viewLocationTexture);
 
 		Commands::setWorldRotation(window, worldRotationAboutYAxis, worldRotationAboutXAxis);
-		worldRotationMatrix = rotate(glm::mat4(1.0f), worldRotationAboutYAxis, glm::vec3(0.0f, 1.0f, 0.0f)) * rotate(glm::mat4(1.0f), worldRotationAboutXAxis, glm::vec3(1.0f, 0.0f, 0.0f));
-		setWorldRotationMatrix(colorShaderProgram, worldRotationMatrix);
-		setWorldRotationMatrix(texturedShaderProgram, worldRotationMatrix);
+		sendWorldRotationMatrixToShader(worldRotationMatrix, worldRotationAboutYAxis, worldRotationAboutXAxis, colorShaderProgram, texturedShaderProgram);
 	
-		// End Frameset
-		glfwSwapBuffers(window); // for double buffering
+		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
-	// Finally, shut down
 	glfwTerminate();
 
 	return 0;
@@ -363,32 +319,61 @@ const char* getTexturedFragmentShaderSource() {
 
 /**
 * Compile and link shader program
-@return shader program ID
+* @return shader program ID
 */
 int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentShaderSource) {
+
+	std::string vertexCode;
+	std::string fragmentCode;
+	std::ifstream vShaderFile;
+	std::ifstream fShaderFile;
+
+	//ensure ifstream can throw exceptions
+	vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+
+	try {
+		vShaderFile.open(vertexPath);
+		fShaderFile.open(fragmentPath);
+		std::stringstream vShaderStream, fShaderStream;
+
+		// read file's buffer contents into streams
+		vShaderStream << vShaderFile.rdbuf();
+		fShaderStream << fShaderFile.rdbuf();
+
+		//close file handlers
+		vShaderFile.close();
+		fShaderFile.close();
+
+		//convert stream into string
+		vertexCode = vShaderStream.str();
+		fragmentCode = fShaderStream.str();
+	}
+	catch (std::ifstream::failure ex) {
+		std::cout << "ERROR: SHADER --> FILE NOT SUCCESSFULLY READ" << std::endl;
+	}
+
+	const char* vShaderCode = vertexCode.c_str();
+	const char* fShaderCode = fragmentCode.c_str();
+
 	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertexShader);
 
-	// check for shader compile errors
 	int success;
 	char infoLog[512];
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
+	if (!success) {
 		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
 		std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
 
-	// fragment shader
 	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
 	glCompileShader(fragmentShader);
 
-	// check for shader compile errors
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
+	if (!success) {
 		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
 		std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
@@ -460,7 +445,6 @@ GLuint loadTexture(const char* filename) {
 	glGenTextures(1, &textureId);
 	assert(textureId != 0);
 
-
 	glBindTexture(GL_TEXTURE_2D, textureId);
 
 	// Step2 Set filter parameters
@@ -470,22 +454,23 @@ GLuint loadTexture(const char* filename) {
 	// Step3 Load Textures with dimension data
 	int width, height, nrChannels;
 	unsigned char* data = stbi_load(filename, &width, &height, &nrChannels, 0);
-	if (!data)
-	{
+	if (!data) {
 		std::cerr << "Error::Texture could not load texture file:" << filename << std::endl;
 		return 0;
 	}
 
 	// Step4 Upload the texture to the PU
 	GLenum format = 0;
-	if (nrChannels == 1)
+	if (nrChannels == 1) {
 		format = GL_RED;
-	else if (nrChannels == 3)
+	}
+	else if (nrChannels == 3) {
 		format = GL_RGB;
-	else if (nrChannels == 4)
+	}
+	else if (nrChannels == 4) {
 		format = GL_RGBA;
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height,
-		0, format, GL_UNSIGNED_BYTE, data);
+	}
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 
 	// Step5 Free resources
 	stbi_image_free(data);
@@ -515,6 +500,64 @@ void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix) {
 	glUseProgram(shaderProgram);
 	GLuint worldRotationMatrixLocation = glGetUniformLocation(shaderProgram, "worldRotationMatrix");
 	glUniformMatrix4fv(worldRotationMatrixLocation, 1, GL_FALSE, &worldRotationMatrix[0][0]);
+}
+
+void sendViewMatrixToShader(const glm::vec3& camPos, 
+							const glm::vec3& camLookAt, 
+							const glm::vec3 camUp, 
+							const int& colorShader, 
+							const int& textShader, 
+							const GLuint& viewLocationColor, 
+							const GLuint& viewLocationTexture) {
+	glm::mat4 viewMatrix(1.0f);
+	viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
+	setViewMatrix(colorShader, viewMatrix);
+	setViewMatrix(textShader, viewMatrix);
+	glUniform3fv(viewLocationColor, 1, value_ptr(cameraPosition));
+	glUniform3fv(viewLocationTexture, 1, value_ptr(cameraPosition));
+}
+
+void sendWorldRotationMatrixToShader(glm::mat4& worldRotationMatrix, const float& rotYaxis, const float& rotXaxis, const int& colorShader, const int& textShader) {
+	worldRotationMatrix = rotate(glm::mat4(1.0f), worldRotationAboutYAxis, glm::vec3(0.0f, 1.0f, 0.0f)) * rotate(glm::mat4(1.0f), worldRotationAboutXAxis, glm::vec3(1.0f, 0.0f, 0.0f));
+	setWorldRotationMatrix(colorShader, worldRotationMatrix);
+	setWorldRotationMatrix(textShader, worldRotationMatrix);
+}
+
+void setCameraVariables(GLFWwindow* window, 
+						double& mousePosX, 
+						double& mousePosY, 
+						double& lastMousePosX, 
+						double& lastMousePosY, 
+						float& camHorAngle, 
+						float& camVertAngle,
+						glm::vec3& cameraLookAt,
+						glm::vec3& cameraSideVector) {
+
+	glfwGetCursorPos(window, &mousePosX, &mousePosY);
+
+	dx = mousePosX - lastMousePosX;
+	dy = mousePosY - lastMousePosY;
+
+	lastMousePosX = mousePosX;
+	lastMousePosY = mousePosY;
+
+	theta = glm::radians(cameraHorizontalAngle);
+	phi = glm::radians(cameraVerticalAngle);
+
+	// Clamp vertical angle to [-85, 85] degrees
+	camVertAngle = glm::max(-85.0f, glm::min(85.0f, camVertAngle));
+
+	// Allow camera to rotate about horizontally
+	if (camHorAngle > 360) {
+		camHorAngle -= 360;
+	}
+	else if (camHorAngle < -360) {
+		camHorAngle += 360;
+	}
+
+	cameraLookAt = glm::vec3(cosf(phi) * cosf(theta), sinf(phi), -cosf(phi) * sinf(theta));
+	cameraSideVector = cross(cameraLookAt, glm::vec3(0.0f, 1.0f, 0.0f));
+	normalize(cameraSideVector);
 }
 
 /**

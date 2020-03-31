@@ -15,6 +15,8 @@
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
+#include <fstream>
+#include <sstream>
 #include "../Include/OBJloader.h"  //For loading .obj files
 #include "../Include/Snowman.h"
 #include "../Include/Commands.h"
@@ -39,6 +41,30 @@ void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix);
 void setViewMatrix(int shaderProgram, glm::mat4 viewMatrix);
 void setWorldMatrix(int shaderProgram, glm::mat4 worldMatrix);
 void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix);
+
+void sendViewMatrixToShader(const glm::vec3& camPos,
+							const glm::vec3& camLookAt,
+							const glm::vec3 camUp,
+							const int& colorShader,
+							const int& textShader,
+							const GLuint& viewLocationColor,
+							const GLuint& viewLocationTexture);
+
+void sendWorldRotationMatrixToShader(glm::mat4& worldRotationMatrix,
+									 const float& rotYaxis,
+									 const float& rotXaxis,
+									 const int& colorShader,
+									 const int& textShader);
+
+void setCameraVariables(GLFWwindow* window, 
+						double& mousePosX, 
+						double& mousePosY, 
+						double& lastMousePosX, 
+						double& lastMousePosY, 
+						float& camHorAngle,
+						float& camVertAngle,
+						glm::vec3& cameraLookAt,
+						glm::vec3& cameraSideVector);
 
 void bind(int& currentShader, GLuint& VAO);
 
@@ -79,3 +105,8 @@ bool canRotateIncrement = true;
 bool canMoveIncrement = true;
 bool canRandomPlacement = true;
 
+//Camera
+double mousePosX, mousePosY;
+double dx, dy;
+float theta, phi;
+constexpr float cameraAngularSpeed = glm::radians(5.0f);

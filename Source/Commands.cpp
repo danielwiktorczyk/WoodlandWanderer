@@ -60,6 +60,22 @@ void Commands::tiltCamera(GLFWwindow* window, float& camVertAng, const double& d
 }
 
 /**
+* Zoom the camera by holding the left mouse button and moving the mouse
+*/
+void Commands::zoomCamera(GLFWwindow* window, float& currentFOV, const double& dy, glm::mat4& projMatrix, const int& colorShader, const int& textShader, std::function<void(int, glm::mat4)> setProjMatrix) {
+	// Camera Zooming
+	float cameraZoomSpeed = 0.001f;
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+		currentFOV += cameraZoomSpeed * dy;
+
+		projMatrix = glm::perspective(currentFOV, 1024.0f / 768.0f, 0.01f, 100.0f);
+
+		setProjMatrix(colorShader, projMatrix);
+		setProjMatrix(textShader, projMatrix);
+	}
+}
+
+/**
 * Set the world orientation
 */
 void Commands::setWorldRotation(GLFWwindow* window, float& rotYaxis, float& rotXaxis) {
