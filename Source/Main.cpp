@@ -12,7 +12,6 @@
 #include "../Include/Main.h"
 
 int main(int argc, char*argv[]) {
-	// Initialize GLFW and OpenGL version
 	glfwInit();
 
 #if defined(PLATFORM_OSX)
@@ -21,12 +20,10 @@ int main(int argc, char*argv[]) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #else
-	// On windows, we set OpenGL version to 2.1, to support more hardware
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 #endif
 
-	// Create Window and rendering context using GLFW, resolution is 1024x768
 	GLFWwindow* window = glfwCreateWindow(1024, 768, "Comp371 - Final Project", NULL, NULL);
 	if (window == NULL)
 	{
@@ -47,7 +44,6 @@ int main(int argc, char*argv[]) {
 		return -1;
 	}
 
-	//Setup models
 #if defined(PLATFORM_OSX)
 	string cubePath = "Models/cube.obj";
 	string heraclesPath = "Models/heracles.obj";
@@ -83,7 +79,6 @@ int main(int argc, char*argv[]) {
 
 	// Camera parameters for view transform
 	glm::vec3 cameraPosition(3.0f, 5.0f, 25.0f);
-	//glm::vec3 cameraPosition(0.0f, 0.0f, 0.0f);
 	glm::vec3 cameraLookAt(0.0f, 0.0f, -1.0f);
 	glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
 
@@ -95,14 +90,10 @@ int main(int argc, char*argv[]) {
 
 	// Set projection matrix for shader
 	float currentFOV = 70.0f;
-	glm::mat4 projectionMatrix = glm::perspective(currentFOV,            // field of view in degrees
-		1024.0f / 768.0f,  // aspect ratio
-		0.01f, 100.0f);   // near and far (near > 0)
+	glm::mat4 projectionMatrix = glm::perspective(currentFOV, 1024.0f / 768.0f, 0.01f, 100.0f); 
 
 	// Set initial view matrix
-	glm::mat4 viewMatrix = lookAt(cameraPosition,  // eye
-		cameraPosition + cameraLookAt,  // center
-		cameraUp); // up
+	glm::mat4 viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp); 
 	
 	// Set View and Projection matrices on both shaders
 	setViewMatrix(colorShaderProgram, viewMatrix);
@@ -128,8 +119,16 @@ int main(int argc, char*argv[]) {
 	GLuint lightLocationTexture = glGetUniformLocation(texturedShaderProgram, "lightPosition");
 
 	// Initialize the Snowman
-	Snowman snowman = Snowman(worldMatrixLocationColor, worldMatrixLocationTexture, colorLocation, colorShaderProgram, texturedShaderProgram, sphereVertices, cubeVAO, sphereVAO,
-		carrotTextureID, metalTextureID);
+	Snowman snowman = Snowman(worldMatrixLocationColor, 
+							  worldMatrixLocationTexture, 
+							  colorLocation, 
+							  colorShaderProgram, 
+							  texturedShaderProgram, 
+							  sphereVertices, 
+							  cubeVAO, 
+							  sphereVAO,
+							  carrotTextureID, 
+							  metalTextureID);
 
 	// World rotation
 	glm::mat4 worldRotationMatrix = glm::mat4(1.0f);
@@ -584,7 +583,7 @@ const char* getTexturedFragmentShaderSource() {
 		"	vec3 specularLight = specularStrength * spec * lightColor;"
 		""
 		// Result of Phong Point Lighting: 
-		"	vec3 result = (ambientLight + diffusedLight + specularLight) * glm::vec3(textureColor.r, textureColor.g, textureColor.b);"
+		"	vec3 result = (ambientLight + diffusedLight + specularLight) * vec3(textureColor.r, textureColor.g, textureColor.b);"
 		"   FragColor = vec4(result, textureColor.g);"
 		"}";
 }

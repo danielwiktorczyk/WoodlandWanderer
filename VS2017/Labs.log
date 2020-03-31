@@ -1,7 +1,4 @@
-﻿  Commands.cpp
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Commands.cpp(49,32): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Commands.cpp(58,33): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-  Main.cpp
+﻿  Main.cpp
 C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(20,1): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message : see declaration of 'fopen'
 C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(31,1): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
@@ -20,10 +17,9 @@ C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(66,1): wa
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
 C:\Users\claul\Documents\Projects\WoodlandWanderer\Include\OBJloader.h(69,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(284,34): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(290,34): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(299,34): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(305,34): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(428,38): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(283,34): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(289,34): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(298,34): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(304,34): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(427,38): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
   Labs.vcxproj -> C:\Users\claul\Documents\Projects\WoodlandWanderer\VS2017\/../Bin/Labs-Debug.exe
