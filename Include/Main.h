@@ -21,6 +21,9 @@
 #include "../Include/Commands.h"
 #include "../Include/Colours.h"
 #include "../Include/LoadedObject.h"
+#include "../Include/CollidableObject.h"
+#include "../Include/NonCollidableObject.h"
+#include "../Include/Forest.h"
 
 // for textures: 
 #define STB_IMAGE_IMPLEMENTATION
@@ -60,7 +63,7 @@ void setCameraVariables(GLFWwindow* window,
 						glm::vec3& cameraLookAt,
 						glm::vec3& cameraSideVector);
 
-void bind(int& currentShader, GLuint& VAO);
+void bind(int& currentShader, GLuint const& VAO);
 
 ///////////////////////////////////////////////////////////////////
 ////////////////////////// Variables //////////////////////////////

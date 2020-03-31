@@ -11,16 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\CollidableObject.cpp" />
     <ClCompile Include="..\Source\Commands.cpp" />
+    <ClCompile Include="..\Source\Forest.cpp" />
     <ClCompile Include="..\Source\LoadedObject.cpp" />
     <ClCompile Include="..\Source\Main.cpp" />
+    <ClCompile Include="..\Source\NonCollidableObject.cpp" />
     <ClCompile Include="..\Source\Snowman.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\CollidableObject.h" />
     <ClInclude Include="..\Include\Colours.h" />
     <ClInclude Include="..\Include\Commands.h" />
+    <ClInclude Include="..\Include\Forest.h" />
     <ClInclude Include="..\Include\LoadedObject.h" />
     <ClInclude Include="..\Include\Main.h" />
+    <ClInclude Include="..\Include\NonCollidableObject.h" />
     <ClInclude Include="..\Include\OBJloader.h" />
     <ClInclude Include="..\Include\Snowman.h" />
     <ClInclude Include="..\Include\stb_image.h" />

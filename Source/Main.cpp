@@ -71,7 +71,7 @@ int main(int argc, char*argv[]) {
 #else
 	std::string cubePath   = "../Assets/Models/cube.obj";
 	std::string spherePath = "../Assets/Models/sphere.obj";
-	std::string treePath   = "../Assets/Models/low-poly-trees-pack.obj";
+	std::string treePath   = "../Assets/Models/low-poly-trees-pack-tree.obj";
 #endif
 	int cubeVertices;
 	GLuint cubeVAO = setupModelVBO(cubePath, cubeVertices);
@@ -139,7 +139,8 @@ int main(int argc, char*argv[]) {
 							  metalTextureID);
 
 	 LoadedObject light = LoadedObject(cubeVAO);
-	 LoadedObject tree = LoadedObject(treeVAO);
+	 NonCollidableObject tree = NonCollidableObject(treeVAO);
+	 Forest forest = Forest();
 
 	 // Baby Blue Background
 	 glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
@@ -166,6 +167,11 @@ int main(int argc, char*argv[]) {
 		Commands::areTexturesToggled(window, canToggleTexturing, texturing);
 		Commands::closeWindow(window);
 		Commands::setRenderingMode(window);
+
+		// Forest
+		bind(colorShaderProgram, forest.getVAO());
+		glm::mat4 forestLocation(1.0f);
+		forest.draw(&forestLocation[0][0], value_ptr(purple), worldMatrixLocationColor, colorLocation);
 
 		// Light
 		bind(colorShaderProgram, sphereVAO);
@@ -449,7 +455,7 @@ void setCameraVariables(GLFWwindow* window,
 /**
 * Bind the desired VAO to the buffer
 */
-void bind(int& currentShader, GLuint& VAO) {
+void bind(int& currentShader, GLuint const& VAO) {
 	glUseProgram(currentShader);
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VAO);

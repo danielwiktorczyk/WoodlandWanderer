@@ -34,6 +34,15 @@
     <ClCompile Include="..\Source\LoadedObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\CollidableObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NonCollidableObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Forest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\OBJloader.h">
@@ -55,6 +64,15 @@
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\LoadedObject.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\CollidableObject.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\NonCollidableObject.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Forest.h">
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>
