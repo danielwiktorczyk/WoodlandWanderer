@@ -155,136 +155,11 @@ int main(int argc, char*argv[]) {
 		Commands::closeWindow(window);
 		Commands::setRenderingMode(window);
 
-		// Snowman Scaling
-		float snowmanScalingSpeed = 0.005f;
-		bool scaleUp = glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS;
-		bool scaleDown = glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS;
-
-		if (scaleUp && (!shift || canScaleIncrement)) { // Scale snowman up
-			snowman.scaleFactor += snowmanScalingSpeed;
-		}
-		if (scaleDown && (!shift || canScaleIncrement)) { // Scale snowman down
-			snowman.scaleFactor -= snowmanScalingSpeed;
-		}
-		if (snowman.scaleFactor < 0) {
-			snowman.scaleFactor = 0;
-		}
-		canScaleIncrement = !(scaleUp || scaleDown);
-
-		// Snowman Rotation by Q and E keys
-		float snowmanRotationSpeed = 0.0064f; // degrees
-		bool rotateLeft = glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS;
-		bool rotateRight = glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS;
-		if (rotateLeft) // Rotate snowman left 5 degrees
-		{
-			if (!shift) {
-				snowman.rotation += snowmanRotationSpeed;
-				if (snowman.rotation >= 2 * M_PI)
-					snowman.rotation -= 2 * M_PI;
-				snowman.animateHat -= 0.01f;
-			}
-			else if (canRotateIncrement) {
-				snowman.rotation += 10 * snowmanRotationSpeed;
-				if (snowman.rotation >= 2 * M_PI)
-					snowman.rotation -= 2 * M_PI;
-				snowman.animateHat -= 0.01f;
-			}
-		}
-		if (rotateRight && (!shift || canRotateIncrement)) // Rotate snowman right 5 degrees
-		{
-			if (!shift) {
-				snowman.rotation -= snowmanRotationSpeed;
-				if (snowman.rotation <= 2 * M_PI)
-					snowman.rotation += 2 * M_PI;
-				snowman.animateHat += 0.01f;
-			}
-			else if (canRotateIncrement) {
-				snowman.rotation -= 10 * snowmanRotationSpeed;
-				if (snowman.rotation <= 2 * M_PI)
-					snowman.rotation += 2 * M_PI;
-				snowman.animateHat += 0.01f;
-			}
-		}
-		canRotateIncrement = !(rotateLeft || rotateRight);
-
+		snowman.scaleSnowman(window, shift, canScaleIncrement);
+		snowman.rotateSnowman(window, shift, canRandomPlacement);
+		snowman.translateSnowman(window, shift, canMoveIncrement);
+		snowman.randomTranslationSnowman(window, shift, canRandomPlacement);
 		
-		// Snowman Translation by WASD keys
-		float snowmanTranslationSpeed = 0.03f;
-		bool moveLeft = glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS;
-		bool moveRight = glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS;
-		bool moveUp = glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS;
-		bool moveDown = glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS;
-		if (moveLeft) // Move snowman left (+ x direction)
-		{
-			if (!shift) {
-				snowman.origin.x += cos(snowman.rotation) * snowmanTranslationSpeed;
-				snowman.origin.z -= sin(snowman.rotation) * snowmanTranslationSpeed;
-				if (!moveUp && !moveDown)
-					snowman.animate += 0.02f;
-			}
-			else if (canMoveIncrement) {
-				snowman.origin.x += cos(snowman.rotation) * 10.0f * snowmanTranslationSpeed;
-				snowman.origin.z -= sin(snowman.rotation) * 10.0f * snowmanTranslationSpeed;
-				if (!moveUp && !moveDown)
-					snowman.animate += 10.0f * 0.02f;
-			}
-		}
-		if (moveRight) // Move snowman right (- x direction)
-		{
-			if (!shift) {
-				snowman.origin.x -= cos(snowman.rotation) * snowmanTranslationSpeed;
-				snowman.origin.z += sin(snowman.rotation) * snowmanTranslationSpeed;
-				if (!moveUp && !moveDown)
-					snowman.animate += 0.02f;
-			}
-			else if (canMoveIncrement) {
-				snowman.origin.x -= cos(snowman.rotation) * 10.0f * snowmanTranslationSpeed;
-				snowman.origin.z += sin(snowman.rotation) * 10.0f * snowmanTranslationSpeed;
-				if (!moveUp && !moveDown)
-					snowman.animate += 10.0f * 0.02f;
-			}
-		}
-		if (moveUp) // Move snowman up (+ z direction)
-		{
-			if (!shift) {
-				snowman.origin.x += sin(snowman.rotation) * snowmanTranslationSpeed;
-				snowman.origin.z += cos(snowman.rotation) * snowmanTranslationSpeed;
-				snowman.animate += 0.02f;
-			}
-			else if (canMoveIncrement) {
-				snowman.origin.x += sin(snowman.rotation) * 10.0f * snowmanTranslationSpeed;
-				snowman.origin.z += cos(snowman.rotation) * 10.0f * snowmanTranslationSpeed;
-				snowman.animate += 10.0f * 0.02f;
-			}
-		}
-		if (moveDown) // Move snowman down (- z direction)
-		{
-			if (!shift) {
-				snowman.origin.x -= sin(snowman.rotation) * snowmanTranslationSpeed;
-				snowman.origin.z -= cos(snowman.rotation) * snowmanTranslationSpeed;
-				snowman.animate -= 0.02f;
-			}
-			else if (canMoveIncrement) {
-				snowman.origin.x -= sin(snowman.rotation) * 10.0f * snowmanTranslationSpeed;
-				snowman.origin.z -= cos(snowman.rotation) * 10.0f * snowmanTranslationSpeed;
-				snowman.animate -= 10.0f * 0.02f;
-			}
-		}
-		canMoveIncrement = !(moveLeft || moveRight || moveUp || moveDown);
-
-		// Snowman Random location
-		int randomBounds = 24; // Let's use 24 units for now, easier to spot the snowman
-		bool randomPlacement = glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS;
-		if (randomPlacement) // Random position 
-		{
-			if (!shift || canRandomPlacement) {
-				float randx = (rand() % randomBounds) - randomBounds / 2.0f;
-				float randy = (rand() % randomBounds) - randomBounds / 2.0f;
-				snowman.origin = glm::vec3(randx, 0.0f, randy);
-			}
-		}
-		canRandomPlacement = !randomPlacement;
-
 		// Snowman Update
 		snowman.update();
 
@@ -644,6 +519,9 @@ void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix) {
 	glUniformMatrix4fv(worldRotationMatrixLocation, 1, GL_FALSE, &worldRotationMatrix[0][0]);
 }
 
+/**
+* Bind the desired VAO to the buffer
+*/
 void bind(int& currentShader, GLuint& VAO) {
 	glUseProgram(currentShader);
 	glBindVertexArray(VAO);

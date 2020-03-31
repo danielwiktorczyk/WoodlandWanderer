@@ -1,4 +1,6 @@
 #pragma once
+#define M_PI 3.1415926535897932384626433832795
+
 #include <GL/glew.h>    // Include GLEW - OpenGL Extension Wrangler
 #include <GLFW/glfw3.h> // cross-platform interface for creating a graphical context,
 #include <glm/glm.hpp>  // GLM is an optimized math library with syntax to similar to OpenGL Shading Language
@@ -20,10 +22,16 @@ public:
 			int theMetalTexture);
 	
 	void update();
+
 	void draw(bool texturing);
 	void drawHelper(glm::mat4 part, glm::vec3 color);
 	void drawTexture(glm::mat4 part, int texture);
 	void drawBody(glm::mat4 part, glm::vec3 color);
+
+	void scaleSnowman(GLFWwindow* window, const bool& shift, bool& canScaleIncrement);
+	void rotateSnowman(GLFWwindow* window, const bool& shift, bool& canRotateIncrement);
+	void translateSnowman(GLFWwindow* window, const bool& shift, bool& canMoveIncrement);
+	void randomTranslationSnowman(GLFWwindow* window, const bool& shift, bool& canRandomPlacement);
 
 	glm::vec3 origin;
 	glm::vec3 offset;

@@ -23,7 +23,6 @@
 // for textures: 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../Include/stb_image.h"
-#define M_PI 3.1415926535897932384626433832795
 
 const char* getVertexShaderSource();
 const char* getFragmentShaderSource();
