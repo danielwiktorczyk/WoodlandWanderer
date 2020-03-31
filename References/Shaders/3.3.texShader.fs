@@ -1,16 +1,19 @@
 #version 330 core
 
-uniform vec3 objectColor;
 uniform vec3 lightPosition;
 uniform vec3 viewPosition;
+uniform sampler2D textureSampler;
 
 in vec3 vertexColor;
+in vec2 vertexUV;
 in vec3 Normal;
 in vec3 FragPos;
 
 out vec4 FragColor;
 		
 void main() {
+	vec4 textureColor = texture(textureSampler, vertexUV);
+		
 // Add Ambient light, part 1/3 for Phong Point Lighting
 	vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 	float ambientFactor = 0.24;
@@ -30,6 +33,6 @@ void main() {
 	vec3 specularLight = specularStrength * spec * lightColor;
 		
 // Result of Phong Point Lighting: 
-	vec3 result = (ambientLight + diffusedLight + specularLight) * objectColor;
-	FragColor = vec4(result, 1.0f);
+	vec3 result = (ambientLight + diffusedLight + specularLight) * vec3(textureColor.r, textureColor.g, textureColor.b);
+	FragColor = vec4(result, textureColor.g);
 };

@@ -58,4 +58,18 @@
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\References\Shaders\3.3.shader.fs">
+      <Filter>References\Shaders</Filter>
+    </None>
+    <None Include="..\References\Shaders\3.3.shader.vs">
+      <Filter>References\Shaders</Filter>
+    </None>
+    <None Include="..\References\Shaders\3.3.texShader.vs">
+      <Filter>References\Shaders</Filter>
+    </None>
+    <None Include="..\References\Shaders\3.3.texShader.fs">
+      <Filter>References\Shaders</Filter>
+    </None>
+  </ItemGroup>
 </Project>

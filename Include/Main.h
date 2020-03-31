@@ -27,12 +27,12 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../Include/stb_image.h"
 
-const char* getVertexShaderSource();
-const char* getFragmentShaderSource();
-const char* getTexturedVertexShaderSource();
-const char* getTexturedFragmentShaderSource();
+//const char* getVertexShaderSource();
+//const char* getFragmentShaderSource();
+//const char* getTexturedVertexShaderSource();
+//const char* getTexturedFragmentShaderSource();
 
-int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentShaderSource);
+int compileAndLinkShaders(const std::string vertexShaderSource, const std::string fragmentShaderSource);
 
 GLuint setupModelVBO(std::string path, int& vertexCount);
 GLuint loadTexture(const char* filename);

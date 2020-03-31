@@ -25,6 +25,12 @@
     <ClInclude Include="..\Include\Snowman.h" />
     <ClInclude Include="..\Include\stb_image.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\References\Shaders\3.3.shader.fs" />
+    <None Include="..\References\Shaders\3.3.shader.vs" />
+    <None Include="..\References\Shaders\3.3.texShader.fs" />
+    <None Include="..\References\Shaders\3.3.texShader.vs" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{277EAE68-9EED-4EFF-BAD3-2A70787A3E8D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

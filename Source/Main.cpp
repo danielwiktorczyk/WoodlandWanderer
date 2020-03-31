@@ -80,8 +80,8 @@ int main(int argc, char*argv[]) {
 	glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
 
 	// Compile and link shaders here ...
-	int colorShaderProgram = compileAndLinkShaders(getVertexShaderSource(), getFragmentShaderSource());
-	int texturedShaderProgram = compileAndLinkShaders(getTexturedVertexShaderSource(), getTexturedFragmentShaderSource());
+	int colorShaderProgram = compileAndLinkShaders("../References/Shaders/3.3.shader.vs", "../References/Shaders/3.3.shader.fs");
+	int texturedShaderProgram = compileAndLinkShaders("../References/Shaders/3.3.texShader.vs", "../References/Shaders/3.3.texShader.fs");
 	
 	// Set View and Projection matrices on both shaders
 	setViewMatrix(colorShaderProgram, viewMatrix);
@@ -186,144 +186,48 @@ int main(int argc, char*argv[]) {
 	return 0;
 }
 
-
-const char* getVertexShaderSource() {
-	return
-		"#version 330 core\n"
-		"layout (location = 0) in vec3 aPos;"
-		"layout (location = 1) in vec3 aNormal;"
-		"layout (location = 2) in vec3 aColor;"
-		""
-		"uniform mat4 worldMatrix = mat4(1.0f);"
-		"uniform mat4 worldRotationMatrix = mat4(1.0f);"
-		"uniform mat4 viewMatrix = mat4(1.0);"
-		"uniform mat4 projectionMatrix = mat4(1.0);"
-		""
-		"out vec3 vertexColor;"
-		"out vec3 Normal;"
-		"out vec3 FragPos;"
-		""
-		"void main()"
-		"{"
-		"   vertexColor = aColor;"
-		"   mat4 modelViewProjection = projectionMatrix * viewMatrix * worldRotationMatrix * worldMatrix;"
-		"   gl_Position = modelViewProjection * vec4(aPos.x, aPos.y, aPos.z, 1.0);"
-		"	Normal = mat3(transpose(inverse(worldMatrix))) * aNormal;" // inverse and transpose since scaling distorts the normal! 
-		"	FragPos = vec3(worldMatrix * vec4(aPos, 1.0f));"
-		"}";
-}
-
-const char* getFragmentShaderSource() {
-	return
-		"#version 330 core\n"
-		"uniform vec3 objectColor;"
-		"uniform vec3 lightPosition;"
-		"uniform vec3 viewPosition;"
-		"in vec3 vertexColor;"
-		"in vec3 Normal;"
-		"in vec3 FragPos;"
-		"out vec4 FragColor;"
-		""
-		"void main()"
-		"{"
-		// Add Ambient light, part 1/3 for Phong Point Lighting
-		"	vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);"
-		"	float ambientFactor = 0.24;"
-		"	vec3 ambientLight = ambientFactor * lightColor;"
-		""
-		// Add Diffuse lighting, part 2/3 for Phong Point Lighting
-		"	vec3 norm = normalize(Normal);" // We want direction only so normalize
-		"	vec3 lightDirection = normalize(lightPosition - FragPos); "
-		"	float diff = max(dot(norm, lightDirection), 0.0);" // Non negative, so max
-		"	vec3 diffusedLight = diff * lightColor;" // Diffuse impact
-		""
-		// Add Specular lighting, part 3/3 for Phong Point Lighting
-		"	float specularStrength = 0.5;"
-		"	vec3 viewDirection = normalize(viewPosition - FragPos);"
-		"	vec3 reflectDirection = reflect(-lightDirection, norm);"
-		"	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), 24);"
-		"	vec3 specularLight = specularStrength * spec * lightColor;"
-		""
-		// Result of Phong Point Lighting: 
-		"	vec3 result = (ambientLight + diffusedLight + specularLight) * objectColor;"
-		"   FragColor = vec4(result, 1.0f);"
-		"}";
-}
-
-const char* getTexturedVertexShaderSource() {
-	return
-
-		"#version 330 core\n"
-		"layout (location = 0) in vec3 aPos;"
-		"layout (location = 1) in vec3 aNormal;"
-		"layout (location = 2) in vec2 aUV;"
-		""
-		"uniform mat4 worldMatrix = mat4(1.0f);"
-		"uniform mat4 worldRotationMatrix = mat4(1.0f);"
-		"uniform mat4 viewMatrix = mat4(1.0);"
-		"uniform mat4 projectionMatrix = mat4(1.0);"
-		""
-		"out vec2 vertexUV;"
-		"out vec3 Normal;"
-		"out vec3 FragPos;"
-		""
-		"void main()"
-		"{"
-		"   mat4 modelViewProjection = projectionMatrix * viewMatrix * worldRotationMatrix * worldMatrix;"
-		"   gl_Position = modelViewProjection * vec4(aPos, 1.0);"
-		"	Normal = mat3(transpose(inverse(worldMatrix))) * aNormal;" // inverse and transpose since scaling distorts the normal! 
-		"	FragPos = vec3(worldMatrix * vec4(aPos, 1.0f));"
-		"   vertexUV = aUV;"
-		"}";
-}
-
-const char* getTexturedFragmentShaderSource() {
-	return
-		"#version 330 core\n"
-		"uniform vec3 lightPosition;"
-		"uniform vec3 viewPosition;"
-		"uniform sampler2D textureSampler;"
-		"in vec3 vertexColor;"
-		"in vec2 vertexUV;"
-		"in vec3 Normal;"
-		"in vec3 FragPos;"
-		"out vec4 FragColor;"
-		""
-		"void main()"
-		"{"
-		"	vec4 textureColor = texture(textureSampler, vertexUV);"
-		""
-		// Add Ambient light, part 1/3 for Phong Point Lighting
-		"	vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);"
-		"	float ambientFactor = 0.24;"
-		"	vec3 ambientLight = ambientFactor * lightColor;"
-		""
-		// Add Diffuse lighting, part 2/3 for Phong Point Lighting
-		"	vec3 norm = normalize(Normal);" // We want direction only so normalize
-		"	vec3 lightDirection = normalize(lightPosition - FragPos); "
-		"	float diff = max(dot(norm, lightDirection), 0.0);" // Non negative, so max
-		"	vec3 diffusedLight = diff * lightColor;" // Diffuse impact
-		""
-		// Add Specular lighting, part 3/3 for Phong Point Lighting
-		"	float specularStrength = 0.5;"
-		"	vec3 viewDirection = normalize(viewPosition - FragPos);"
-		"	vec3 reflectDirection = reflect(-lightDirection, norm);"
-		"	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), 24);"
-		"	vec3 specularLight = specularStrength * spec * lightColor;"
-		""
-		// Result of Phong Point Lighting: 
-		"	vec3 result = (ambientLight + diffusedLight + specularLight) * vec3(textureColor.r, textureColor.g, textureColor.b);"
-		"   FragColor = vec4(result, textureColor.g);"
-		"}";
-}
-
 /**
 * Compile and link shader program
 * @return shader program ID
 */
-int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentShaderSource) {
+int compileAndLinkShaders(const std::string vertexPath, const std::string fragmentPath) {
+	//retrieve the vertex / fragment source code from filepath
+
+	std::string vertexCode;
+	std::string fragmentCode;
+	std::ifstream vShaderFile;
+	std::ifstream fShaderFile;
+
+	//ensure ifstream can throw exceptions
+	vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+
+	try {
+		vShaderFile.open(vertexPath);
+		fShaderFile.open(fragmentPath);
+		std::stringstream vShaderStream, fShaderStream;
+
+		// read file's buffer contents into streams
+		vShaderStream << vShaderFile.rdbuf();
+		fShaderStream << fShaderFile.rdbuf();
+
+		//close file handlers
+		vShaderFile.close();
+		fShaderFile.close();
+
+		//convert stream into string
+		vertexCode = vShaderStream.str();
+		fragmentCode = fShaderStream.str();
+	}
+	catch (std::ifstream::failure ex) {
+		std::cout << "ERROR: SHADER --> FILE NOT SUCCESSFULLY READ" << std::endl;
+	}
+
+	const char* vShaderCode = vertexCode.c_str();
+	const char* fShaderCode = fragmentCode.c_str();
+
 	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	glShaderSource(vertexShader, 1, &vShaderCode, NULL);
 	glCompileShader(vertexShader);
 
 	int success;
@@ -335,7 +239,7 @@ int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentSh
 	}
 
 	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glShaderSource(fragmentShader, 1, &fShaderCode, NULL);
 	glCompileShader(fragmentShader);
 
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
