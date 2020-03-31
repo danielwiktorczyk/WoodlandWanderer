@@ -45,8 +45,8 @@ int main(int argc, char*argv[]) {
 	}
 
 #if defined(PLATFORM_OSX)
-	string cubePath = "Models/cube.obj";
-	string heraclesPath = "Models/heracles.obj";
+	std::string cubePath = "Models/cube.obj";
+	std::string heraclesPath = "Models/heracles.obj";
 #else
 	std::string cubePath = "../Assets/Models/cube.obj";
 	std::string spherePath = "../Assets/Models/sphere.obj";
@@ -76,24 +76,6 @@ int main(int argc, char*argv[]) {
 	// Compile and link shaders here ...
 	int colorShaderProgram = compileAndLinkShaders(getVertexShaderSource(), getFragmentShaderSource());
 	int texturedShaderProgram = compileAndLinkShaders(getTexturedVertexShaderSource(), getTexturedFragmentShaderSource());
-
-	// Camera parameters for view transform
-	glm::vec3 cameraPosition(3.0f, 5.0f, 25.0f);
-	glm::vec3 cameraLookAt(0.0f, 0.0f, -1.0f);
-	glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
-
-	// Other camera parameters
-	float cameraSpeed = 0.05f;
-	float cameraHorizontalAngle = 90.0f;
-	float cameraVerticalAngle = 0.0f;
-	glm::vec3 cameraSideVector = glm::vec3(1.0f);
-
-	// Set projection matrix for shader
-	float currentFOV = 70.0f;
-	glm::mat4 projectionMatrix = glm::perspective(currentFOV, 1024.0f / 768.0f, 0.01f, 100.0f); 
-
-	// Set initial view matrix
-	glm::mat4 viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp); 
 	
 	// Set View and Projection matrices on both shaders
 	setViewMatrix(colorShaderProgram, viewMatrix);
@@ -130,21 +112,6 @@ int main(int argc, char*argv[]) {
 							  carrotTextureID, 
 							  metalTextureID);
 
-	// World rotation
-	glm::mat4 worldRotationMatrix = glm::mat4(1.0f);
-	float worldRotationAboutXAxis = 0.0f;
-	float worldRotationAboutYAxis = 0.0f;
-
-	// Texturing toggle
-	bool texturing = false;
-	bool canToggleTexturing = true;
-
-	// Controlling increment helper variables
-	bool canScaleIncrement = true;
-	bool canRotateIncrement = true;
-	bool canMoveIncrement = true;
-	bool canRandomPlacement = true;
-
 	// Set lighting point source location
 	glm::vec3 lightPosition = glm::vec3(0.0f, 30.0f, 0.0f);
 	glUniform3fv(lightLocationColor, 1, value_ptr(lightPosition));
@@ -162,87 +129,17 @@ int main(int argc, char*argv[]) {
 		glBindVertexArray(cubeVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, cubeVAO);
 
-		// Draw Grid
-		if (texturing) {
-			glUseProgram(texturedShaderProgram);
-
-			glActiveTexture(GL_TEXTURE0);
-			GLuint textureLocation = glGetUniformLocation(texturedShaderProgram, "textureSampler");
-			glBindTexture(GL_TEXTURE_2D, snowTextureID);
-			glUniform1i(textureLocation, 0);
-
-			glm::mat4 groundPatch = scale(glm::mat4(1.0f), glm::vec3(10.0f, 0.02f, 10.0f));
-			glm::mat4 currentGroundPatch;
-			for (int i = -5; i < 5; i++) {
-				for (int j = -5; j < 5; j++) {
-					currentGroundPatch = translate(glm::mat4(1.0f), glm::vec3(i * 10.0f, -0.01f, j * 10.0f)) * groundPatch;
-					glUniformMatrix4fv(worldMatrixLocationTexture, 1, GL_FALSE, &currentGroundPatch[0][0]);
-					glDrawArrays(GL_TRIANGLES, 12, 18);
-				}	
-			}
-		}
-		else {
-			glUseProgram(colorShaderProgram);
-
-			glm::mat4 gridLineMatrix = scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
-			glm::mat4 currentGridLineMatrix;
-			for (int i = -50; i < 50; i++) {
-				currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, i * 1.0f)) * gridLineMatrix;
-				glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
-				glUniform3fv(colorLocation, 1, value_ptr(gridColor));
-				glDrawArrays(GL_TRIANGLES, 12, 18);
-				glDrawArrays(GL_TRIANGLES, 30, 36);
-			}
-			gridLineMatrix = scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.02f, 100.0f));
-			for (int i = -50; i < 50; i++) {
-				currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(i * 1.0f, -0.01f, 0.0f)) * gridLineMatrix;
-				glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
-				glUniform3fv(colorLocation, 1, value_ptr(gridColor));
-				glDrawArrays(GL_TRIANGLES, 12, 18);
-				glDrawArrays(GL_TRIANGLES, 30, 36);
-			}
-		}
-
-		// Draw x y and z Axis
-		glUseProgram(colorShaderProgram);
-
-		float const axisWidth = 0.1f;
-		float const axisLength = 5.0f;
-
-		glm::mat4 xAxisMatrix = translate(glm::mat4(1.0f), glm::vec3(axisLength / 2, 0.0f, 0.0f)) * scale(glm::mat4(1.0f), glm::vec3(axisLength, axisWidth, axisWidth));
-		glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &xAxisMatrix[0][0]);
-		glUniform3fv(colorLocation, 1, value_ptr(red));
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		glm::mat4 yAxisMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, axisLength / 2, 0.0f)) * scale(glm::mat4(1.0f), glm::vec3(axisWidth, axisLength, axisWidth));
-		glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &yAxisMatrix[0][0]);
-		glUniform3fv(colorLocation, 1, value_ptr(blue));
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		glm::mat4 zAxisMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, axisLength / 2)) * scale(glm::mat4(1.0f), glm::vec3(axisWidth, axisWidth, axisLength));
-		glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &zAxisMatrix[0][0]);
-		glUniform3fv(colorLocation, 1, value_ptr(green));
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
 		// Draw an object representing the light source
 		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
 		glm::vec3 lightBulbColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
-		glUseProgram(colorShaderProgram);
-
-		glBindVertexArray(0);
-		glBindVertexArray(sphereVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, sphereVAO);
-
+		bind(colorShaderProgram, sphereVAO);
 		glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &lightBulbMatrix[0][0]);
 		glUniform3fv(colorLocation, 1, value_ptr(lightBulbColor));
 		glDrawArrays(GL_TRIANGLES, 0, sphereVertices);
 
 		// Tree!
-		glUseProgram(colorShaderProgram);
-		glBindVertexArray(0);
-		glBindVertexArray(treeVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, treeVAO);
+		bind(colorShaderProgram, treeVAO);
 		glm::mat4 base = scale(glm::mat4(1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
 		glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &base[0][0]);
 		glUniform3fv(colorLocation, 1, value_ptr(turquoise));
@@ -262,14 +159,17 @@ int main(int argc, char*argv[]) {
 		float snowmanScalingSpeed = 0.005f;
 		bool scaleUp = glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS;
 		bool scaleDown = glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS;
-		if (scaleUp && (!shift || canScaleIncrement)) // Scale snowman up
-			snowman.scaleFactor += snowmanScalingSpeed;
-		if (scaleDown && (!shift || canScaleIncrement)) // Scale snowman down
-			snowman.scaleFactor -= snowmanScalingSpeed;
-		if (snowman.scaleFactor < 0)
-			snowman.scaleFactor = 0;
-		canScaleIncrement = !(scaleUp || scaleDown);
 
+		if (scaleUp && (!shift || canScaleIncrement)) { // Scale snowman up
+			snowman.scaleFactor += snowmanScalingSpeed;
+		}
+		if (scaleDown && (!shift || canScaleIncrement)) { // Scale snowman down
+			snowman.scaleFactor -= snowmanScalingSpeed;
+		}
+		if (snowman.scaleFactor < 0) {
+			snowman.scaleFactor = 0;
+		}
+		canScaleIncrement = !(scaleUp || scaleDown);
 
 		// Snowman Rotation by Q and E keys
 		float snowmanRotationSpeed = 0.0064f; // degrees
@@ -742,4 +642,10 @@ void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix) {
 	glUseProgram(shaderProgram);
 	GLuint worldRotationMatrixLocation = glGetUniformLocation(shaderProgram, "worldRotationMatrix");
 	glUniformMatrix4fv(worldRotationMatrixLocation, 1, GL_FALSE, &worldRotationMatrix[0][0]);
+}
+
+void bind(int& currentShader, GLuint& VAO) {
+	glUseProgram(currentShader);
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VAO);
 }

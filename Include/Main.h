@@ -39,3 +39,43 @@ void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix);
 void setViewMatrix(int shaderProgram, glm::mat4 viewMatrix);
 void setWorldMatrix(int shaderProgram, glm::mat4 worldMatrix);
 void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix);
+
+void bind(int& currentShader, GLuint& VAO);
+
+///////////////////////////////////////////////////////////////////
+////////////////////////// Variables //////////////////////////////
+///////////////////////////////////////////////////////////////////
+
+// Camera parameters for view transform
+glm::vec3 cameraPosition(3.0f, 5.0f, 25.0f);
+glm::vec3 cameraLookAt(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
+
+// Other camera parameters
+float cameraSpeed = 0.05f;
+float cameraHorizontalAngle = 90.0f;
+float cameraVerticalAngle = 0.0f;
+glm::vec3 cameraSideVector = glm::vec3(1.0f);
+
+// Set projection matrix for shader
+float currentFOV = 70.0f;
+glm::mat4 projectionMatrix = glm::perspective(currentFOV, 1024.0f / 768.0f, 0.01f, 100.0f);
+
+// Set initial view matrix
+glm::mat4 viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
+
+// Texturing toggle
+bool texturing = false;
+bool canToggleTexturing = true;
+
+// World rotation
+glm::mat4 worldRotationMatrix = glm::mat4(1.0f);
+float worldRotationAboutXAxis = 0.0f;
+float worldRotationAboutYAxis = 0.0f;
+
+// Controlling increment helper variables
+bool canScaleIncrement = true;
+bool canRotateIncrement = true;
+bool canMoveIncrement = true;
+bool canRandomPlacement = true;
+
