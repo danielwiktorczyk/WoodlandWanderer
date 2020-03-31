@@ -19,6 +19,7 @@
 #include "../Include/Snowman.h"
 #include "../Include/Commands.h"
 #include "../Include/Colours.h"
+#include "../Include/LoadedObject.h"
 
 // for textures: 
 #define STB_IMAGE_IMPLEMENTATION

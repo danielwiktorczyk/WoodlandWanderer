@@ -31,6 +31,9 @@
     <ClCompile Include="..\Source\Commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\LoadedObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\OBJloader.h">
@@ -49,6 +52,9 @@
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\Colours.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\LoadedObject.h">
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>

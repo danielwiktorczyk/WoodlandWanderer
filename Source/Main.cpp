@@ -100,6 +100,10 @@ int main(int argc, char*argv[]) {
 	GLuint lightLocationColor = glGetUniformLocation(colorShaderProgram, "lightPosition");
 	GLuint lightLocationTexture = glGetUniformLocation(texturedShaderProgram, "lightPosition");
 
+	///////////////////////////////////////////////////////////////////
+	/////////////////////////// Objects ///////////////////////////////
+	///////////////////////////////////////////////////////////////////
+
 	// Initialize the Snowman
 	Snowman snowman = Snowman(worldMatrixLocationColor, 
 							  worldMatrixLocationTexture, 
@@ -112,10 +116,14 @@ int main(int argc, char*argv[]) {
 							  carrotTextureID, 
 							  metalTextureID);
 
+	 LoadedObject light = LoadedObject(cubeVAO);
+	 LoadedObject tree = LoadedObject(treeVAO);
+
 	// Set lighting point source location
 	glm::vec3 lightPosition = glm::vec3(0.0f, 30.0f, 0.0f);
 	glUniform3fv(lightLocationColor, 1, value_ptr(lightPosition));
 	glUniform3fv(lightLocationTexture, 1, value_ptr(lightPosition));
+
 
 	// Entering Main Loop
 	while (!glfwWindowShouldClose(window))
@@ -125,27 +133,17 @@ int main(int argc, char*argv[]) {
 
 		Commands::areTexturesToggled(window, canToggleTexturing, texturing);
 
-		// Draw geometry
-		glBindVertexArray(cubeVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, cubeVAO);
-
-		// Draw an object representing the light source
-		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
-		glm::vec3 lightBulbColor = glm::vec3(1.0f, 1.0f, 1.0f);
-
 		bind(colorShaderProgram, sphereVAO);
-		glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &lightBulbMatrix[0][0]);
-		glUniform3fv(colorLocation, 1, value_ptr(lightBulbColor));
-		glDrawArrays(GL_TRIANGLES, 0, sphereVertices);
+
+		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+
+		light.draw(&lightBulbMatrix[0][0], value_ptr(white), worldMatrixLocationColor, colorLocation, sphereVertices);
 
 		// Tree!
 		bind(colorShaderProgram, treeVAO);
 		glm::mat4 base = scale(glm::mat4(1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
-		glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &base[0][0]);
-		glUniform3fv(colorLocation, 1, value_ptr(turquoise));
-		glDrawArrays(GL_TRIANGLES, 0, treeVertices);
 
-		// Draw Snowman. This object will handle drawing itself!
+		tree.draw(&base[0][0], value_ptr(turquoise), worldMatrixLocationColor, colorLocation, treeVertices);
 		snowman.draw(texturing);
 
 		// Handle inputs
