@@ -11,305 +11,7 @@
 
 #include "../Include/Main.h"
 
-const char* getVertexShaderSource()
-{
-	return
-		"#version 330 core\n"
-		"layout (location = 0) in vec3 aPos;"
-		"layout (location = 1) in vec3 aNormal;"
-		"layout (location = 2) in vec3 aColor;"
-		""
-		"uniform mat4 worldMatrix = mat4(1.0f);"
-		"uniform mat4 worldRotationMatrix = mat4(1.0f);"
-		"uniform mat4 viewMatrix = mat4(1.0);"
-		"uniform mat4 projectionMatrix = mat4(1.0);"
-		""
-		"out vec3 vertexColor;"
-		"out vec3 Normal;"
-		"out vec3 FragPos;"
-		""
-		"void main()"
-		"{"
-		"   vertexColor = aColor;"
-		"   mat4 modelViewProjection = projectionMatrix * viewMatrix * worldRotationMatrix * worldMatrix;"
-		"   gl_Position = modelViewProjection * vec4(aPos.x, aPos.y, aPos.z, 1.0);"
-		"	Normal = mat3(transpose(inverse(worldMatrix))) * aNormal;" // inverse and transpose since scaling distorts the normal! 
-		"	FragPos = vec3(worldMatrix * vec4(aPos, 1.0f));" 
-		"}";
-}
-
-const char* getFragmentShaderSource()
-{
-	return
-		"#version 330 core\n"
-		"uniform vec3 objectColor;"
-		"uniform vec3 lightPosition;"
-		"uniform vec3 viewPosition;"
-		"in vec3 vertexColor;"
-		"in vec3 Normal;"
-		"in vec3 FragPos;"
-		"out vec4 FragColor;"
-		""
-		"void main()"
-		"{"
-			// Add Ambient light, part 1/3 for Phong Point Lighting
-		"	vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);"
-		"	float ambientFactor = 0.24;"
-		"	vec3 ambientLight = ambientFactor * lightColor;"
-		""
-			// Add Diffuse lighting, part 2/3 for Phong Point Lighting
-		"	vec3 norm = normalize(Normal);" // We want direction only so normalize
-		"	vec3 lightDirection = normalize(lightPosition - FragPos); "
-		"	float diff = max(dot(norm, lightDirection), 0.0);" // Non negative, so max
-		"	vec3 diffusedLight = diff * lightColor;" // Diffuse impact
-		""
-			// Add Specular lighting, part 3/3 for Phong Point Lighting
-		"	float specularStrength = 0.5;"
-		"	vec3 viewDirection = normalize(viewPosition - FragPos);"
-		"	vec3 reflectDirection = reflect(-lightDirection, norm);"
-		"	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), 24);"
-		"	vec3 specularLight = specularStrength * spec * lightColor;"
-		""
-			// Result of Phong Point Lighting: 
-		"	vec3 result = (ambientLight + diffusedLight + specularLight) * objectColor;"
-		"   FragColor = vec4(result, 1.0f);"
-		"}";
-}
-
-const char* getTexturedVertexShaderSource() // TODO add lighting
-{
-	return
-
-		"#version 330 core\n"
-		"layout (location = 0) in vec3 aPos;"
-		"layout (location = 1) in vec3 aNormal;"
-		"layout (location = 2) in vec2 aUV;"
-		""
-		"uniform mat4 worldMatrix = mat4(1.0f);"
-		"uniform mat4 worldRotationMatrix = mat4(1.0f);"
-		"uniform mat4 viewMatrix = mat4(1.0);"
-		"uniform mat4 projectionMatrix = mat4(1.0);"
-		""
-		"out vec2 vertexUV;"
-		"out vec3 Normal;"
-		"out vec3 FragPos;"
-		""
-		"void main()"
-		"{"
-		"   mat4 modelViewProjection = projectionMatrix * viewMatrix * worldRotationMatrix * worldMatrix;"
-		"   gl_Position = modelViewProjection * vec4(aPos, 1.0);"
-		"	Normal = mat3(transpose(inverse(worldMatrix))) * aNormal;" // inverse and transpose since scaling distorts the normal! 
-		"	FragPos = vec3(worldMatrix * vec4(aPos, 1.0f));"
-		"   vertexUV = aUV;"
-		"}";
-}
-
-const char* getTexturedFragmentShaderSource()
-{
-	return
-		"#version 330 core\n"
-		"uniform vec3 lightPosition;"
-		"uniform vec3 viewPosition;"
-		"uniform sampler2D textureSampler;"
-		"in vec3 vertexColor;"
-		"in vec2 vertexUV;"
-		"in vec3 Normal;"
-		"in vec3 FragPos;"
-		"out vec4 FragColor;"
-		""
-		"void main()"
-		"{"
-		"	vec4 textureColor = texture(textureSampler, vertexUV);"
-		""
-		// Add Ambient light, part 1/3 for Phong Point Lighting
-		"	vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);"
-		"	float ambientFactor = 0.24;"
-		"	vec3 ambientLight = ambientFactor * lightColor;"
-		""
-		// Add Diffuse lighting, part 2/3 for Phong Point Lighting
-		"	vec3 norm = normalize(Normal);" // We want direction only so normalize
-		"	vec3 lightDirection = normalize(lightPosition - FragPos); "
-		"	float diff = max(dot(norm, lightDirection), 0.0);" // Non negative, so max
-		"	vec3 diffusedLight = diff * lightColor;" // Diffuse impact
-		""
-		// Add Specular lighting, part 3/3 for Phong Point Lighting
-		"	float specularStrength = 0.5;"
-		"	vec3 viewDirection = normalize(viewPosition - FragPos);"
-		"	vec3 reflectDirection = reflect(-lightDirection, norm);"
-		"	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), 24);"
-		"	vec3 specularLight = specularStrength * spec * lightColor;"
-		""
-		// Result of Phong Point Lighting: 
-		"	vec3 result = (ambientLight + diffusedLight + specularLight) * glm::vec3(textureColor.r, textureColor.g, textureColor.b);"
-		"   FragColor = vec4(result, textureColor.g);"
-		"}";
-}
-
-int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentShaderSource)
-{
-	// compile and link shader program
-	// return shader program id
-	// ------------------------------------
-
-	// vertex shader
-	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	// check for shader compile errors
-	int success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	// fragment shader
-	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	// check for shader compile errors
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	// link shaders
-	int shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	// check for linking errors
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-	}
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
-	return shaderProgram;
-}
-
-GLuint setupModelVBO(std::string path, int& vertexCount) {
-	std::vector<glm::vec3> vertices;
-	std::vector<glm::vec3> normals;
-	std::vector<glm::vec2> UVs;
-
-	//read the vertex data from the model's OBJ file
-	loadOBJ(path.c_str(), vertices, normals, UVs);
-
-	GLuint VAO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO); //Becomes active VAO
-	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-
-	//Vertex VBO setup
-	GLuint vertices_VBO;
-	glGenBuffers(1, &vertices_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices.front(), GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-
-	//Normals VBO setup
-	GLuint normals_VBO;
-	glGenBuffers(1, &normals_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, normals_VBO);
-	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals.front(), GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(1);
-
-	//UVs VBO setup
-	GLuint uvs_VBO;
-	glGenBuffers(1, &uvs_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, uvs_VBO);
-	glBufferData(GL_ARRAY_BUFFER, UVs.size() * sizeof(glm::vec2), &UVs.front(), GL_STATIC_DRAW);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(2);
-
-	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs, as we are using multiple VAOs)
-	vertexCount = vertices.size();
-	return VAO;
-}
-
-GLuint loadTexture(const char* filename)
-{
-	// Step1 Create and bind textures
-	GLuint textureId = 0;
-	glGenTextures(1, &textureId);
-	assert(textureId != 0);
-
-
-	glBindTexture(GL_TEXTURE_2D, textureId);
-
-	// Step2 Set filter parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	// Step3 Load Textures with dimension data
-	int width, height, nrChannels;
-	unsigned char* data = stbi_load(filename, &width, &height, &nrChannels, 0);
-	if (!data)
-	{
-		std::cerr << "Error::Texture could not load texture file:" << filename << std::endl;
-		return 0;
-	}
-
-	// Step4 Upload the texture to the PU
-	GLenum format = 0;
-	if (nrChannels == 1)
-		format = GL_RED;
-	else if (nrChannels == 3)
-		format = GL_RGB;
-	else if (nrChannels == 4)
-		format = GL_RGBA;
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height,
-		0, format, GL_UNSIGNED_BYTE, data);
-
-	// Step5 Free resources
-	stbi_image_free(data);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	return textureId;
-}
-
-void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix)
-{
-	glUseProgram(shaderProgram);
-	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
-	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
-}
-
-void setViewMatrix(int shaderProgram, glm::mat4 viewMatrix)
-{
-	glUseProgram(shaderProgram);
-	GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
-	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
-}
-
-void setWorldMatrix(int shaderProgram, glm::mat4 worldMatrix)
-{
-	glUseProgram(shaderProgram);
-	GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
-	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
-}
-
-void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix) 
-{
-	glUseProgram(shaderProgram);
-	GLuint worldRotationMatrixLocation = glGetUniformLocation(shaderProgram, "worldRotationMatrix");
-	glUniformMatrix4fv(worldRotationMatrixLocation, 1, GL_FALSE, &worldRotationMatrix[0][0]);
-}
-
-int main(int argc, char*argv[])
-{
+int main(int argc, char*argv[]) {
 	// Initialize GLFW and OpenGL version
 	glfwInit();
 
@@ -325,7 +27,7 @@ int main(int argc, char*argv[])
 #endif
 
 	// Create Window and rendering context using GLFW, resolution is 1024x768
-	GLFWwindow* window = glfwCreateWindow(1024, 768, "Comp371 - Assignment2 - Daniel Wiktorczyk - 40060894", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(1024, 768, "Comp371 - Final Project", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cerr << "Failed to create GLFW window" << std::endl;
@@ -455,29 +157,11 @@ int main(int argc, char*argv[])
 		// Each frame, reset color of each pixel to glClearColor
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Determine whether Textures are enabled or not 
-		if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
-			if (canToggleTexturing) {
-				texturing = !texturing; // toggle texturing
-				canToggleTexturing = false;
-			}
-		}
-		else {
-			canToggleTexturing = true;
-		}
+		Commands::areTexturesToggled(window, canToggleTexturing, texturing);
 
 		// Draw geometry
 		glBindVertexArray(cubeVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, cubeVAO);
-
-		// some colors to work with
-		glm::vec3 const red = glm::vec3(1.0f, 0.0f, 0.0f);
-		glm::vec3 const blue = glm::vec3(0.0f, 0.0f, 1.0f);
-		glm::vec3 const turquoise = glm::vec3(0.0f, 1.0f, 1.0f);
-		glm::vec3 const green = glm::vec3(0.0f, 1.0f, 0.0f);
-		glm::vec3 const purple = glm::vec3(1.0f, 1.0f, 0.0f);
-		glm::vec3 const yellow = glm::vec3(1.0f, 1.0f, 0.0f);
-		glm::vec3 const gridColor = glm::vec3(0.678, 0.847, 0.902);
 
 		// Draw Grid
 		if (texturing) {
@@ -572,20 +256,8 @@ int main(int argc, char*argv[])
 		// For movement, if shift is held, it means a small movement for rotation, scaling, and transposing
 		bool shift = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS;
 
-		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-			glfwSetWindowShouldClose(window, true);
-
-		// Rendering mode changes
-		if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-		if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-		/*
-		Snowman Transformation via input
-		*/
+		Commands::closeWindow(window);
+		Commands::setRenderingMode(window);
 
 		// Snowman Scaling
 		float snowmanScalingSpeed = 0.005f;
@@ -729,7 +401,7 @@ int main(int argc, char*argv[])
 		lastMousePosX = mousePosX;
 		lastMousePosY = mousePosY;
 
-		const float cameraAngularSpeed = glm::radians(5.0f);
+		constexpr float cameraAngularSpeed = glm::radians(5.0f);
 		float theta = glm::radians(cameraHorizontalAngle);
 		float phi = glm::radians(cameraVerticalAngle);
 
@@ -746,13 +418,8 @@ int main(int argc, char*argv[])
 		cameraSideVector = cross(cameraLookAt, glm::vec3(0.0f, 1.0f, 0.0f));
 		normalize(cameraSideVector);
 
-		// Camera Panning
-		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) // 
-			cameraHorizontalAngle -= dx * cameraAngularSpeed; // UPDATE fixed from assignment 1
-
-		// Camera Tilting
-		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS) // 
-			cameraVerticalAngle -= dy * cameraAngularSpeed;  // Only want tilting in y
+		Commands::panCamera(window, cameraHorizontalAngle, dx, cameraAngularSpeed);
+		Commands::tiltCamera(window, cameraVerticalAngle, dy, cameraAngularSpeed);
 
 		// Camera Zooming
 		float cameraZoomSpeed = 0.001f;
@@ -804,4 +471,291 @@ int main(int argc, char*argv[])
 	glfwTerminate();
 
 	return 0;
+}
+
+
+const char* getVertexShaderSource() {
+	return
+		"#version 330 core\n"
+		"layout (location = 0) in vec3 aPos;"
+		"layout (location = 1) in vec3 aNormal;"
+		"layout (location = 2) in vec3 aColor;"
+		""
+		"uniform mat4 worldMatrix = mat4(1.0f);"
+		"uniform mat4 worldRotationMatrix = mat4(1.0f);"
+		"uniform mat4 viewMatrix = mat4(1.0);"
+		"uniform mat4 projectionMatrix = mat4(1.0);"
+		""
+		"out vec3 vertexColor;"
+		"out vec3 Normal;"
+		"out vec3 FragPos;"
+		""
+		"void main()"
+		"{"
+		"   vertexColor = aColor;"
+		"   mat4 modelViewProjection = projectionMatrix * viewMatrix * worldRotationMatrix * worldMatrix;"
+		"   gl_Position = modelViewProjection * vec4(aPos.x, aPos.y, aPos.z, 1.0);"
+		"	Normal = mat3(transpose(inverse(worldMatrix))) * aNormal;" // inverse and transpose since scaling distorts the normal! 
+		"	FragPos = vec3(worldMatrix * vec4(aPos, 1.0f));"
+		"}";
+}
+
+const char* getFragmentShaderSource() {
+	return
+		"#version 330 core\n"
+		"uniform vec3 objectColor;"
+		"uniform vec3 lightPosition;"
+		"uniform vec3 viewPosition;"
+		"in vec3 vertexColor;"
+		"in vec3 Normal;"
+		"in vec3 FragPos;"
+		"out vec4 FragColor;"
+		""
+		"void main()"
+		"{"
+		// Add Ambient light, part 1/3 for Phong Point Lighting
+		"	vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);"
+		"	float ambientFactor = 0.24;"
+		"	vec3 ambientLight = ambientFactor * lightColor;"
+		""
+		// Add Diffuse lighting, part 2/3 for Phong Point Lighting
+		"	vec3 norm = normalize(Normal);" // We want direction only so normalize
+		"	vec3 lightDirection = normalize(lightPosition - FragPos); "
+		"	float diff = max(dot(norm, lightDirection), 0.0);" // Non negative, so max
+		"	vec3 diffusedLight = diff * lightColor;" // Diffuse impact
+		""
+		// Add Specular lighting, part 3/3 for Phong Point Lighting
+		"	float specularStrength = 0.5;"
+		"	vec3 viewDirection = normalize(viewPosition - FragPos);"
+		"	vec3 reflectDirection = reflect(-lightDirection, norm);"
+		"	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), 24);"
+		"	vec3 specularLight = specularStrength * spec * lightColor;"
+		""
+		// Result of Phong Point Lighting: 
+		"	vec3 result = (ambientLight + diffusedLight + specularLight) * objectColor;"
+		"   FragColor = vec4(result, 1.0f);"
+		"}";
+}
+
+const char* getTexturedVertexShaderSource() {
+	return
+
+		"#version 330 core\n"
+		"layout (location = 0) in vec3 aPos;"
+		"layout (location = 1) in vec3 aNormal;"
+		"layout (location = 2) in vec2 aUV;"
+		""
+		"uniform mat4 worldMatrix = mat4(1.0f);"
+		"uniform mat4 worldRotationMatrix = mat4(1.0f);"
+		"uniform mat4 viewMatrix = mat4(1.0);"
+		"uniform mat4 projectionMatrix = mat4(1.0);"
+		""
+		"out vec2 vertexUV;"
+		"out vec3 Normal;"
+		"out vec3 FragPos;"
+		""
+		"void main()"
+		"{"
+		"   mat4 modelViewProjection = projectionMatrix * viewMatrix * worldRotationMatrix * worldMatrix;"
+		"   gl_Position = modelViewProjection * vec4(aPos, 1.0);"
+		"	Normal = mat3(transpose(inverse(worldMatrix))) * aNormal;" // inverse and transpose since scaling distorts the normal! 
+		"	FragPos = vec3(worldMatrix * vec4(aPos, 1.0f));"
+		"   vertexUV = aUV;"
+		"}";
+}
+
+const char* getTexturedFragmentShaderSource() {
+	return
+		"#version 330 core\n"
+		"uniform vec3 lightPosition;"
+		"uniform vec3 viewPosition;"
+		"uniform sampler2D textureSampler;"
+		"in vec3 vertexColor;"
+		"in vec2 vertexUV;"
+		"in vec3 Normal;"
+		"in vec3 FragPos;"
+		"out vec4 FragColor;"
+		""
+		"void main()"
+		"{"
+		"	vec4 textureColor = texture(textureSampler, vertexUV);"
+		""
+		// Add Ambient light, part 1/3 for Phong Point Lighting
+		"	vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);"
+		"	float ambientFactor = 0.24;"
+		"	vec3 ambientLight = ambientFactor * lightColor;"
+		""
+		// Add Diffuse lighting, part 2/3 for Phong Point Lighting
+		"	vec3 norm = normalize(Normal);" // We want direction only so normalize
+		"	vec3 lightDirection = normalize(lightPosition - FragPos); "
+		"	float diff = max(dot(norm, lightDirection), 0.0);" // Non negative, so max
+		"	vec3 diffusedLight = diff * lightColor;" // Diffuse impact
+		""
+		// Add Specular lighting, part 3/3 for Phong Point Lighting
+		"	float specularStrength = 0.5;"
+		"	vec3 viewDirection = normalize(viewPosition - FragPos);"
+		"	vec3 reflectDirection = reflect(-lightDirection, norm);"
+		"	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), 24);"
+		"	vec3 specularLight = specularStrength * spec * lightColor;"
+		""
+		// Result of Phong Point Lighting: 
+		"	vec3 result = (ambientLight + diffusedLight + specularLight) * glm::vec3(textureColor.r, textureColor.g, textureColor.b);"
+		"   FragColor = vec4(result, textureColor.g);"
+		"}";
+}
+
+/**
+* Compile and link shader program
+@return shader program ID
+*/
+int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentShaderSource) {
+	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	glCompileShader(vertexShader);
+
+	// check for shader compile errors
+	int success;
+	char infoLog[512];
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+		std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
+	// fragment shader
+	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(fragmentShader);
+
+	// check for shader compile errors
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+		std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+
+	// link shaders
+	int shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
+
+	// check for linking errors
+	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+	if (!success) {
+		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+		std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	}
+
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+
+	return shaderProgram;
+}
+
+GLuint setupModelVBO(std::string path, int& vertexCount) {
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec3> normals;
+	std::vector<glm::vec2> UVs;
+
+	//read the vertex data from the model's OBJ file
+	loadOBJ(path.c_str(), vertices, normals, UVs);
+
+	GLuint VAO;
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO); //Becomes active VAO
+	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
+
+	//Vertex VBO setup
+	GLuint vertices_VBO;
+	glGenBuffers(1, &vertices_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices.front(), GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+
+	//Normals VBO setup
+	GLuint normals_VBO;
+	glGenBuffers(1, &normals_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, normals_VBO);
+	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals.front(), GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(1);
+
+	//UVs VBO setup
+	GLuint uvs_VBO;
+	glGenBuffers(1, &uvs_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, uvs_VBO);
+	glBufferData(GL_ARRAY_BUFFER, UVs.size() * sizeof(glm::vec2), &UVs.front(), GL_STATIC_DRAW);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(2);
+
+	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs, as we are using multiple VAOs)
+	vertexCount = vertices.size();
+	return VAO;
+}
+
+GLuint loadTexture(const char* filename) {
+	// Step1 Create and bind textures
+	GLuint textureId = 0;
+	glGenTextures(1, &textureId);
+	assert(textureId != 0);
+
+
+	glBindTexture(GL_TEXTURE_2D, textureId);
+
+	// Step2 Set filter parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	// Step3 Load Textures with dimension data
+	int width, height, nrChannels;
+	unsigned char* data = stbi_load(filename, &width, &height, &nrChannels, 0);
+	if (!data)
+	{
+		std::cerr << "Error::Texture could not load texture file:" << filename << std::endl;
+		return 0;
+	}
+
+	// Step4 Upload the texture to the PU
+	GLenum format = 0;
+	if (nrChannels == 1)
+		format = GL_RED;
+	else if (nrChannels == 3)
+		format = GL_RGB;
+	else if (nrChannels == 4)
+		format = GL_RGBA;
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height,
+		0, format, GL_UNSIGNED_BYTE, data);
+
+	// Step5 Free resources
+	stbi_image_free(data);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	return textureId;
+}
+
+void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix) {
+	glUseProgram(shaderProgram);
+	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
+	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
+}
+
+void setViewMatrix(int shaderProgram, glm::mat4 viewMatrix) {
+	glUseProgram(shaderProgram);
+	GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+}
+
+void setWorldMatrix(int shaderProgram, glm::mat4 worldMatrix) {
+	glUseProgram(shaderProgram);
+	GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
+	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
+}
+
+void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix) {
+	glUseProgram(shaderProgram);
+	GLuint worldRotationMatrixLocation = glGetUniformLocation(shaderProgram, "worldRotationMatrix");
+	glUniformMatrix4fv(worldRotationMatrixLocation, 1, GL_FALSE, &worldRotationMatrix[0][0]);
 }

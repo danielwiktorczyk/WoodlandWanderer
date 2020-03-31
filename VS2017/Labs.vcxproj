@@ -11,10 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\Commands.cpp" />
     <ClCompile Include="..\Source\Main.cpp" />
     <ClCompile Include="..\Source\Snowman.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\Colours.h" />
+    <ClInclude Include="..\Include\Commands.h" />
     <ClInclude Include="..\Include\Main.h" />
     <ClInclude Include="..\Include\OBJloader.h" />
     <ClInclude Include="..\Include\Snowman.h" />
