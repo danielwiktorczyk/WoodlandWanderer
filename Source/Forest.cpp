@@ -34,7 +34,7 @@ void Forest::draw(const GLfloat* value4fv, const GLfloat* value3fv, GLuint& worl
 	glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, value4fv);
 	glUniform3fv(colorLocation, 1, value3fv);
 
-	glDrawArrays(GL_TRIANGLES, 0, this->vertices.size());
+	glDrawArrays(GL_LINES, 0, this->vertices.size());
 }
 
 

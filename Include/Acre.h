@@ -10,12 +10,9 @@
 
 class Acre {
 public:
-	Acre();
-	void draw(const GLfloat* value4fv, const GLfloat* value3fv, GLuint& worldMatrixLocationColor, GLuint colorLocation);
-	GLuint getVAO() { return this->VAO; };
+	Acre(GLuint VAO);
+	void draw(const GLfloat* value4fv, const GLfloat* value3fv, GLuint& worldMatrixLocationColor, GLuint colorLocation, const int& vertices);
 
 private:
 	GLuint VAO;
-	GLuint VBO;
-	std::vector<glm::vec3> vertices;
 };

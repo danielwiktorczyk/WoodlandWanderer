@@ -141,7 +141,7 @@ int main(int argc, char*argv[]) {
 	 LoadedObject light       = LoadedObject(cubeVAO);
 	 NonCollidableObject tree = NonCollidableObject(treeVAO);
 	 Forest forest            = Forest();
-	 Acre testAcre            = Acre();
+	 Acre testAcre            = Acre(cubeVAO);
 
 	 // Baby Blue Background
 	 glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
@@ -175,10 +175,11 @@ int main(int argc, char*argv[]) {
 		forest.draw(&forestLocation[0][0], value_ptr(green), worldMatrixLocationColor, colorLocation);
 
 		// Acre
-		bind(colorShaderProgram, testAcre.getVAO());
-		glm::mat4 acreLocation(1.0f);
-		acreLocation = translate(acreLocation, glm::vec3(2.0f, 0.0f, 5.0f ));
-		testAcre.draw(&forestLocation[0][0], value_ptr(orange), worldMatrixLocationColor, colorLocation);
+		bind(colorShaderProgram, cubeVAO);
+		glm::mat4 acreModel(1.0f);
+		acreModel = scale(glm::mat4(1.0f), glm::vec3(3.0f,   0.5f, 3.0f));
+		acreModel = translate(acreModel, glm::vec3(0.0f, -0.5f, 0.0f ));
+		testAcre.draw(&acreModel[0][0], value_ptr(orange), worldMatrixLocationColor, colorLocation, cubeVertices);
 
 		// Light
 		bind(colorShaderProgram, sphereVAO);
