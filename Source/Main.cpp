@@ -442,22 +442,7 @@ int main(int argc, char*argv[]) {
 		glUniform3fv(viewLocationColor, 1, value_ptr(cameraPosition));
 		glUniform3fv(viewLocationTexture, 1, value_ptr(cameraPosition));
 
-		/*
-		World Orientation
-		*/
-		float worldRotationSpeed = 0.005f;
-		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-			worldRotationAboutYAxis += worldRotationSpeed;
-		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-			worldRotationAboutYAxis -= worldRotationSpeed;
-		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-			worldRotationAboutXAxis += worldRotationSpeed;
-		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-			worldRotationAboutXAxis -= worldRotationSpeed;
-		if (glfwGetKey(window, GLFW_KEY_HOME) == GLFW_PRESS) {
-			worldRotationAboutXAxis = 0.0f;
-			worldRotationAboutYAxis = 0.0f;
-		}
+		Commands::setWorldRotation(window, worldRotationAboutYAxis, worldRotationAboutXAxis);
 		worldRotationMatrix = rotate(glm::mat4(1.0f), worldRotationAboutYAxis, glm::vec3(0.0f, 1.0f, 0.0f)) * rotate(glm::mat4(1.0f), worldRotationAboutXAxis, glm::vec3(1.0f, 0.0f, 0.0f));
 		setWorldRotationMatrix(colorShaderProgram, worldRotationMatrix);
 		setWorldRotationMatrix(texturedShaderProgram, worldRotationMatrix);
