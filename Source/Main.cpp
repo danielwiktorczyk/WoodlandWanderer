@@ -169,6 +169,47 @@ int main(int argc, char*argv[]) {
 		Commands::closeWindow(window);
 		Commands::setRenderingMode(window);
 
+		// Draw Grid
+		if (texturing) {
+			glUseProgram(texturedShaderProgram);
+
+			glActiveTexture(GL_TEXTURE0);
+			GLuint textureLocation = glGetUniformLocation(texturedShaderProgram, "textureSampler");
+			glBindTexture(GL_TEXTURE_2D, snowTextureID);
+			glUniform1i(textureLocation, 0);
+
+			glm::mat4 groundPatch = scale(glm::mat4(1.0f), glm::vec3(10.0f, 0.02f, 10.0f));
+			glm::mat4 currentGroundPatch;
+			for (int i = -5; i < 5; i++) {
+				for (int j = -5; j < 5; j++) {
+					currentGroundPatch = translate(glm::mat4(1.0f), glm::vec3(i * 10.0f, -0.01f, j * 10.0f)) * groundPatch;
+					glUniformMatrix4fv(worldMatrixLocationTexture, 1, GL_FALSE, &currentGroundPatch[0][0]);
+					glDrawArrays(GL_TRIANGLES, 12, 18);
+				}
+			}
+		}
+		else {
+			glUseProgram(colorShaderProgram);
+
+			glm::mat4 gridLineMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
+			glm::mat4 currentGridLineMatrix;
+			for (int i = -50; i < 50; i++) {
+				currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, i * 1.0f)) * gridLineMatrix;
+				glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
+				glUniform3fv(colorLocation, 1, value_ptr(gridColor));
+				glDrawArrays(GL_TRIANGLES, 12, 18);
+				glDrawArrays(GL_TRIANGLES, 30, 36);
+			}
+			gridLineMatrix = scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.02f, 100.0f));
+			for (int i = -50; i < 50; i++) {
+				currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(i * 1.0f, -0.01f, 0.0f)) * gridLineMatrix;
+				glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
+				glUniform3fv(colorLocation, 1, value_ptr(gridColor));
+				glDrawArrays(GL_TRIANGLES, 12, 18);
+				glDrawArrays(GL_TRIANGLES, 30, 36);
+			}
+		}
+
 		// Forest
 		bind(colorShaderProgram, forest.getVAO());
 		glm::mat4 forestLocation(1.0f);
