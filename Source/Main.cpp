@@ -2,23 +2,28 @@
 *
 * COMP 371 Project
 *
-*
-* Adapted from template code:
-*   COMP 371 Labs Framework
+* TEAM
+* Claudia Lapalme    - 40058454
+* George  Mavroeidis - 40065356
+* Armando Russo      - 40076164
+* Daniel  Wiktorczyk - 40060894
 * 
-* Used lab tutorials from class and learnopengl.com tutorials 
-
-
-
-WE NEED TO SOURCE THE OBJECT FILES !!!
-
-
-
+*
+* SOURCES
+* - Lab tutorials & learnopengl.com
+* - Simple grass:        https://www.blendswap.com/blend/24539
+* - Low Poly trees pack: https://www.blendswap.com/blend/23720
+* 
 */
 
 #include "../Include/Main.h"
 
 int main(int argc, char*argv[]) {
+
+	///////////////////////////////////////////////////////////////////
+	///////////////////////// Intialization ///////////////////////////
+	///////////////////////////////////////////////////////////////////
+
 	glfwInit();
 
 #if defined(PLATFORM_OSX)
@@ -41,6 +46,7 @@ int main(int argc, char*argv[]) {
 
 	// Disable mouse cursor when over the window!
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwGetCursorPos(window, &lastMousePosX, &lastMousePosY);
 
 	// Initialize GLEW
 	glewExperimental = GL_TRUE; // Needed for core profile
@@ -50,13 +56,22 @@ int main(int argc, char*argv[]) {
 		return -1;
 	}
 
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+
+	///////////////////////////////////////////////////////////////////
+	////////////////////////// .obj set up ////////////////////////////
+	///////////////////////////////////////////////////////////////////
+
 #if defined(PLATFORM_OSX)
-	std::string cubePath = "Models/cube.obj";
-	std::string heraclesPath = "Models/heracles.obj";
+	std::string cubePath   = "Models/cube.obj";
+	std::string spherePath = "Models/sphere.obj";
+	std::string treePath   = "Models/low-poly-trees-pack.obj";
 #else
-	std::string cubePath = "../Assets/Models/cube.obj";
+	std::string cubePath   = "../Assets/Models/cube.obj";
 	std::string spherePath = "../Assets/Models/sphere.obj";
-	std::string treePath = "../Assets/Models/low-poly-trees-pack.obj";
+	std::string treePath   = "../Assets/Models/low-poly-trees-pack.obj";
 #endif
 	int cubeVertices;
 	GLuint cubeVAO = setupModelVBO(cubePath, cubeVertices);
@@ -65,19 +80,24 @@ int main(int argc, char*argv[]) {
 	int treeVertices;
 	GLuint treeVAO = setupModelVBO(treePath, treeVertices);
 
-	// Load Textures
+
+	///////////////////////////////////////////////////////////////////
+	/////////////////////////// Textures //////////////////////////////
+	///////////////////////////////////////////////////////////////////
+
 #if defined(PLATFORM_OSX)
 	GLuint carrotTextureID = loadTexture("Textures/carrot.jpg");
-	GLuint metalTextureID = loadTexture("Textures/metal.jpg");
-	GLuint snowTextureID = loadTexture("Textures/snow.jpg");
+	GLuint metalTextureID  = loadTexture("Textures/metal.jpg");
+	GLuint snowTextureID   = loadTexture("Textures/snow.jpg");
 #else
 	GLuint carrotTextureID = loadTexture("../Assets/Textures/carrot.jpg");
-	GLuint metalTextureID = loadTexture("../Assets/Textures/metal.jpg");
-	GLuint snowTextureID = loadTexture("../Assets/Textures/snow.jpg");
+	GLuint metalTextureID  = loadTexture("../Assets/Textures/metal.jpg");
+	GLuint snowTextureID   = loadTexture("../Assets/Textures/snow.jpg");
 #endif
 
-	// Baby Blue Background
-	glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
+	///////////////////////////////////////////////////////////////////
+	/////////////////////////// Shaders ///////////////////////////////
+	///////////////////////////////////////////////////////////////////
 
 	// Compile and link shaders here ...
 	int colorShaderProgram = compileAndLinkShaders("../References/Shaders/3.3.shader.vs", "../References/Shaders/3.3.shader.fs");
@@ -90,13 +110,9 @@ int main(int argc, char*argv[]) {
 	setProjectionMatrix(colorShaderProgram, projectionMatrix);
 	setProjectionMatrix(texturedShaderProgram, projectionMatrix);
 
-	double lastMousePosX, lastMousePosY;
-	glfwGetCursorPos(window, &lastMousePosX, &lastMousePosY);
-
-	// Enable Backface culling and Depth Test
-	glCullFace(GL_BACK);
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
+	///////////////////////////////////////////////////////////////////
+	/////////////////////////// Uniforms //////////////////////////////
+	///////////////////////////////////////////////////////////////////
 
 	GLuint worldMatrixLocationColor = glGetUniformLocation(colorShaderProgram, "worldMatrix");
 	GLuint worldMatrixLocationTexture = glGetUniformLocation(texturedShaderProgram, "worldMatrix");
@@ -125,6 +141,9 @@ int main(int argc, char*argv[]) {
 	 LoadedObject light = LoadedObject(cubeVAO);
 	 LoadedObject tree = LoadedObject(treeVAO);
 
+	 // Baby Blue Background
+	 glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
+
 	 ///////////////////////////////////////////////////////////////////
 	 //////////////////////////// Light ////////////////////////////////
 	 ///////////////////////////////////////////////////////////////////
@@ -133,10 +152,20 @@ int main(int argc, char*argv[]) {
 	glUniform3fv(lightLocationColor, 1, value_ptr(lightPosition));
 	glUniform3fv(lightLocationTexture, 1, value_ptr(lightPosition));
 
+	///////////////////////////////////////////////////////////////////
+	///////////////////////// Render Loop /////////////////////////////
+	///////////////////////////////////////////////////////////////////
+
 	while (!glfwWindowShouldClose(window)) {
+
+		// For movement, if shift is held, it means a small movement for rotation, scaling, and transposing
+		bool shift = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS;
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		Commands::areTexturesToggled(window, canToggleTexturing, texturing);
+		Commands::closeWindow(window);
+		Commands::setRenderingMode(window);
 
 		// Light
 		bind(colorShaderProgram, sphereVAO);
@@ -150,31 +179,19 @@ int main(int argc, char*argv[]) {
 		
 		//Snowman
 		snowman.draw(texturing);
-
-		// Handle inputs
-		// For movement, if shift is held, it means a small movement for rotation, scaling, and transposing
-		bool shift = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS;
-
-		Commands::closeWindow(window);
-		Commands::setRenderingMode(window);
-
 		snowman.scaleSnowman(window, shift, canScaleIncrement);
 		snowman.rotateSnowman(window, shift, canRandomPlacement);
 		snowman.translateSnowman(window, shift, canMoveIncrement);
 		snowman.randomTranslationSnowman(window, shift, canRandomPlacement);
-		
-		// Snowman Update
 		snowman.update();
 
 		setCameraVariables(window, mousePosX, mousePosY, lastMousePosX, lastMousePosY, cameraHorizontalAngle, cameraVerticalAngle, cameraLookAt, cameraSideVector);
-
 		Commands::panCamera(window, cameraHorizontalAngle, dx, cameraAngularSpeed);
 		Commands::tiltCamera(window, cameraVerticalAngle, dy, cameraAngularSpeed);
 		Commands::zoomCamera(window, currentFOV, dy, projectionMatrix, colorShaderProgram, texturedShaderProgram, setProjectionMatrix);
 
-		sendViewMatrixToShader(cameraPosition, cameraLookAt, cameraUp, colorShaderProgram, texturedShaderProgram, viewLocationColor, viewLocationTexture);
-
 		Commands::setWorldRotation(window, worldRotationAboutYAxis, worldRotationAboutXAxis);
+		sendViewMatrixToShader(cameraPosition, cameraLookAt, cameraUp, colorShaderProgram, texturedShaderProgram, viewLocationColor, viewLocationTexture);
 		sendWorldRotationMatrixToShader(worldRotationMatrix, worldRotationAboutYAxis, worldRotationAboutXAxis, colorShaderProgram, texturedShaderProgram);
 	
 		glfwSwapBuffers(window);
@@ -277,8 +294,7 @@ GLuint setupModelVBO(std::string path, int& vertexCount) {
 
 	GLuint VAO;
 	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO); //Becomes active VAO
-	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
+	glBindVertexArray(VAO);
 
 	//Vertex VBO setup
 	GLuint vertices_VBO;
@@ -304,7 +320,7 @@ GLuint setupModelVBO(std::string path, int& vertexCount) {
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(2);
 
-	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs, as we are using multiple VAOs)
+	glBindVertexArray(0);
 	vertexCount = vertices.size();
 	return VAO;
 }

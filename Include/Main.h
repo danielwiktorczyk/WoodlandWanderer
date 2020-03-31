@@ -4,14 +4,13 @@
 #include <cstdlib>   // Random
 #include <ctime>     // Time for Random Seeding
 
-#define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
-#include <GL/glew.h>    // Include GLEW - OpenGL Extension Wrangler
+#define GLEW_STATIC 1 
+#include <GL/glew.h>    
 
-#include <GLFW/glfw3.h> // cross-platform interface for creating a graphical context,
-// initializing OpenGL and binding inputs
+#include <GLFW/glfw3.h>
 
-#include <glm/glm.hpp>  // GLM is an optimized math library with syntax to similar to OpenGL Shading Language
-#include <glm/gtc/matrix_transform.hpp> // include this to create transformation matrices
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
@@ -26,11 +25,6 @@
 // for textures: 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../Include/stb_image.h"
-
-//const char* getVertexShaderSource();
-//const char* getFragmentShaderSource();
-//const char* getTexturedVertexShaderSource();
-//const char* getTexturedFragmentShaderSource();
 
 int compileAndLinkShaders(const std::string vertexShaderSource, const std::string fragmentShaderSource);
 
@@ -71,6 +65,8 @@ void bind(int& currentShader, GLuint& VAO);
 ///////////////////////////////////////////////////////////////////
 ////////////////////////// Variables //////////////////////////////
 ///////////////////////////////////////////////////////////////////
+
+double lastMousePosX, lastMousePosY;
 
 // Camera parameters for view transform
 glm::vec3 cameraPosition(3.0f, 5.0f, 25.0f);

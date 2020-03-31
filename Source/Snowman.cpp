@@ -1,15 +1,15 @@
 #include "../Include/Snowman.h"
 
 Snowman::Snowman(GLuint worldMatrixColorLoc,
-	GLuint worldMatrixTextureLoc,
-	GLuint colorLoc,
-	int colshader,
-	int texshader,
-	int theSphereVertices,
-	GLuint theCubeVAO,
-	GLuint theSphereVAO,
-	int theCarrotTexture,
-	int theMetalTexture) {
+				 GLuint worldMatrixTextureLoc,
+				 GLuint colorLoc,
+				 int colshader,
+				 int texshader,
+				 int theSphereVertices,
+				 GLuint theCubeVAO,
+				 GLuint theSphereVAO,
+				 int theCarrotTexture,
+				 int theMetalTexture) {
 
 	this->origin = glm::vec3(0.0f, 0.0f, 0.0f);
 	this->scaleFactor = 1.0f;
@@ -33,6 +33,7 @@ Snowman::Snowman(GLuint worldMatrixColorLoc,
 }
 
 void Snowman::update() {
+
 	glm::mat4 partRotation = rotate(glm::mat4(1.0f), rotation, glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 groupTranslation = translate(glm::mat4(1.0f), origin);
 	glm::mat4 groupScaling = scale(glm::mat4(1.0f), glm::vec3(scaleFactor));
