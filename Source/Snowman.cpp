@@ -12,7 +12,7 @@ Snowman::Snowman(GLuint worldMatrixColorLoc,
 				 int theMetalTexture) {
 
 	this->origin = glm::vec3(0.0f, 0.0f, 0.0f);
-	this->scaleFactor = 1.0f;
+	this->scaleFactor = 0.85f;
 	this->rotation = 0.0f;
 	this->worldMatrixLocationColor = worldMatrixColorLoc;
 	this->worldMatrixLocationTexture = worldMatrixTextureLoc;

@@ -19,6 +19,7 @@
     <ClCompile Include="..\Source\Main.cpp" />
     <ClCompile Include="..\Source\NonCollidableObject.cpp" />
     <ClCompile Include="..\Source\Snowman.cpp" />
+    <ClCompile Include="..\Source\Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Acre.h" />
@@ -32,6 +33,7 @@
     <ClInclude Include="..\Include\OBJloader.h" />
     <ClInclude Include="..\Include\Snowman.h" />
     <ClInclude Include="..\Include\stb_image.h" />
+    <ClInclude Include="..\Include\Tile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\References\Shaders\3.3.shader.fs" />

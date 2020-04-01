@@ -8,14 +8,18 @@
 
 class LoadedObject {
 public:
+	LoadedObject() = default;
 	LoadedObject(GLuint VAO);
-	void draw(const GLfloat* objLocation,
+	void draw(const GLfloat* objModel,
 			  const GLfloat* objColor,
 			  GLuint& worldMatrixLocation,
 			  GLuint colorLocation,
 			  const int& vertices);
+	glm::vec3 getPosition();
+	void setPosition(glm::vec3 position);
 
 private:
 	GLuint VAO;
+	glm::vec3 position;
 };
 

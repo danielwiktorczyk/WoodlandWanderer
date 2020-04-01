@@ -7,6 +7,7 @@
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
+#include "Acre.h"
 
 class Forest {
 public: 
@@ -18,4 +19,6 @@ private:
 	GLuint VAO;
 	GLuint VBO;
 	std::vector<glm::vec3> vertices;
+	std::vector<Acre> acres; // will be 20 x 20, square?
+
 };

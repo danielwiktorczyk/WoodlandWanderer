@@ -141,7 +141,8 @@ int main(int argc, char*argv[]) {
 	 LoadedObject light       = LoadedObject(cubeVAO);
 	 NonCollidableObject tree = NonCollidableObject(treeVAO);
 	 Forest forest            = Forest();
-	 Acre testAcre            = Acre(cubeVAO);
+	 Acre acre            = Acre(cubeVAO);
+	 Tile tile            = Tile(cubeVAO, treeVAO, glm::vec3(0.0f, 0.0f, 0.0f));
 
 	 // Baby Blue Background
 	 glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
@@ -218,9 +219,16 @@ int main(int argc, char*argv[]) {
 		// Acre
 		bind(colorShaderProgram, cubeVAO);
 		glm::mat4 acreModel(1.0f);
-		acreModel = scale(glm::mat4(1.0f), glm::vec3(3.0f,   0.5f, 3.0f));
+		acreModel = scale(glm::mat4(1.0f), glm::vec3(100.0f,   0.5f, 100.0f));
 		acreModel = translate(acreModel, glm::vec3(0.0f, -0.5f, 0.0f ));
-		testAcre.draw(&acreModel[0][0], value_ptr(orange), worldMatrixLocationColor, colorLocation, cubeVertices);
+		acre.draw(&acreModel[0][0], value_ptr(orange), worldMatrixLocationColor, colorLocation, cubeVertices);
+
+		// Tile
+		bind(colorShaderProgram, cubeVAO);
+		glm::mat4 tileModel(1.0f);
+		tileModel = scale(glm::mat4(1.0f), glm::vec3(10.0f, 0.5f, 10.0f));
+		tileModel = translate(tileModel, glm::vec3(0.0f, 0.0f, 0.0f));
+		tile.draw(&tileModel[0][0], value_ptr(red), worldMatrixLocationColor, colorLocation, cubeVertices);
 
 		// Light
 		bind(colorShaderProgram, sphereVAO);
