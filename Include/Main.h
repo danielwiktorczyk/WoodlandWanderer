@@ -27,14 +27,9 @@
 #include "../Include/Acre.h"
 #include "../Include/Tile.h"
 
-// for textures: 
-#define STB_IMAGE_IMPLEMENTATION
-#include "../Include/stb_image.h"
-
 int compileAndLinkShaders(const std::string vertexShaderSource, const std::string fragmentShaderSource);
 
 GLuint setupModelVBO(std::string path, int& vertexCount);
-GLuint loadTexture(const char* filename);
 
 void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix);
 void setViewMatrix(int shaderProgram, glm::mat4 viewMatrix);
@@ -45,15 +40,9 @@ void sendViewMatrixToShader(const glm::vec3& camPos,
 							const glm::vec3& camLookAt,
 							const glm::vec3 camUp,
 							const int& colorShader,
-							const int& textShader,
-							const GLuint& viewLocationColor,
-							const GLuint& viewLocationTexture);
+							const GLuint& viewLocationColor);
 
-void sendWorldRotationMatrixToShader(glm::mat4& worldRotationMatrix,
-									 const float& rotYaxis,
-									 const float& rotXaxis,
-									 const int& colorShader,
-									 const int& textShader);
+void sendWorldRotationMatrixToShader(glm::mat4& worldRotationMatrix, const float& rotYaxis, const float& rotXaxis, const int& colorShader);
 
 void setCameraVariables(GLFWwindow* window, 
 						double& mousePosX, 
@@ -90,10 +79,6 @@ glm::mat4 projectionMatrix = glm::perspective(currentFOV, 1024.0f / 768.0f, 0.01
 
 // Set initial view matrix
 glm::mat4 viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
-
-// Texturing toggle
-bool texturing = false;
-bool canToggleTexturing = true;
 
 // World rotation
 glm::mat4 worldRotationMatrix = glm::mat4(1.0f);

@@ -1,22 +1,6 @@
 #include "../Include/Commands.h"
 
 /**
-* Checks to see if the user is toggling the textures.
-* If the user presses X, the value of texOn is switched
-*/
-void Commands::areTexturesToggled(GLFWwindow* window, bool& canToggle, bool& texOn) {
-	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
-		if (canToggle) {
-			texOn = !texOn; // toggle texturing
-			canToggle = false;
-		}
-	}
-	else {
-		canToggle = true;
-	}
-}
-
-/**
 * Checks to see if the user pressed enter.
 * If they did, the program exits.
 */
@@ -62,7 +46,12 @@ void Commands::tiltCamera(GLFWwindow* window, float& camVertAng, const double& d
 /**
 * Zoom the camera by holding the left mouse button and moving the mouse
 */
-void Commands::zoomCamera(GLFWwindow* window, float& currentFOV, const double& dy, glm::mat4& projMatrix, const int& colorShader, const int& textShader, std::function<void(int, glm::mat4)> setProjMatrix) {
+void Commands::zoomCamera(GLFWwindow* window, 
+						  float& currentFOV, 
+						  const double& dy, 
+						  glm::mat4& projMatrix, 
+						  const int& colorShader, 
+						  std::function<void(int, glm::mat4)> setProjMatrix) {
 	// Camera Zooming
 	float cameraZoomSpeed = 0.001f;
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
@@ -71,7 +60,6 @@ void Commands::zoomCamera(GLFWwindow* window, float& currentFOV, const double& d
 		projMatrix = glm::perspective(currentFOV, 1024.0f / 768.0f, 0.01f, 100.0f);
 
 		setProjMatrix(colorShader, projMatrix);
-		setProjMatrix(textShader, projMatrix);
 	}
 }
 

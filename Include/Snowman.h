@@ -11,21 +11,16 @@
 class Snowman {
 public:
 	Snowman(GLuint worldMatrixColorLoc, 
-			GLuint worldMatrixTextureLoc, 
 			GLuint colorLoc, 
 			int colshader, 
-			int texshader, 
 			int theSphereVertices, 
 			GLuint theCubeVAO, 
-			GLuint theSphereVAO, 
-			int theCarrotTexture, 
-			int theMetalTexture);
+			GLuint theSphereVAO);
 	
 	void update();
 
-	void draw(bool texturing);
+	void draw();
 	void drawHelper(glm::mat4 part, glm::vec3 color);
-	void drawTexture(glm::mat4 part, int texture);
 	void drawBody(glm::mat4 part, glm::vec3 color);
 
 	void scaleSnowman(GLFWwindow* window, const bool& shift, bool& canScaleIncrement);
@@ -46,14 +41,9 @@ public:
 	glm::vec3 const hatColor = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	GLuint worldMatrixLocationColor;
-	GLuint worldMatrixLocationTexture;
 	GLuint colorLocation;
 
 	int colorShaderProgram;
-	int textureShaderProgram;
-
-	int carrotTexture;
-	int metalTexture;
 
 	int sphereVertices;
 	GLuint sphereVAO;

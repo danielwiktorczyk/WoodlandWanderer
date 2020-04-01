@@ -10,7 +10,6 @@
 
 class Commands {
 public:
-	static void areTexturesToggled(GLFWwindow* window, bool& canToggle, bool& texOn);
 	static void closeWindow(GLFWwindow* window);
 	static void setRenderingMode(GLFWwindow* window);
 
@@ -21,7 +20,6 @@ public:
 		const double& dy, 
 		glm::mat4& projMatrix, 
 		const int& colorShader, 
-		const int& textShader, 
 		std::function<void(int, glm::mat4)> setProjMatrix);
 
 	static void setWorldRotation(GLFWwindow* window, float& rotYaxis, float& rotXaxis);

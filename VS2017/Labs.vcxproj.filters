@@ -54,9 +54,6 @@
     <ClInclude Include="..\Include\OBJloader.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\stb_image.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\Main.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -87,18 +84,15 @@
     <ClInclude Include="..\Include\Tile.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\globals.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\References\Shaders\3.3.shader.fs">
       <Filter>References\Shaders</Filter>
     </None>
     <None Include="..\References\Shaders\3.3.shader.vs">
-      <Filter>References\Shaders</Filter>
-    </None>
-    <None Include="..\References\Shaders\3.3.texShader.vs">
-      <Filter>References\Shaders</Filter>
-    </None>
-    <None Include="..\References\Shaders\3.3.texShader.fs">
       <Filter>References\Shaders</Filter>
     </None>
   </ItemGroup>

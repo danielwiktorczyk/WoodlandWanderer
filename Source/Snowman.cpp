@@ -1,30 +1,21 @@
 #include "../Include/Snowman.h"
 
 Snowman::Snowman(GLuint worldMatrixColorLoc,
-				 GLuint worldMatrixTextureLoc,
-				 GLuint colorLoc,
-				 int colshader,
-				 int texshader,
-				 int theSphereVertices,
-				 GLuint theCubeVAO,
-				 GLuint theSphereVAO,
-				 int theCarrotTexture,
-				 int theMetalTexture) {
+	GLuint colorLoc,
+	int colshader,
+	int theSphereVertices,
+	GLuint theCubeVAO,
+	GLuint theSphereVAO) {
 
 	this->origin = glm::vec3(0.0f, 0.0f, 0.0f);
 	this->scaleFactor = 0.85f;
 	this->rotation = 0.0f;
 	this->worldMatrixLocationColor = worldMatrixColorLoc;
-	this->worldMatrixLocationTexture = worldMatrixTextureLoc;
 	this->colorLocation = colorLoc;
 	this->colorShaderProgram = colshader;
-	this->textureShaderProgram = texshader;
 	this->sphereVertices = theSphereVertices;
 	this->cubeVAO = theCubeVAO;
 	this->sphereVAO = theSphereVAO;
-
-	this->carrotTexture = theCarrotTexture;
-	this->metalTexture = theMetalTexture;
 
 	this->animate = 0.0f;
 	this->animateHat = 0.0f;
@@ -69,7 +60,7 @@ void Snowman::update() {
 	mouth = groupTranslation * groupScaling * partRotation * translate(glm::mat4(1.0f), scaleFactor * (glm::vec3(0.0f, 7.25f, chubbyFactor * 0.84f))) * scale(glm::mat4(1.0f), scaleFactor * glm::vec3(0.25, 0.125, 0.1));
 }
 
-void Snowman::draw(bool texturing) {
+void Snowman::draw() {
 
 	drawHelper(leftArm, snowmanBranchColor);
 	drawHelper(leftArmBranch1, snowmanBranchColor);
@@ -92,18 +83,10 @@ void Snowman::draw(bool texturing) {
 	drawBody(middle, snowmanColor);
 	drawBody(head, snowmanColor);
 
-	if (texturing) {
-		drawTexture(hatBrim, metalTexture);
-		drawTexture(hatBody, metalTexture);
+	drawHelper(hatBrim, hatColor);
+	drawHelper(hatBody, hatColor);
 
-		drawTexture(carrot, carrotTexture);
-	}
-	else {
-		drawHelper(hatBrim, hatColor);
-		drawHelper(hatBody, hatColor);
-
-		drawHelper(carrot, carrotColor);
-	}
+	drawHelper(carrot, carrotColor);
 
 }
 
@@ -116,22 +99,6 @@ void Snowman::drawHelper(glm::mat4 part, glm::vec3 color) {
 
 	glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &part[0][0]);
 	glUniform3fv(colorLocation, 1, value_ptr(color));
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-}
-
-void Snowman::drawTexture(glm::mat4 part, int texture) {
-	glUseProgram(textureShaderProgram);
-
-	glActiveTexture(GL_TEXTURE0);
-	GLuint textureLocation = glGetUniformLocation(textureShaderProgram, "textureSampler");
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(textureLocation, 0);
-
-	glBindVertexArray(0);
-	glBindVertexArray(cubeVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, cubeVAO);
-
-	glUniformMatrix4fv(worldMatrixLocationTexture, 1, GL_FALSE, &part[0][0]);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
@@ -225,7 +192,7 @@ void Snowman::translateSnowman(GLFWwindow* window, const bool& shift, bool& canM
 	bool moveRight = glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS;
 	bool moveUp = glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS;
 	bool moveDown = glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS;
-	
+
 	// Move snowman left (+ x direction)
 	if (moveLeft) {
 		if (!shift) {

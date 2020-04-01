@@ -1,24 +1,26 @@
 /*
 *
-* COMP 371 Project
+* COMP 371 Project 
+*
+* Low poly procedural world
 *
 * TEAM
 * Claudia Lapalme    - 40058454
 * George  Mavroeidis - 40065356
 * Armando Russo      - 40076164
 * Daniel  Wiktorczyk - 40060894
-* 
+*
 *
 * SOURCES
 * - Lab tutorials & learnopengl.com
 * - Simple grass:        https://www.blendswap.com/blend/24539
 * - Low Poly trees pack: https://www.blendswap.com/blend/23720
-* 
+*
 */
 
 #include "../Include/Main.h"
 
-int main(int argc, char*argv[]) {
+int main(int argc, char* argv[]) {
 
 	///////////////////////////////////////////////////////////////////
 	///////////////////////// Intialization ///////////////////////////
@@ -65,13 +67,13 @@ int main(int argc, char*argv[]) {
 	///////////////////////////////////////////////////////////////////
 
 #if defined(PLATFORM_OSX)
-	std::string cubePath   = "Models/cube.obj";
+	std::string cubePath = "Models/cube.obj";
 	std::string spherePath = "Models/sphere.obj";
-	std::string treePath   = "Models/low-poly-trees-pack.obj";
+	std::string treePath = "Models/low-poly-trees-pack.obj";
 #else
-	std::string cubePath   = "../Assets/Models/cube.obj";
+	std::string cubePath = "../Assets/Models/cube.obj";
 	std::string spherePath = "../Assets/Models/sphere.obj";
-	std::string treePath   = "../Assets/Models/low-poly-trees-pack-tree.obj";
+	std::string treePath = "../Assets/Models/low-poly-trees-pack-tree.obj";
 #endif
 	int cubeVertices;
 	GLuint cubeVAO = setupModelVBO(cubePath, cubeVertices);
@@ -80,80 +82,53 @@ int main(int argc, char*argv[]) {
 	int treeVertices;
 	GLuint treeVAO = setupModelVBO(treePath, treeVertices);
 
-
-	///////////////////////////////////////////////////////////////////
-	/////////////////////////// Textures //////////////////////////////
-	///////////////////////////////////////////////////////////////////
-
-#if defined(PLATFORM_OSX)
-	GLuint carrotTextureID = loadTexture("Textures/carrot.jpg");
-	GLuint metalTextureID  = loadTexture("Textures/metal.jpg");
-	GLuint snowTextureID   = loadTexture("Textures/snow.jpg");
-#else
-	GLuint carrotTextureID = loadTexture("../Assets/Textures/carrot.jpg");
-	GLuint metalTextureID  = loadTexture("../Assets/Textures/metal.jpg");
-	GLuint snowTextureID   = loadTexture("../Assets/Textures/snow.jpg");
-#endif
-
 	///////////////////////////////////////////////////////////////////
 	/////////////////////////// Shaders ///////////////////////////////
 	///////////////////////////////////////////////////////////////////
 
 	// Compile and link shaders here ...
 	int colorShaderProgram = compileAndLinkShaders("../References/Shaders/3.3.shader.vs", "../References/Shaders/3.3.shader.fs");
-	int texturedShaderProgram = compileAndLinkShaders("../References/Shaders/3.3.texShader.vs", "../References/Shaders/3.3.texShader.fs");
-	
+
 	// Set View and Projection matrices on both shaders
 	setViewMatrix(colorShaderProgram, viewMatrix);
-	setViewMatrix(texturedShaderProgram, viewMatrix);
-
 	setProjectionMatrix(colorShaderProgram, projectionMatrix);
-	setProjectionMatrix(texturedShaderProgram, projectionMatrix);
 
 	///////////////////////////////////////////////////////////////////
 	/////////////////////////// Uniforms //////////////////////////////
 	///////////////////////////////////////////////////////////////////
 
-	GLuint worldMatrixLocationColor = glGetUniformLocation(colorShaderProgram, "worldMatrix");
-	GLuint worldMatrixLocationTexture = glGetUniformLocation(texturedShaderProgram, "worldMatrix");
-	GLuint colorLocation = glGetUniformLocation(colorShaderProgram, "objectColor");
-	GLuint viewLocationColor = glGetUniformLocation(colorShaderProgram, "viewPosition");
-	GLuint viewLocationTexture = glGetUniformLocation(texturedShaderProgram, "viewPosition");
-	GLuint lightLocationColor = glGetUniformLocation(colorShaderProgram, "lightPosition");
-	GLuint lightLocationTexture = glGetUniformLocation(texturedShaderProgram, "lightPosition");
+	GLuint worldMatrixLocation = glGetUniformLocation(colorShaderProgram, "worldMatrix");
+	GLuint colorLocation       = glGetUniformLocation(colorShaderProgram, "objectColor");
+	GLuint viewLocation        = glGetUniformLocation(colorShaderProgram, "viewPosition");
+	GLuint lightLocation       = glGetUniformLocation(colorShaderProgram, "lightPosition");
 
 	///////////////////////////////////////////////////////////////////
 	/////////////////////////// Objects ///////////////////////////////
 	///////////////////////////////////////////////////////////////////
 
 	// Initialize the Snowman
-	Snowman snowman = Snowman(worldMatrixLocationColor, 
-							  worldMatrixLocationTexture, 
-							  colorLocation, 
-							  colorShaderProgram, 
-							  texturedShaderProgram, 
-							  sphereVertices, 
-							  cubeVAO, 
-							  sphereVAO,
-							  carrotTextureID, 
-							  metalTextureID);
+	Snowman snowman = Snowman(worldMatrixLocation,
+		colorLocation,
+		colorShaderProgram,
+		sphereVertices,
+		cubeVAO,
+		sphereVAO);
 
-	 LoadedObject light       = LoadedObject(cubeVAO, cubeVertices, white);
-	 NonCollidableObject tree = NonCollidableObject(treeVAO, treeVertices, turquoise);
-	 Forest forest            = Forest(cubeVAO, cubeVertices, green);
-	 Acre acre                = Acre(cubeVAO, cubeVertices, orange, true);
-	 Tile tile                = Tile(cubeVAO, glm::mat4(1.0f), tree, red, cubeVertices);
+	LoadedObject light = LoadedObject(cubeVAO, cubeVertices, white);
+	NonCollidableObject tree = NonCollidableObject(treeVAO, treeVertices, turquoise);
+	Forest forest = Forest(cubeVAO, cubeVertices, green);
+	Acre acre = Acre(cubeVAO, cubeVertices, orange, true);
+	Tile tile = Tile(cubeVAO, glm::mat4(1.0f), tree, red, cubeVertices);
 
-	 // Baby Blue Background
-	 glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
+	// Baby Blue Background
+	glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
 
-	 ///////////////////////////////////////////////////////////////////
-	 //////////////////////////// Light ////////////////////////////////
-	 ///////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////
+	//////////////////////////// Light ////////////////////////////////
+	///////////////////////////////////////////////////////////////////
 
 	glm::vec3 lightPosition = glm::vec3(15.0f, 20.0f, 5.0f);
-	glUniform3fv(lightLocationColor, 1, value_ptr(lightPosition));
-	glUniform3fv(lightLocationTexture, 1, value_ptr(lightPosition));
+	glUniform3fv(lightLocation, 1, value_ptr(lightPosition));
 
 	///////////////////////////////////////////////////////////////////
 	///////////////////////// Render Loop /////////////////////////////
@@ -166,86 +141,65 @@ int main(int argc, char*argv[]) {
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		Commands::areTexturesToggled(window, canToggleTexturing, texturing);
 		Commands::closeWindow(window);
 		Commands::setRenderingMode(window);
 
-		// Draw Grid
-		if (texturing) {
-			glUseProgram(texturedShaderProgram);
 
-			glActiveTexture(GL_TEXTURE0);
-			GLuint textureLocation = glGetUniformLocation(texturedShaderProgram, "textureSampler");
-			glBindTexture(GL_TEXTURE_2D, snowTextureID);
-			glUniform1i(textureLocation, 0);
+		glUseProgram(colorShaderProgram);
 
-			glm::mat4 groundPatch = scale(glm::mat4(1.0f), glm::vec3(10.0f, 0.02f, 10.0f));
-			glm::mat4 currentGroundPatch;
-			for (int i = -5; i < 5; i++) {
-				for (int j = -5; j < 5; j++) {
-					currentGroundPatch = translate(glm::mat4(1.0f), glm::vec3(i * 10.0f, -0.01f, j * 10.0f)) * groundPatch;
-					glUniformMatrix4fv(worldMatrixLocationTexture, 1, GL_FALSE, &currentGroundPatch[0][0]);
-					glDrawArrays(GL_TRIANGLES, 12, 18);
-				}
-			}
+		glm::mat4 gridLineMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
+		glm::mat4 currentGridLineMatrix;
+		for (int i = -50; i < 50; i++) {
+			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, i * 1.0f)) * gridLineMatrix;
+			glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
+			glUniform3fv(colorLocation, 1, value_ptr(gridColor));
+			glDrawArrays(GL_TRIANGLES, 12, 18);
+			glDrawArrays(GL_TRIANGLES, 30, 36);
 		}
-		else {
-			glUseProgram(colorShaderProgram);
-
-			glm::mat4 gridLineMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
-			glm::mat4 currentGridLineMatrix;
-			for (int i = -50; i < 50; i++) {
-				currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, i * 1.0f)) * gridLineMatrix;
-				glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
-				glUniform3fv(colorLocation, 1, value_ptr(gridColor));
-				glDrawArrays(GL_TRIANGLES, 12, 18);
-				glDrawArrays(GL_TRIANGLES, 30, 36);
-			}
-			gridLineMatrix = scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.02f, 100.0f));
-			for (int i = -50; i < 50; i++) {
-				currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(i * 1.0f, -0.01f, 0.0f)) * gridLineMatrix;
-				glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
-				glUniform3fv(colorLocation, 1, value_ptr(gridColor));
-				glDrawArrays(GL_TRIANGLES, 12, 18);
-				glDrawArrays(GL_TRIANGLES, 30, 36);
-			}
+		gridLineMatrix = scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.02f, 100.0f));
+		for (int i = -50; i < 50; i++) {
+			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(i * 1.0f, -0.01f, 0.0f)) * gridLineMatrix;
+			glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
+			glUniform3fv(colorLocation, 1, value_ptr(gridColor));
+			glDrawArrays(GL_TRIANGLES, 12, 18);
+			glDrawArrays(GL_TRIANGLES, 30, 36);
 		}
 
 		// Forest
 		bind(colorShaderProgram, forest.getVAO());
 		glm::mat4 forestModel = scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.0f, 100.0f));
 		forest.setPosition(forestModel);
-		forest.draw(worldMatrixLocationColor, colorLocation);
+		forest.draw(worldMatrixLocation, colorLocation);
 
 		// Acre
 		bind(colorShaderProgram, cubeVAO);
-		glm::mat4 acreModel = scale(glm::mat4(1.0f), glm::vec3(100.0f,   0.5f, 100.0f));
-		acreModel = translate(acreModel, glm::vec3(0.0f, -0.5f, 0.0f ));
+		glm::mat4 acreModel = scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.5f, 100.0f));
+		acreModel = translate(acreModel, glm::vec3(0.0f, -0.5f, 0.0f));
 		acre.setPosition(acreModel);
-		acre.draw(worldMatrixLocationColor, colorLocation);
+		acre.draw(worldMatrixLocation, colorLocation);
 
 		// Tile
 		bind(colorShaderProgram, cubeVAO);
 		glm::mat4 tileModel = scale(glm::mat4(1.0f), glm::vec3(10.0f, 0.5f, 10.0f));
 		tileModel = translate(tileModel, glm::vec3(0.0f, 0.0f, 0.0f));
 		tile.setPosition(tileModel);
-		tile.draw(worldMatrixLocationColor, colorLocation);
+		tile.draw(worldMatrixLocation, colorLocation);
 
 		// Light
 		bind(colorShaderProgram, cubeVAO);
 		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
-		glUniform3fv(lightLocationColor, 1, value_ptr(lightPosition));
+		glUniform3fv(lightLocation, 1, value_ptr(lightPosition));
 		light.setPosition(lightBulbMatrix);
-		light.draw(worldMatrixLocationColor, colorLocation);
+		light.draw(worldMatrixLocation, colorLocation);
 
 		// Tree!
 		bind(colorShaderProgram, treeVAO);
 		glm::mat4 base = scale(glm::mat4(1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
 		tree.setPosition(base);
-		tree.draw(worldMatrixLocationColor, colorLocation);
-		
+		tree.draw(worldMatrixLocation, colorLocation);
+
 		//Snowman
-		snowman.draw(texturing);
+		snowman.draw();
 		snowman.scaleSnowman(window, shift, canScaleIncrement);
 		snowman.rotateSnowman(window, shift, canRandomPlacement);
 		snowman.translateSnowman(window, shift, canMoveIncrement);
@@ -255,12 +209,12 @@ int main(int argc, char*argv[]) {
 		setCameraVariables(window, mousePosX, mousePosY, lastMousePosX, lastMousePosY, cameraHorizontalAngle, cameraVerticalAngle, cameraLookAt, cameraSideVector);
 		Commands::panCamera(window, cameraHorizontalAngle, dx, cameraAngularSpeed);
 		Commands::tiltCamera(window, cameraVerticalAngle, dy, cameraAngularSpeed);
-		Commands::zoomCamera(window, currentFOV, dy, projectionMatrix, colorShaderProgram, texturedShaderProgram, setProjectionMatrix);
+		Commands::zoomCamera(window, currentFOV, dy, projectionMatrix, colorShaderProgram, setProjectionMatrix);
 
 		Commands::setWorldRotation(window, worldRotationAboutYAxis, worldRotationAboutXAxis);
-		sendViewMatrixToShader(cameraPosition, cameraLookAt, cameraUp, colorShaderProgram, texturedShaderProgram, viewLocationColor, viewLocationTexture);
-		sendWorldRotationMatrixToShader(worldRotationMatrix, worldRotationAboutYAxis, worldRotationAboutXAxis, colorShaderProgram, texturedShaderProgram);
-	
+		sendViewMatrixToShader(cameraPosition, cameraLookAt, cameraUp, colorShaderProgram, viewLocation);
+		sendWorldRotationMatrixToShader(worldRotationMatrix, worldRotationAboutYAxis, worldRotationAboutXAxis, colorShaderProgram);
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
@@ -392,45 +346,6 @@ GLuint setupModelVBO(std::string path, int& vertexCount) {
 	return VAO;
 }
 
-GLuint loadTexture(const char* filename) {
-	// Step1 Create and bind textures
-	GLuint textureId = 0;
-	glGenTextures(1, &textureId);
-	assert(textureId != 0);
-
-	glBindTexture(GL_TEXTURE_2D, textureId);
-
-	// Step2 Set filter parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	// Step3 Load Textures with dimension data
-	int width, height, nrChannels;
-	unsigned char* data = stbi_load(filename, &width, &height, &nrChannels, 0);
-	if (!data) {
-		std::cerr << "Error::Texture could not load texture file:" << filename << std::endl;
-		return 0;
-	}
-
-	// Step4 Upload the texture to the PU
-	GLenum format = 0;
-	if (nrChannels == 1) {
-		format = GL_RED;
-	}
-	else if (nrChannels == 3) {
-		format = GL_RGB;
-	}
-	else if (nrChannels == 4) {
-		format = GL_RGBA;
-	}
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-
-	// Step5 Free resources
-	stbi_image_free(data);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	return textureId;
-}
-
 void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix) {
 	glUseProgram(shaderProgram);
 	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
@@ -455,36 +370,31 @@ void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix) {
 	glUniformMatrix4fv(worldRotationMatrixLocation, 1, GL_FALSE, &worldRotationMatrix[0][0]);
 }
 
-void sendViewMatrixToShader(const glm::vec3& camPos, 
-							const glm::vec3& camLookAt, 
-							const glm::vec3 camUp, 
-							const int& colorShader, 
-							const int& textShader, 
-							const GLuint& viewLocationColor, 
-							const GLuint& viewLocationTexture) {
+void sendViewMatrixToShader(const glm::vec3& camPos,
+	const glm::vec3& camLookAt,
+	const glm::vec3 camUp,
+	const int& colorShader,
+	const GLuint& viewLocationColor) {
 	glm::mat4 viewMatrix(1.0f);
 	viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
 	setViewMatrix(colorShader, viewMatrix);
-	setViewMatrix(textShader, viewMatrix);
 	glUniform3fv(viewLocationColor, 1, value_ptr(cameraPosition));
-	glUniform3fv(viewLocationTexture, 1, value_ptr(cameraPosition));
 }
 
-void sendWorldRotationMatrixToShader(glm::mat4& worldRotationMatrix, const float& rotYaxis, const float& rotXaxis, const int& colorShader, const int& textShader) {
+void sendWorldRotationMatrixToShader(glm::mat4& worldRotationMatrix, const float& rotYaxis, const float& rotXaxis, const int& colorShader) {
 	worldRotationMatrix = rotate(glm::mat4(1.0f), worldRotationAboutYAxis, glm::vec3(0.0f, 1.0f, 0.0f)) * rotate(glm::mat4(1.0f), worldRotationAboutXAxis, glm::vec3(1.0f, 0.0f, 0.0f));
 	setWorldRotationMatrix(colorShader, worldRotationMatrix);
-	setWorldRotationMatrix(textShader, worldRotationMatrix);
 }
 
-void setCameraVariables(GLFWwindow* window, 
-						double& mousePosX, 
-						double& mousePosY, 
-						double& lastMousePosX, 
-						double& lastMousePosY, 
-						float& camHorAngle, 
-						float& camVertAngle,
-						glm::vec3& cameraLookAt,
-						glm::vec3& cameraSideVector) {
+void setCameraVariables(GLFWwindow* window,
+	double& mousePosX,
+	double& mousePosY,
+	double& lastMousePosX,
+	double& lastMousePosY,
+	float& camHorAngle,
+	float& camVertAngle,
+	glm::vec3& cameraLookAt,
+	glm::vec3& cameraSideVector) {
 
 	glfwGetCursorPos(window, &mousePosX, &mousePosY);
 
