@@ -11,11 +11,17 @@
 
 class Acre {
 public:
-	Acre(GLuint VAO);
-	void draw(const GLfloat* value4fv, const GLfloat* value3fv, GLuint& worldMatrixLocationColor, GLuint colorLocation, const int& vertices);
+	Acre(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color, bool rendered);
+	
+	void draw(GLuint& worldMatrixLocation, GLuint colorLocation);
+	
+	void setPosition(glm::mat4 pos) { this->position = pos; };
 
 private:
-	GLuint VAO;
+	const GLuint& VAO;
+	glm::mat4 position = glm::mat4(1.0f);
+	glm::vec3 color;
+	const GLuint& numVertices;
 	std::vector<Tile> tiles; // will be 20 x 20, square?
 	bool rendered;
 };

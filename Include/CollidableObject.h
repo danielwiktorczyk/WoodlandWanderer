@@ -9,6 +9,6 @@
 
 class CollidableObject : public LoadedObject {
 public:
-	CollidableObject(GLuint VAO);
+	CollidableObject(GLuint VAO, GLuint numVertices, glm::vec3 color);
 
 };

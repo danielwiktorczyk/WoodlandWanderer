@@ -9,17 +9,19 @@
 class LoadedObject {
 public:
 	LoadedObject() = default;
-	LoadedObject(GLuint VAO);
-	void draw(const GLfloat* objModel,
-			  const GLfloat* objColor,
-			  GLuint& worldMatrixLocation,
-			  GLuint colorLocation,
-			  const int& vertices);
-	glm::vec3 getPosition();
-	void setPosition(glm::vec3 position);
+	LoadedObject(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color);
+
+	void draw(GLuint& worldMatrixLocation, GLuint& colorLocation);
+	
+	glm::mat4 getPosition() { return this->position; };
+	void setPosition(glm::mat4 position) { this->position = position; };
+	glm::vec3 getColor() { return this->color; };
+	void setColor(glm::vec3 color) { this->color = color; };
 
 private:
-	GLuint VAO;
-	glm::vec3 position;
+	const GLuint& VAO;
+	glm::mat4 position = glm::mat4(1.0f);
+	glm::vec3 color;
+	const GLuint& numVertices;
 };
 

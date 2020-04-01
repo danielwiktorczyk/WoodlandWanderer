@@ -11,14 +11,17 @@
 
 class Forest {
 public: 
-	Forest();
-	void draw(const GLfloat* value4fv, const GLfloat* value3fv, GLuint& worldMatrixLocationColor, GLuint colorLocation);
+	Forest(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color);
+
+	void draw(GLuint& worldMatrixLocationColor, GLuint colorLocation);
+	
 	GLuint getVAO() { return this->VAO; };
+	void setPosition(glm::mat4 pos) { this->position = pos; };
 
 private:
-	GLuint VAO;
-	GLuint VBO;
-	std::vector<glm::vec3> vertices;
+	const GLuint& VAO;
+	const GLuint& numVertices;
+	glm::mat4 position = glm::mat4(1.0f);
+	glm::vec3 color;
 	std::vector<Acre> acres; // will be 20 x 20, square?
-
 };

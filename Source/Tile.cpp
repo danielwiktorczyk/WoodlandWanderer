@@ -1,9 +1,9 @@
 #include "../Include/Tile.h"
 
-Tile::Tile(GLuint tileVAO, GLuint occupantVAO, glm::vec3 position) {
-	this->occupant = LoadedObject::LoadedObject(occupantVAO);
+Tile::Tile(GLuint tileVAO, glm::mat4 position, LoadedObject& occupant, glm::vec3 color, const GLuint numVertices) : occupant(occupant), numVertices(numVertices) {
 	this->tileVAO = tileVAO;
 	this->position = position;
+	this->color = color;
 
 	// refactor to method after which randomizes it
 	// for now, middle:
@@ -11,15 +11,15 @@ Tile::Tile(GLuint tileVAO, GLuint occupantVAO, glm::vec3 position) {
 
 }
 
-void Tile::draw(const GLfloat* value4fv, const GLfloat* value3fv, GLuint& worldMatrixLocationColor, GLuint colorLocation, const int& vertices) {
+void Tile::draw(GLuint& worldMatrixLocation, GLuint colorLocation) {
 	
 	// draw tile itself
 	glBindVertexArray(this->tileVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, this->tileVAO);
 
-	glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, value4fv);
-	glUniform3fv(colorLocation, 1, value3fv);
+	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &(this->position)[0][0]);
+	glUniform3fv(colorLocation, 1, value_ptr(this->color));
 
-	glDrawArrays(GL_TRIANGLES, 0, vertices);
+	glDrawArrays(GL_TRIANGLES, 0, this->numVertices);
 
 }

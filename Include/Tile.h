@@ -11,11 +11,16 @@
 
 class Tile {
 public: 
-	Tile(GLuint tileVAO, GLuint occupantVAO, glm::vec3 position);
-	void draw(const GLfloat* value4fv, const GLfloat* value3fv, GLuint& worldMatrixLocationColor, GLuint colorLocation, const int& vertices);
+	Tile(GLuint tileVAO, glm::mat4 position, LoadedObject& occupant, glm::vec3 color, const GLuint numVertices);
+	
+	void draw(GLuint& worldMatrixLocation, GLuint colorLocation);
+
+	void setPosition(glm::mat4 pos) { this->position = pos; };
 
 private:
 	GLuint tileVAO;
-	LoadedObject occupant; 
-	glm::vec3 position;
+	LoadedObject& occupant; 
+	glm::mat4 position = glm::mat4(1.0f);
+	glm::vec3 color = { 1.0f, 1.0f, 1.0f };
+	const GLuint& numVertices;
 };

@@ -138,11 +138,11 @@ int main(int argc, char*argv[]) {
 							  carrotTextureID, 
 							  metalTextureID);
 
-	 LoadedObject light       = LoadedObject(cubeVAO);
-	 NonCollidableObject tree = NonCollidableObject(treeVAO);
-	 Forest forest            = Forest();
-	 Acre acre            = Acre(cubeVAO);
-	 Tile tile            = Tile(cubeVAO, treeVAO, glm::vec3(0.0f, 0.0f, 0.0f));
+	 LoadedObject light       = LoadedObject(cubeVAO, cubeVertices, white);
+	 NonCollidableObject tree = NonCollidableObject(treeVAO, treeVertices, turquoise);
+	 Forest forest            = Forest(cubeVAO, cubeVertices, green);
+	 Acre acre                = Acre(cubeVAO, cubeVertices, orange, true);
+	 Tile tile                = Tile(cubeVAO, glm::mat4(1.0f), tree, red, cubeVertices);
 
 	 // Baby Blue Background
 	 glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
@@ -213,33 +213,36 @@ int main(int argc, char*argv[]) {
 
 		// Forest
 		bind(colorShaderProgram, forest.getVAO());
-		glm::mat4 forestLocation(1.0f);
-		forest.draw(&forestLocation[0][0], value_ptr(green), worldMatrixLocationColor, colorLocation);
+		glm::mat4 forestModel = scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.0f, 100.0f));
+		forest.setPosition(forestModel);
+		forest.draw(worldMatrixLocationColor, colorLocation);
 
 		// Acre
 		bind(colorShaderProgram, cubeVAO);
-		glm::mat4 acreModel(1.0f);
-		acreModel = scale(glm::mat4(1.0f), glm::vec3(100.0f,   0.5f, 100.0f));
+		glm::mat4 acreModel = scale(glm::mat4(1.0f), glm::vec3(100.0f,   0.5f, 100.0f));
 		acreModel = translate(acreModel, glm::vec3(0.0f, -0.5f, 0.0f ));
-		acre.draw(&acreModel[0][0], value_ptr(orange), worldMatrixLocationColor, colorLocation, cubeVertices);
+		acre.setPosition(acreModel);
+		acre.draw(worldMatrixLocationColor, colorLocation);
 
 		// Tile
 		bind(colorShaderProgram, cubeVAO);
-		glm::mat4 tileModel(1.0f);
-		tileModel = scale(glm::mat4(1.0f), glm::vec3(10.0f, 0.5f, 10.0f));
+		glm::mat4 tileModel = scale(glm::mat4(1.0f), glm::vec3(10.0f, 0.5f, 10.0f));
 		tileModel = translate(tileModel, glm::vec3(0.0f, 0.0f, 0.0f));
-		tile.draw(&tileModel[0][0], value_ptr(red), worldMatrixLocationColor, colorLocation, cubeVertices);
+		tile.setPosition(tileModel);
+		tile.draw(worldMatrixLocationColor, colorLocation);
 
 		// Light
-		bind(colorShaderProgram, sphereVAO);
+		bind(colorShaderProgram, cubeVAO);
 		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniform3fv(lightLocationColor, 1, value_ptr(lightPosition));
-		light.draw(&lightBulbMatrix[0][0], value_ptr(white), worldMatrixLocationColor, colorLocation, sphereVertices);
+		light.setPosition(lightBulbMatrix);
+		light.draw(worldMatrixLocationColor, colorLocation);
 
 		// Tree!
 		bind(colorShaderProgram, treeVAO);
 		glm::mat4 base = scale(glm::mat4(1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
-		tree.draw(&base[0][0], value_ptr(turquoise), worldMatrixLocationColor, colorLocation, treeVertices);
+		tree.setPosition(base);
+		tree.draw(worldMatrixLocationColor, colorLocation);
 		
 		//Snowman
 		snowman.draw(texturing);

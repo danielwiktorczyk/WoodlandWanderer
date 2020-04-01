@@ -9,6 +9,5 @@
 
 class NonCollidableObject : public LoadedObject {
 public:
-	NonCollidableObject(GLuint VAO);
-
+	NonCollidableObject(GLuint& VAO, const GLuint& numVertices, glm::vec3 color);
 };
