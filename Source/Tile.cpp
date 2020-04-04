@@ -1,6 +1,6 @@
 #include "../Include/Tile.h"
 
-Tile::Tile(GLuint tileVAO, glm::mat4 position, LoadedObject& occupant, glm::vec3 color, const GLuint numVertices) : occupant(occupant), numVertices(numVertices) {
+Tile::Tile(GLuint tileVAO, glm::mat4 position, DrawableModel& occupant, glm::vec3 color, const GLuint numVertices) : occupant(occupant), numVertices(numVertices) {
 	this->tileVAO = tileVAO;
 	this->position = position;
 	this->color = color;

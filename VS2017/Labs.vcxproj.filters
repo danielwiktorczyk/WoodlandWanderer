@@ -31,15 +31,6 @@
     <ClCompile Include="..\Source\Commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\LoadedObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\CollidableObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\NonCollidableObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\Forest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -47,6 +38,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DrawableModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NonCollidableModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\CollidableModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,15 +66,6 @@
     <ClInclude Include="..\Include\Colours.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\LoadedObject.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Include\CollidableObject.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Include\NonCollidableObject.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\Forest.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -85,6 +76,15 @@
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\globals.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\DrawableModel.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\NonCollidableModel.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\CollidableModel.h">
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>

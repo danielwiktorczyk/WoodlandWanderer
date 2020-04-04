@@ -12,25 +12,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Acre.cpp" />
-    <ClCompile Include="..\Source\CollidableObject.cpp" />
+    <ClCompile Include="..\Source\CollidableModel.cpp" />
     <ClCompile Include="..\Source\Commands.cpp" />
     <ClCompile Include="..\Source\Forest.cpp" />
-    <ClCompile Include="..\Source\LoadedObject.cpp" />
+    <ClCompile Include="..\Source\DrawableModel.cpp" />
     <ClCompile Include="..\Source\Main.cpp" />
-    <ClCompile Include="..\Source\NonCollidableObject.cpp" />
+    <ClCompile Include="..\Source\NonCollidableModel.cpp" />
     <ClCompile Include="..\Source\Snowman.cpp" />
     <ClCompile Include="..\Source\Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Acre.h" />
-    <ClInclude Include="..\Include\CollidableObject.h" />
+    <ClInclude Include="..\Include\CollidableModel.h" />
     <ClInclude Include="..\Include\Colours.h" />
     <ClInclude Include="..\Include\Commands.h" />
     <ClInclude Include="..\Include\Forest.h" />
     <ClInclude Include="..\Include\globals.h" />
-    <ClInclude Include="..\Include\LoadedObject.h" />
+    <ClInclude Include="..\Include\DrawableModel.h" />
     <ClInclude Include="..\Include\Main.h" />
-    <ClInclude Include="..\Include\NonCollidableObject.h" />
+    <ClInclude Include="..\Include\NonCollidableModel.h" />
     <ClInclude Include="..\Include\OBJloader.h" />
     <ClInclude Include="..\Include\Snowman.h" />
     <ClInclude Include="..\Include\Tile.h" />

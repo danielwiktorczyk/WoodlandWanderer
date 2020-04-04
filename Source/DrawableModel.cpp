@@ -1,8 +1,8 @@
-#include "../Include/LoadedObject.h"
+#include "../Include/DrawableModel.h"
 
-LoadedObject::LoadedObject(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color) : numVertices(numVertices), color(color), VAO(VAO) { }
+DrawableModel::DrawableModel(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color) : numVertices(numVertices), color(color), VAO(VAO) { }
 
-void LoadedObject::draw(GLuint& worldMatrixLocation, GLuint& colorLocation) {
+void DrawableModel::draw(GLuint& worldMatrixLocation, GLuint& colorLocation) {
 	
 	glBindVertexArray(this->VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, this->VAO);

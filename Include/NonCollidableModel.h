@@ -1,5 +1,5 @@
 #pragma once
-#include "LoadedObject.h"
+#include "DrawableModel.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -7,8 +7,7 @@
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-class CollidableObject : public LoadedObject {
+class NonCollidableModel : public DrawableModel {
 public:
-	CollidableObject(GLuint VAO, GLuint numVertices, glm::vec3 color);
-
+	NonCollidableModel(GLuint& VAO, const GLuint& numVertices, glm::vec3 color);
 };

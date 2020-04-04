@@ -114,8 +114,8 @@ int main(int argc, char* argv[]) {
 		cubeVAO,
 		sphereVAO);
 
-	LoadedObject light = LoadedObject(cubeVAO, cubeVertices, white);
-	NonCollidableObject tree = NonCollidableObject(treeVAO, treeVertices, turquoise);
+	DrawableModel light = DrawableModel(cubeVAO, cubeVertices, white);
+	NonCollidableModel tree = NonCollidableModel(treeVAO, treeVertices, turquoise);
 	Forest forest = Forest(cubeVAO, cubeVertices, green);
 	Acre acre = Acre(cubeVAO, cubeVertices, orange, true);
 	Tile tile = Tile(cubeVAO, glm::mat4(1.0f), tree, red, cubeVertices);

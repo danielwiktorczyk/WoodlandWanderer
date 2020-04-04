@@ -1,6 +1,6 @@
 #pragma once
 #pragma once
-#include "LoadedObject.h"
+#include "DrawableModel.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -11,7 +11,7 @@
 
 class Tile {
 public: 
-	Tile(GLuint tileVAO, glm::mat4 position, LoadedObject& occupant, glm::vec3 color, const GLuint numVertices);
+	Tile(GLuint tileVAO, glm::mat4 position, DrawableModel& occupant, glm::vec3 color, const GLuint numVertices);
 	
 	void draw(GLuint& worldMatrixLocation, GLuint colorLocation);
 
@@ -19,7 +19,7 @@ public:
 
 private:
 	GLuint tileVAO;
-	LoadedObject& occupant; 
+	DrawableModel& occupant; 
 	glm::mat4 position = glm::mat4(1.0f);
 	glm::vec3 color = { 1.0f, 1.0f, 1.0f };
 	const GLuint& numVertices;

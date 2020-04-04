@@ -6,10 +6,10 @@
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-class LoadedObject {
+class DrawableModel {
 public:
-	LoadedObject() = default;
-	LoadedObject(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color);
+	DrawableModel() = default;
+	DrawableModel(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color);
 
 	void draw(GLuint& worldMatrixLocation, GLuint& colorLocation);
 	
