@@ -147,7 +147,7 @@ int main(int argc, char* argv[]) {
 
 		glUseProgram(colorShaderProgram);
 
-		glm::mat4 gridLineMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
+		glm::mat4 gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
 		glm::mat4 currentGridLineMatrix;
 		for (int i = -50; i < 50; i++) {
 			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, i * 1.0f)) * gridLineMatrix;
@@ -156,7 +156,7 @@ int main(int argc, char* argv[]) {
 			glDrawArrays(GL_TRIANGLES, 12, 18);
 			glDrawArrays(GL_TRIANGLES, 30, 36);
 		}
-		gridLineMatrix = scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.02f, 100.0f));
+		gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.02f, 100.0f));
 		for (int i = -50; i < 50; i++) {
 			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(i * 1.0f, -0.01f, 0.0f)) * gridLineMatrix;
 			glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
