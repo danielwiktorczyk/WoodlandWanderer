@@ -6,10 +6,10 @@
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-class DrawableModel {
+class Model {
 public:
-	DrawableModel() = default;
-	DrawableModel(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color);
+	Model() = default;
+	Model(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color);
 
 	void draw(GLuint& worldMatrixLocation, GLuint& colorLocation);
 	

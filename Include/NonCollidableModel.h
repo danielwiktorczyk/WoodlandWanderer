@@ -7,7 +7,7 @@
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-class NonCollidableModel : public DrawableModel {
+class NonCollidableModel : public Model {
 public:
 	NonCollidableModel(GLuint& VAO, const GLuint& numVertices, glm::vec3 color);
 };

@@ -69,11 +69,11 @@ int main(int argc, char* argv[]) {
 #if defined(PLATFORM_OSX)
 	std::string cubePath = "Models/cube.obj";
 	std::string spherePath = "Models/sphere.obj";
-	std::string treePath = "Models/low-poly-trees-pack.obj";
+	std::string treePath = "Models/Trees/curvy-pine-tree.obj";
 #else
 	std::string cubePath = "../Assets/Models/cube.obj";
 	std::string spherePath = "../Assets/Models/sphere.obj";
-	std::string treePath = "../Assets/Models/low-poly-trees-pack-tree.obj";
+	std::string treePath = "../Assets/Models/Trees/curvy-pine-tree.obj";
 #endif
 	int cubeVertices;
 	GLuint cubeVAO = setupModelVBO(cubePath, cubeVertices);
@@ -115,15 +115,15 @@ int main(int argc, char* argv[]) {
 		cubeVAO,
 		sphereVAO);
 
-	DrawableModel light = DrawableModel(cubeVAO, cubeVertices, white);
+	Model light = Model(cubeVAO, cubeVertices, white);
 	NonCollidableModel tree = NonCollidableModel(treeVAO, treeVertices, turquoise);
 	NonCollidableModel basicCube = NonCollidableModel(cubeVAO, cubeVertices, blue);
 	NonCollidableModel basicPlatform = NonCollidableModel(cubeVAO, cubeVertices, blue);
 	Forest forest = Forest(cubeVAO, cubeVertices, green);
 	
 	// Testing only
-	Acre acre = Acre(cubeVAO, cubeVertices, orange, true);
-	Tile tile = Tile(basicCube, basicPlatform, glm::translate(glm::mat4(1.0f), {5.0f, 0.0f, 5.0f})); // TODO Using a cube for now for testing
+	Acre acre = Acre(NonCollidableModel(cubeVAO, cubeVertices, orange));
+	Tile tile = Tile(basicCube, NonCollidableModel(cubeVAO, cubeVertices, yellow), glm::translate(glm::mat4(1.0f), {5.0f, 0.0f, 5.0f})); // TODO Using a cube for now for testing
 
 	// Baby Blue Background
 	glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
@@ -180,7 +180,7 @@ int main(int argc, char* argv[]) {
 		bind(colorShaderProgram, cubeVAO);
 		glm::mat4 acreModel = scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.5f, 100.0f));
 		acreModel = translate(acreModel, glm::vec3(0.0f, -0.5f, 0.0f));
-		acre.setModelTransformMatrix(acreModel); //TODO refactor into setPosition(only translation) and setMatrixTransform(scale and rotation) 
+		acre.setTranslationMatrix(acreModel); //TODO refactor into setPosition(only translation) and setMatrixTransform(scale and rotation) 
 		acre.draw(worldMatrixLocation, colorLocation);
 
 		// Tile

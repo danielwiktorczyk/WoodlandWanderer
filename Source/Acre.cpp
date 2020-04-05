@@ -1,16 +1,19 @@
 #include "../Include/Acre.h"
 
-Acre::Acre(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color, bool rendered) : VAO(VAO), numVertices(numVertices), color(color), rendered(rendered) { }
+Acre::Acre(Model& platform) : platform(platform) {
+	this->translationMatrix = translationMatrix;
+	glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
+	platformTransformMatrix = glm::scale(platformTransformMatrix, glm::vec3(100.0f, 1.0f, 100.0f));
+	platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -0.5f, 0.0f));
+	platformTransformMatrix = translationMatrix * platformTransformMatrix;
+	this->platform.setModelTransformMatrix(platformTransformMatrix);
+	
+	this->rendered = false;
+}
 
 void Acre::draw(GLuint& worldMatrixLocation, GLuint colorLocation) {
+	this->platform.draw(worldMatrixLocation, colorLocation);
 	
-	// draw the Acre itself
-	glBindVertexArray(this->VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, this->VAO);
-	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &(this->modelTransformMatrix)[0][0]);
-	glUniform3fv(colorLocation, 1, value_ptr(this->color));
-	glDrawArrays(GL_TRIANGLES, 0, this->numVertices);
-
 	// order all its managed Tiles to draw itself
 	// TODO for each Tile tile: tile.draw()
 }

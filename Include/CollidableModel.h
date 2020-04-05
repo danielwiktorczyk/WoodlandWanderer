@@ -7,7 +7,7 @@
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-class CollidableModel : public DrawableModel {
+class CollidableModel : public Model {
 public:
 	CollidableModel(GLuint VAO, GLuint numVertices, glm::vec3 color);
 

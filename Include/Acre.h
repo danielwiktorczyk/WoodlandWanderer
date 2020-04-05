@@ -11,17 +11,15 @@
 
 class Acre {
 public:
-	Acre(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color, bool rendered);
+	Acre(Model& platform);
 	
 	void draw(GLuint& worldMatrixLocation, GLuint colorLocation);
 	
-	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->modelTransformMatrix = modelTransformMatrix; };
+	void setTranslationMatrix(glm::mat4 translationMatrix) { this->translationMatrix = translationMatrix; };
 
 private:
-	const GLuint& VAO;
-	glm::mat4 modelTransformMatrix = glm::mat4(1.0f);
-	glm::vec3 color;
-	const GLuint& numVertices;
-	std::vector<Tile> tiles; // 10x10, square
+	Model& platform;
+	glm::mat4 translationMatrix = glm::mat4(1.0f);
+	std::vector<Tile> tiles; // Remains a 10x10, square. TODO Should be an array?
 	bool rendered;
 };

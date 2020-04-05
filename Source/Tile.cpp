@@ -1,7 +1,7 @@
 #include "../Include/Tile.h"
 #include <time.h>
 
-Tile::Tile(DrawableModel& platform, DrawableModel& occupant, glm::mat4 translationMatrix) : platform(platform), occupant(occupant) {
+Tile::Tile(Model& platform, Model& occupant, glm::mat4 translationMatrix) : platform(platform), occupant(occupant) {
 	this->translationMatrix = translationMatrix;
 	glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
 	platformTransformMatrix = glm::scale(platformTransformMatrix, glm::vec3(10.0f, 1.0f, 10.0f));
@@ -26,11 +26,6 @@ Tile::Tile(DrawableModel& platform, DrawableModel& occupant, glm::mat4 translati
 }
 
 void Tile::draw(GLuint& worldMatrixLocation, GLuint colorLocation) {
-	
-	// draw tile itself
 	this->platform.draw(worldMatrixLocation, colorLocation);
-
-	// draw the occupant 
 	this->occupant.draw(worldMatrixLocation, colorLocation);
-
 }
