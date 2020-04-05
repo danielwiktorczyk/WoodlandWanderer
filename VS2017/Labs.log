@@ -1,4 +1,2 @@
-﻿  Tile.cpp
-C:\Users\Daniel\source\repos\WoodlandWanderer\Source\Tile.cpp(13,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\Daniel\source\repos\WoodlandWanderer\Source\Tile.cpp(16,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+﻿  Main.cpp
   Labs.vcxproj -> C:\Users\Daniel\source\repos\WoodlandWanderer\VS2017\/../Bin/Labs-Debug.exe

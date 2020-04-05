@@ -18,6 +18,7 @@
     <ClCompile Include="..\Source\Model.cpp" />
     <ClCompile Include="..\Source\Main.cpp" />
     <ClCompile Include="..\Source\NonCollidableModel.cpp" />
+    <ClCompile Include="..\Source\OBJloader.cpp" />
     <ClCompile Include="..\Source\Snowman.cpp" />
     <ClCompile Include="..\Source\Tile.cpp" />
   </ItemGroup>
