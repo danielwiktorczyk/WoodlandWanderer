@@ -4,7 +4,6 @@ uniform vec3 objectColor;
 uniform vec3 lightPosition;
 uniform vec3 viewPosition;
 
-in vec3 vertexColor;
 in vec3 Normal;
 in vec3 FragPos;
 

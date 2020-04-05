@@ -316,7 +316,6 @@ void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix) {
 	glUseProgram(shaderProgram);
 	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
 	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
-	glUniform3fv(projectionMatrixLocation, 1, value_ptr(projectionMatrix));
 }
 
 void setViewMatrix(int shaderProgram, glm::mat4 viewMatrix) {
