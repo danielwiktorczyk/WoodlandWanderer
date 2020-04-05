@@ -66,21 +66,10 @@ int main(int argc, char* argv[]) {
 	////////////////////////// .obj set up ////////////////////////////
 	///////////////////////////////////////////////////////////////////
 
-#if defined(PLATFORM_OSX)
-	std::string cubePath = "Models/cube.obj";
-	std::string spherePath = "Models/sphere.obj";
-	std::string treePath = "Models/Trees/curvy-pine-tree.obj";
-#else
-	std::string cubePath = "../Assets/Models/cube.obj";
-	std::string spherePath = "../Assets/Models/sphere.obj";
-	std::string treePath = "../Assets/Models/Trees/curvy-pine-tree.obj";
-#endif
 	int cubeVertices;
-	GLuint cubeVAO = setupModelVBO_OLD(cubePath, cubeVertices);
+	GLuint cubeVAO = setupModelVBO_OLD(cubeAsset, cubeVertices);
 	int sphereVertices;
-	GLuint sphereVAO = setupModelVBO_OLD(spherePath, sphereVertices);
-	int treeVertices;
-	GLuint treeVAO = setupModelVBO_OLD(treePath, treeVertices);
+	GLuint sphereVAO = setupModelVBO_OLD(sphereAsset, sphereVertices);
 
 	///////////////////////////////////////////////////////////////////
 	/////////////////////////// Shaders ///////////////////////////////
@@ -115,7 +104,7 @@ int main(int argc, char* argv[]) {
 		cubeVAO,
 		sphereVAO);
 
-	Model light = Model(cubePath, white);
+	Model light = Model(cubeAsset, white);
 	
 	Acre acre = Acre(glm::vec3(0.0f, 0.0f, 0.0f));
 	Forest forest = Forest(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -149,7 +138,7 @@ int main(int argc, char* argv[]) {
 		glm::mat4 gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
 		glm::mat4 currentGridLineMatrix;
 		for (int i = -5; i < 5; i++) {
-			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, i * 10.0f)) * gridLineMatrix;
+			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, 5.0f + i * 10.0f)) * gridLineMatrix;
 			glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
 			glUniform3fv(colorLocation, 1, value_ptr(gridColor));
 			glDrawArrays(GL_TRIANGLES, 12, 18);
@@ -157,7 +146,7 @@ int main(int argc, char* argv[]) {
 		}
 		gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.02f, 100.0f));
 		for (int i = -5; i < 5; i++) {
-			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(i * 10.0f, -0.01f, 0.0f)) * gridLineMatrix;
+			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(5.0f + i * 10.0f, -0.01f, 0.0f)) * gridLineMatrix;
 			glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
 			glUniform3fv(colorLocation, 1, value_ptr(gridColor));
 			glDrawArrays(GL_TRIANGLES, 12, 18);

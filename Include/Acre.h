@@ -8,8 +8,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 #include "Tile.h"
+#include "../Include/Assets.h"
 
-#define Width 10
+
+#define Width 9
 
 class Acre {
 public:
@@ -20,7 +22,6 @@ public:
 private:
 	Model platform;
 	glm::vec3 translation = glm::vec3(1.0f, 1.0f, 1.0f);
-	int width = 10; // must be even!
-	std::vector< std::vector<Tile> > tiles; // Remains a 10x10, square. TODO Should be an array?
+	std::vector< std::vector<Tile> > tiles; // M x M square, where M is ODD
 	bool rendered;
 };

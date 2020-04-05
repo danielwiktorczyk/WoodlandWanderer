@@ -26,6 +26,7 @@
 #include "../Include/Forest.h"
 #include "../Include/Acre.h"
 #include "../Include/Tile.h"
+#include "../Include/Assets.h"
  
 int compileAndLinkShaders(const std::string vertexShaderSource, const std::string fragmentShaderSource);
 
@@ -53,8 +54,6 @@ void setCameraVariables(GLFWwindow* window,
 						float& camVertAngle,
 						glm::vec3& cameraLookAt,
 						glm::vec3& cameraSideVector);
-
-void bind(int& currentShader, GLuint const& VAO);
 
 ///////////////////////////////////////////////////////////////////
 ////////////////////////// Variables //////////////////////////////
