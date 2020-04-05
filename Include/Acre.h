@@ -11,7 +11,8 @@
 #include "../Include/Assets.h"
 
 
-#define Width 9
+//#define Width 9
+#define Width 3
 
 class Acre {
 public:
