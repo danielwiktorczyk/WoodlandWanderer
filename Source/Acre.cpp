@@ -25,7 +25,7 @@ Acre::Acre(glm::vec3 translation) {
 	}
 }
 
-void Acre::draw(GLuint& worldMatrixLocation, GLuint colorLocation) {
+void Acre::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
 	this->platform.draw(worldMatrixLocation, colorLocation);
 	
 	for (int i = 0; i < Width - 1; i++)

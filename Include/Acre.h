@@ -16,7 +16,7 @@
 class Acre {
 public:
 	Acre(glm::vec3 translation);
-	void draw(GLuint& worldMatrixLocation, GLuint colorLocation);
+	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 	void setTranslationMatrix(glm::vec3 translation) { this->translation = translation; };
 
 private:

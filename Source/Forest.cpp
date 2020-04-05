@@ -11,7 +11,7 @@ Forest::Forest(glm::vec3 translatio) {
 	this->platform.setModelTransformMatrix(platformTransformMatrix);
 }
 
-void Forest::draw(GLuint& worldMatrixLocation, GLuint colorLocation) {
+void Forest::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
 	//this->platform.draw(worldMatrixLocation, colorLocation);
 }
 

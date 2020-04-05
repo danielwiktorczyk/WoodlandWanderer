@@ -88,7 +88,7 @@ Tile::Tile(glm::vec3 translation) {
 	this->occupant.setModelTransformMatrix(occupantPosition);
 }
 
-void Tile::draw(GLuint& worldMatrixLocation, GLuint colorLocation) {
+void Tile::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
 	//this->platform.draw(worldMatrixLocation, colorLocation);
 	this->occupant.draw(worldMatrixLocation, colorLocation);
 }

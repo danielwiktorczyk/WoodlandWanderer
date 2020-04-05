@@ -18,7 +18,7 @@ public:
 	Tile() = default;
 	Tile(glm::vec3 translation);
 	
-	void draw(GLuint& worldMatrixLocation, GLuint colorLocation);
+	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 
 	void setTranslation(glm::vec3 translation) { this->translation = translation; };
 

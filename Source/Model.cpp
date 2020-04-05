@@ -4,7 +4,7 @@ Model::Model(std::string assetPath, glm::vec3 color) : assetPath(assetPath), col
 	setupVBO();
 }
 
-void Model::draw(GLuint& worldMatrixLocation, GLuint& colorLocation) {
+void Model::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
 	glDisable(GL_CULL_FACE);
 	
 	glBindVertexArray(this->VAO);

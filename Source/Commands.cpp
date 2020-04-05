@@ -25,6 +25,23 @@ void Commands::setRenderingMode(GLFWwindow* window) {
 	}
 }
 
+void Commands::processCameraDirection(GLFWwindow* window, glm::vec3& cameraPos, glm::vec3& cameraLookAt, glm::vec3& cameraUp, float deltaTime) {
+	float cameraSpeed = deltaTime + 0.1;
+
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+		cameraPos += cameraSpeed * cameraLookAt;
+	}
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
+		cameraPos -= cameraSpeed * cameraLookAt;
+	}
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
+		cameraPos -= glm::normalize(glm::cross(cameraLookAt, cameraUp)) * cameraSpeed;
+	}
+	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) {
+		cameraPos += glm::normalize(glm::cross(cameraLookAt, cameraUp)) * cameraSpeed;
+	}
+}
+
 /**
 * Set the world orientation
 */

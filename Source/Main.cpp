@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 #endif
 
-	GLFWwindow* window = glfwCreateWindow(windowWidth, 768, "Comp371 - Final Project", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeigth, "Comp371 - Final Project", NULL, NULL);
 	if (window == NULL) {
 		std::cerr << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -89,11 +89,11 @@ int main(int argc, char* argv[]) {
 	/////////////////////////// Uniforms //////////////////////////////
 	///////////////////////////////////////////////////////////////////
 
-	GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
-	GLuint colorLocation       = glGetUniformLocation(shaderProgram, "objectColor");
-	GLuint viewLocation        = glGetUniformLocation(shaderProgram, "viewPosition");
-	GLuint lightLocation       = glGetUniformLocation(shaderProgram, "lightPosition");
-	GLuint projLocation        = glGetUniformLocation(shaderProgram, "projectionMatrix");
+	const GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
+	const GLuint colorLocation       = glGetUniformLocation(shaderProgram, "objectColor");
+	const GLuint viewLocation        = glGetUniformLocation(shaderProgram, "viewPosition");
+	const GLuint lightLocation       = glGetUniformLocation(shaderProgram, "lightPosition");
+	const GLuint projLocation        = glGetUniformLocation(shaderProgram, "projectionMatrix");
 
 	///////////////////////////////////////////////////////////////////
 	/////////////////////////// Objects ///////////////////////////////
@@ -127,6 +127,10 @@ int main(int argc, char* argv[]) {
 	///////////////////////////////////////////////////////////////////
 
 	while (!glfwWindowShouldClose(window)) {
+
+		float currentFrame = glfwGetTime();
+		float deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 
 		// For movement, if shift is held, it means a small movement for rotation, scaling, and transposing
 		bool shift = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS;
@@ -174,6 +178,7 @@ int main(int argc, char* argv[]) {
 		snowman.randomTranslationSnowman(window, shift, canRandomPlacement);
 		snowman.update();
 
+		Commands::processCameraDirection(window, cameraPosition, cameraLookAt, cameraUp, deltaTime);
 		projectionMatrix = glm::perspective(fov, windowWidth / windowHeigth, 0.01f, 100.0f);
 		setProjectionMatrix(shaderProgram, projectionMatrix);
 		Commands::setWorldRotation(window, worldRotationAboutYAxis, worldRotationAboutXAxis);
