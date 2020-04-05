@@ -78,9 +78,6 @@
     <ClInclude Include="..\Include\Tile.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\globals.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\NonCollidableModel.h">
       <Filter>Include Files</Filter>
     </ClInclude>
