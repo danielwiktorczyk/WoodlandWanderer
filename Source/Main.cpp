@@ -124,8 +124,8 @@ int main(int argc, char* argv[]) {
 	Forest forest = Forest(NonCollidableModel(cubePath, green));
 	
 	// Testing only
-	Acre acre = Acre(NonCollidableModel(cubePath, orange));
 	glm::vec3 translation = glm::vec3(5.0f, 0.0f, 5.0f);
+	Acre acre = Acre(translation);
 	Tile tile = Tile(translation);
 
 	// Baby Blue Background

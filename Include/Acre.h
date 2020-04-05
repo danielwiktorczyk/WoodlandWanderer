@@ -11,15 +11,15 @@
 
 class Acre {
 public:
-	Acre(Model& platform);
+	Acre(glm::vec3 translation);
 	
 	void draw(GLuint& worldMatrixLocation, GLuint colorLocation);
 	
-	void setTranslationMatrix(glm::mat4 translationMatrix) { this->translationMatrix = translationMatrix; };
+	void setTranslationMatrix(glm::vec3 translation) { this->translation = translation; };
 
 private:
-	Model& platform;
-	glm::mat4 translationMatrix = glm::mat4(1.0f);
+	Model platform;
+	glm::vec3 translation = glm::vec3(1.0f, 1.0f, 1.0f);
 	std::vector<Tile> tiles; // Remains a 10x10, square. TODO Should be an array?
 	bool rendered;
 };
