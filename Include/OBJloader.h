@@ -1,9 +1,11 @@
+#pragma once
 #include <glm/glm.hpp>
 #include <cstring>
 #include <vector>
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 
 bool loadOBJ(
 	const char* path,

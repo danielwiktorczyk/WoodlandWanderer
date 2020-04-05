@@ -5,11 +5,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <vector>
+#include "../Include/OBJloader.h"
 
 class Model {
 public:
 	Model() = default;
-	Model(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color);
+	Model(std::string assetPath, glm::vec3 color);
 
 	void draw(GLuint& worldMatrixLocation, GLuint& colorLocation);
 	
@@ -19,9 +21,12 @@ public:
 	void setColor(glm::vec3 color) { this->color = color; };
 
 private:
-	const GLuint& VAO;
-	glm::mat4 modelTransformMatrix = glm::mat4(1.0f);
+	std::string assetPath;
 	glm::vec3 color;
-	const GLuint& numVertices;
+	GLuint VAO;
+	glm::mat4 modelTransformMatrix = glm::mat4(1.0f);
+	GLuint numVertices;
+
+	void setupVBO();
 };
 

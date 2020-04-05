@@ -9,6 +9,5 @@
 
 class CollidableModel : public Model {
 public:
-	CollidableModel(GLuint VAO, GLuint numVertices, glm::vec3 color);
-
+	CollidableModel(std::string assetPath, glm::vec3 color);
 };

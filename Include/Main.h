@@ -29,7 +29,7 @@
  
 int compileAndLinkShaders(const std::string vertexShaderSource, const std::string fragmentShaderSource);
 
-GLuint setupModelVBO(std::string path, int& vertexCount);
+GLuint setupModelVBO_OLD(std::string path, int& vertexCount);
 
 void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix);
 void setViewMatrix(int shaderProgram, glm::mat4 viewMatrix);
