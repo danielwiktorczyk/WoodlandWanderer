@@ -25,6 +25,9 @@ void Commands::setRenderingMode(GLFWwindow* window) {
 	}
 }
 
+/**
+* Move the camera in the world
+*/
 void Commands::processCameraDirection(GLFWwindow* window, glm::vec3& cameraPos, glm::vec3& cameraLookAt, glm::vec3& cameraUp, float deltaTime) {
 	float cameraSpeed = deltaTime + 0.1;
 
@@ -34,10 +37,10 @@ void Commands::processCameraDirection(GLFWwindow* window, glm::vec3& cameraPos, 
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
 		cameraPos -= cameraSpeed * cameraLookAt;
 	}
-	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) {
 		cameraPos -= glm::normalize(glm::cross(cameraLookAt, cameraUp)) * cameraSpeed;
 	}
-	if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
 		cameraPos += glm::normalize(glm::cross(cameraLookAt, cameraUp)) * cameraSpeed;
 	}
 }
@@ -48,16 +51,16 @@ void Commands::processCameraDirection(GLFWwindow* window, glm::vec3& cameraPos, 
 void Commands::setWorldRotation(GLFWwindow* window, float& rotYaxis, float& rotXaxis) {
 	float worldRotationSpeed = 0.005f;
 
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
 		rotYaxis += worldRotationSpeed;
 	}
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 		rotYaxis -= worldRotationSpeed;
 	}
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 		rotXaxis += worldRotationSpeed;
 	}
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
 		rotXaxis -= worldRotationSpeed;
 	}
 	if (glfwGetKey(window, GLFW_KEY_HOME) == GLFW_PRESS) {

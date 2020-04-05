@@ -32,18 +32,13 @@ int compileAndLinkShaders(const std::string vertexShaderSource, const std::strin
 
 GLuint setupModelVBO_OLD(std::string path, int& vertexCount);
 
-void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix);
-void setViewMatrix(int shaderProgram, glm::mat4 viewMatrix);
-void setWorldMatrix(int shaderProgram, glm::mat4 worldMatrix);
-void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix);
+void setProjectionMatrix(int shaderProgram);
+void setViewMatrix(int shaderProgram);
+void setWorldRotationMatrix(int shaderProgram);
 
-void sendViewMatrixToShader(const glm::vec3& camPos,
-							const glm::vec3& camLookAt,
-							const glm::vec3 camUp,
-							const int& colorShader,
-							const GLuint& viewLocationColor);
+void sendViewMatrixToShader(const int& shader);
 
-void sendWorldRotationMatrixToShader(glm::mat4& worldRotationMatrix, const float& rotYaxis, const float& rotXaxis, const int& colorShader);
+void sendWorldRotationMatrixToShader(const int& shader);
 
 void mouseCallback(GLFWwindow* window, double xPos, double yPos);
 void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);

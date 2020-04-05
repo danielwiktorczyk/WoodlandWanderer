@@ -81,8 +81,8 @@ int main(int argc, char* argv[]) {
 	int shaderProgram = compileAndLinkShaders("../References/Shaders/3.3.shader.vs", "../References/Shaders/3.3.shader.fs");
 
 	// Set View and Projection matrices on both shaders
-	setViewMatrix(shaderProgram, viewMatrix);
-	setProjectionMatrix(shaderProgram, projectionMatrix);
+	setViewMatrix(shaderProgram);
+	setProjectionMatrix(shaderProgram);
 
 
 	///////////////////////////////////////////////////////////////////
@@ -178,12 +178,12 @@ int main(int argc, char* argv[]) {
 		snowman.randomTranslationSnowman(window, shift, canRandomPlacement);
 		snowman.update();
 
-		Commands::processCameraDirection(window, cameraPosition, cameraLookAt, cameraUp, deltaTime);
 		projectionMatrix = glm::perspective(fov, windowWidth / windowHeigth, 0.01f, 100.0f);
-		setProjectionMatrix(shaderProgram, projectionMatrix);
+		setProjectionMatrix(shaderProgram);
 		Commands::setWorldRotation(window, worldRotationAboutYAxis, worldRotationAboutXAxis);
-		sendViewMatrixToShader(cameraPosition, cameraLookAt, cameraUp, shaderProgram, viewLocation);
-		sendWorldRotationMatrixToShader(worldRotationMatrix, worldRotationAboutYAxis, worldRotationAboutXAxis, shaderProgram);
+		Commands::processCameraDirection(window, cameraPosition, cameraLookAt, cameraUp, deltaTime);
+		sendViewMatrixToShader(shaderProgram);
+		sendWorldRotationMatrixToShader(shaderProgram);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -317,44 +317,32 @@ GLuint setupModelVBO_OLD(std::string path, int& vertexCount) {
 	return VAO;
 }
 
-void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix) {
+void setProjectionMatrix(int shaderProgram) {
 	glUseProgram(shaderProgram);
 	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
 	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
 }
 
-void setViewMatrix(int shaderProgram, glm::mat4 viewMatrix) {
+void setViewMatrix(int shaderProgram) {
 	glUseProgram(shaderProgram);
 	GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
 	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
 }
 
-void setWorldMatrix(int shaderProgram, glm::mat4 worldMatrix) {
-	glUseProgram(shaderProgram);
-	GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
-	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
-}
-
-void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix) {
+void setWorldRotationMatrix(int shaderProgram) {
 	glUseProgram(shaderProgram);
 	GLuint worldRotationMatrixLocation = glGetUniformLocation(shaderProgram, "worldRotationMatrix");
 	glUniformMatrix4fv(worldRotationMatrixLocation, 1, GL_FALSE, &worldRotationMatrix[0][0]);
 }
 
-void sendViewMatrixToShader(const glm::vec3& camPos,
-							const glm::vec3& camLookAt,
-							const glm::vec3 camUp,
-							const int& colorShader,
-							const GLuint& viewLocation) {
-	glm::mat4 viewMatrix(1.0f);
+void sendViewMatrixToShader(const int& shader) {
 	viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
-	setViewMatrix(colorShader, viewMatrix);
-	glUniform3fv(viewLocation, 1, value_ptr(cameraPosition));
+	setViewMatrix(shader);
 }
 
-void sendWorldRotationMatrixToShader(glm::mat4& worldRotationMatrix, const float& rotYaxis, const float& rotXaxis, const int& colorShader) {
+void sendWorldRotationMatrixToShader(const int& shader) {
 	worldRotationMatrix = rotate(glm::mat4(1.0f), worldRotationAboutYAxis, glm::vec3(0.0f, 1.0f, 0.0f)) * rotate(glm::mat4(1.0f), worldRotationAboutXAxis, glm::vec3(1.0f, 0.0f, 0.0f));
-	setWorldRotationMatrix(colorShader, worldRotationMatrix);
+	setWorldRotationMatrix(shader);
 }
 
 /*
