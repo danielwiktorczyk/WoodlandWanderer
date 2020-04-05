@@ -118,16 +118,14 @@ int main(int argc, char* argv[]) {
 	Model light = Model(cubeVAO, cubeVertices, white);
 	NonCollidableModel tree = NonCollidableModel(treeVAO, treeVertices, turquoise);
 	NonCollidableModel basicCube = NonCollidableModel(cubeVAO, cubeVertices, blue);
+	NonCollidableModel basicSphere = NonCollidableModel(sphereVAO, sphereVertices, blue);
 	NonCollidableModel basicPlatform = NonCollidableModel(cubeVAO, cubeVertices, blue);
 	Forest forest = Forest(NonCollidableModel(cubeVAO, cubeVertices, green));
 	
 	// Testing only
 	Acre acre = Acre(NonCollidableModel(cubeVAO, cubeVertices, orange));
 	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), { 5.0f, 0.0f, 5.0f });
-
-	// TODO: why does occupant work with basicCube... but not Tree??? 
-	Tile tile = Tile(basicCube, NonCollidableModel(cubeVAO, cubeVertices, yellow), translationMatrix);
-	//Tile tile = Tile(tree, NonCollidableModel(cubeVAO, cubeVertices, yellow), translationMatrix);
+	Tile tile = Tile(NonCollidableModel(cubeVAO, cubeVertices, yellow), tree, translationMatrix);
 
 	// Baby Blue Background
 	glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
@@ -184,11 +182,6 @@ int main(int argc, char* argv[]) {
 		glUniform3fv(lightLocation, 1, value_ptr(lightPosition));
 		light.setModelTransformMatrix(lightBulbMatrix);
 		light.draw(worldMatrixLocation, colorLocation);
-
-		// Tree!
-		glm::mat4 treeScale = glm::scale(glm::mat4(1.0f), glm::vec3(4.0f, 4.0f, 4.0f));
-		tree.setModelTransformMatrix(treeScale);
-		tree.draw(worldMatrixLocation, colorLocation);
 
 		//Snowman
 		snowman.draw();
