@@ -1,6 +1,6 @@
 #pragma once
 #pragma once
-#include "DrawableModel.h"
+#include "Model.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>

@@ -123,7 +123,11 @@ int main(int argc, char* argv[]) {
 	
 	// Testing only
 	Acre acre = Acre(NonCollidableModel(cubeVAO, cubeVertices, orange));
-	Tile tile = Tile(basicCube, NonCollidableModel(cubeVAO, cubeVertices, yellow), glm::translate(glm::mat4(1.0f), {5.0f, 0.0f, 5.0f})); // TODO Using a cube for now for testing
+	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), { 5.0f, 0.0f, 5.0f });
+
+	// TODO: why does occupant work with basicCube... but not Tree??? 
+	Tile tile = Tile(basicCube, NonCollidableModel(cubeVAO, cubeVertices, yellow), translationMatrix);
+	//Tile tile = Tile(tree, NonCollidableModel(cubeVAO, cubeVertices, yellow), translationMatrix);
 
 	// Baby Blue Background
 	glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
@@ -293,6 +297,7 @@ int compileAndLinkShaders(const std::string vertexPath, const std::string fragme
 	return shaderProgram;
 }
 
+// TODO refactor into Model class. Main should create Models with just path and color! 
 GLuint setupModelVBO(std::string path, int& vertexCount) {
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;

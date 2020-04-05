@@ -20,7 +20,7 @@
 #include "../Include/Snowman.h"
 #include "../Include/Commands.h"
 #include "../Include/Colours.h"
-#include "../Include/DrawableModel.h"
+#include "../Include/Model.h"
 #include "../Include/CollidableModel.h"
 #include "../Include/NonCollidableModel.h"
 #include "../Include/Forest.h"

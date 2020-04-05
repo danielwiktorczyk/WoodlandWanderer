@@ -17,12 +17,12 @@ Tile::Tile(Model& platform, Model& occupant, glm::mat4 translationMatrix) : plat
 	float randTransalteY = -2.0f + 4.0f * (rand() % 100) / 100.0f;
 
 	glm::mat4 occupantPosition = translationMatrix;
-	occupantPosition = glm::scale(occupantPosition, glm::vec3(randScale, randScale, randScale));
+	//occupantPosition = glm::scale(occupantPosition, glm::vec3(randScale, randScale, randScale));
+	occupantPosition = glm::scale(occupantPosition, glm::vec3(randScale, 5.0f * randScale, randScale));
 	occupantPosition = glm::rotate(occupantPosition, randRotate, glm::vec3(0.0f, 1.0f, 0.0f));
 	occupantPosition = glm::translate(occupantPosition, glm::vec3(randTranslateX, 0.0f, randTransalteY));
 
 	this->occupant.setModelTransformMatrix(occupantPosition);
-
 }
 
 void Tile::draw(GLuint& worldMatrixLocation, GLuint colorLocation) {

@@ -1,4 +1,4 @@
-#include "../Include/DrawableModel.h"
+#include "../Include/Model.h"
 
 Model::Model(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color) : numVertices(numVertices), color(color), VAO(VAO) { }
 

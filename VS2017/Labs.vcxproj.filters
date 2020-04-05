@@ -40,13 +40,13 @@
     <ClCompile Include="..\Source\Tile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\DrawableModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\NonCollidableModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\CollidableModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -78,13 +78,13 @@
     <ClInclude Include="..\Include\globals.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\DrawableModel.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\NonCollidableModel.h">
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\CollidableModel.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Model.h">
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>
