@@ -87,21 +87,21 @@ int main(int argc, char* argv[]) {
 	///////////////////////////////////////////////////////////////////
 
 	// Compile and link shaders here ...
-	int colorShaderProgram = compileAndLinkShaders("../References/Shaders/3.3.shader.vs", "../References/Shaders/3.3.shader.fs");
+	int shaderProgram = compileAndLinkShaders("../References/Shaders/3.3.shader.vs", "../References/Shaders/3.3.shader.fs");
 
 	// Set View and Projection matrices on both shaders
-	setViewMatrix(colorShaderProgram, viewMatrix);
-	setProjectionMatrix(colorShaderProgram, projectionMatrix);
+	setViewMatrix(shaderProgram, viewMatrix);
+	setProjectionMatrix(shaderProgram, projectionMatrix);
 
 
 	///////////////////////////////////////////////////////////////////
 	/////////////////////////// Uniforms //////////////////////////////
 	///////////////////////////////////////////////////////////////////
 
-	GLuint worldMatrixLocation = glGetUniformLocation(colorShaderProgram, "worldMatrix");
-	GLuint colorLocation       = glGetUniformLocation(colorShaderProgram, "objectColor");
-	GLuint viewLocation        = glGetUniformLocation(colorShaderProgram, "viewPosition");
-	GLuint lightLocation       = glGetUniformLocation(colorShaderProgram, "lightPosition");
+	GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
+	GLuint colorLocation       = glGetUniformLocation(shaderProgram, "objectColor");
+	GLuint viewLocation        = glGetUniformLocation(shaderProgram, "viewPosition");
+	GLuint lightLocation       = glGetUniformLocation(shaderProgram, "lightPosition");
 
 	///////////////////////////////////////////////////////////////////
 	/////////////////////////// Objects ///////////////////////////////
@@ -110,7 +110,7 @@ int main(int argc, char* argv[]) {
 	// Initialize the Snowman
 	Snowman snowman = Snowman(worldMatrixLocation,
 		colorLocation,
-		colorShaderProgram,
+		shaderProgram,
 		sphereVertices,
 		cubeVAO,
 		sphereVAO);
@@ -119,7 +119,7 @@ int main(int argc, char* argv[]) {
 	NonCollidableModel tree = NonCollidableModel(treeVAO, treeVertices, turquoise);
 	NonCollidableModel basicCube = NonCollidableModel(cubeVAO, cubeVertices, blue);
 	NonCollidableModel basicPlatform = NonCollidableModel(cubeVAO, cubeVertices, blue);
-	Forest forest = Forest(cubeVAO, cubeVertices, green);
+	Forest forest = Forest(NonCollidableModel(cubeVAO, cubeVertices, green));
 	
 	// Testing only
 	Acre acre = Acre(NonCollidableModel(cubeVAO, cubeVertices, orange));
@@ -150,7 +150,7 @@ int main(int argc, char* argv[]) {
 		Commands::setRenderingMode(window);
 
 
-		glUseProgram(colorShaderProgram);
+		glUseProgram(shaderProgram);
 
 		glm::mat4 gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
 		glm::mat4 currentGridLineMatrix;
@@ -170,37 +170,20 @@ int main(int argc, char* argv[]) {
 			glDrawArrays(GL_TRIANGLES, 30, 36);
 		}
 
-		// Forest, TODO uhhh why is this not being displayed
-		bind(colorShaderProgram, forest.getVAO());
-		glm::mat4 forestModel = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -2.0f, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1000.0f, 0.5f, 1000.0f));
-		forest.setModelTransformMatrix(forestModel); //TODO refactor into setPosition(only translation) and setMatrixTransform(scale and rotation) 
+		// Abstractions
 		forest.draw(worldMatrixLocation, colorLocation);
-		
-		// Acre
-		bind(colorShaderProgram, cubeVAO);
-		glm::mat4 acreModel = scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.5f, 100.0f));
-		acreModel = translate(acreModel, glm::vec3(0.0f, -0.5f, 0.0f));
-		acre.setTranslationMatrix(acreModel); //TODO refactor into setPosition(only translation) and setMatrixTransform(scale and rotation) 
 		acre.draw(worldMatrixLocation, colorLocation);
-
-		// Tile
-		bind(colorShaderProgram, cubeVAO);
-		glm::mat4 tileModel = scale(glm::mat4(1.0f), glm::vec3(10.0f, 0.5f, 10.0f));
-		tileModel = translate(tileModel, glm::vec3(5.0f, 0.0f, 5.0f));
-		tile.setModelTransformMatrix(tileModel);
 		tile.draw(worldMatrixLocation, colorLocation);
 
 		// Light
-		bind(colorShaderProgram, cubeVAO);
 		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniform3fv(lightLocation, 1, value_ptr(lightPosition));
 		light.setModelTransformMatrix(lightBulbMatrix);
 		light.draw(worldMatrixLocation, colorLocation);
 
 		// Tree!
-		bind(colorShaderProgram, treeVAO);
-		glm::mat4 base = scale(glm::mat4(1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
-		tree.setModelTransformMatrix(base);
+		glm::mat4 treeScale = glm::scale(glm::mat4(1.0f), glm::vec3(4.0f, 4.0f, 4.0f));
+		tree.setModelTransformMatrix(treeScale);
 		tree.draw(worldMatrixLocation, colorLocation);
 
 		//Snowman
@@ -214,11 +197,11 @@ int main(int argc, char* argv[]) {
 		setCameraVariables(window, mousePosX, mousePosY, lastMousePosX, lastMousePosY, cameraHorizontalAngle, cameraVerticalAngle, cameraLookAt, cameraSideVector);
 		Commands::panCamera(window, cameraHorizontalAngle, dx, cameraAngularSpeed);
 		Commands::tiltCamera(window, cameraVerticalAngle, dy, cameraAngularSpeed);
-		Commands::zoomCamera(window, currentFOV, dy, projectionMatrix, colorShaderProgram, setProjectionMatrix);
+		Commands::zoomCamera(window, currentFOV, dy, projectionMatrix, shaderProgram, setProjectionMatrix);
 
 		Commands::setWorldRotation(window, worldRotationAboutYAxis, worldRotationAboutXAxis);
-		sendViewMatrixToShader(cameraPosition, cameraLookAt, cameraUp, colorShaderProgram, viewLocation);
-		sendWorldRotationMatrixToShader(worldRotationMatrix, worldRotationAboutYAxis, worldRotationAboutXAxis, colorShaderProgram);
+		sendViewMatrixToShader(cameraPosition, cameraLookAt, cameraUp, shaderProgram, viewLocation);
+		sendWorldRotationMatrixToShader(worldRotationMatrix, worldRotationAboutYAxis, worldRotationAboutXAxis, shaderProgram);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -426,13 +409,4 @@ void setCameraVariables(GLFWwindow* window,
 	cameraLookAt = glm::vec3(cosf(phi) * cosf(theta), sinf(phi), -cosf(phi) * sinf(theta));
 	cameraSideVector = cross(cameraLookAt, glm::vec3(0.0f, 1.0f, 0.0f));
 	normalize(cameraSideVector);
-}
-
-/**
-* Bind the desired VAO to the buffer
-*/
-void bind(int& currentShader, GLuint const& VAO) {
-	glUseProgram(currentShader);
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VAO);
 }

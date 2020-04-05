@@ -1,15 +1,16 @@
 #include "..\Include\Forest.h"
 
-Forest::Forest(const GLuint& VAO, const GLuint& numVertices, glm::vec3 color) : VAO(VAO), numVertices(numVertices), color(color) { }
+Forest::Forest(Model& platform) : platform(platform) { 
+	this->translationMatrix = translationMatrix;
+	glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
+	platformTransformMatrix = glm::scale(platformTransformMatrix, glm::vec3(1000.0f, 3.0f, 1000.0f));
+	platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -3.0f, 0.0f));
+	platformTransformMatrix = translationMatrix * platformTransformMatrix;
+	this->platform.setModelTransformMatrix(platformTransformMatrix);
+}
 
-void Forest::draw(GLuint& worldMatrixLocationColor, GLuint colorLocation) {
-	glBindVertexArray(this->VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, this->VAO);
-
-	glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &(this->modelTransformMatrix)[0][0]);
-	glUniform3fv(colorLocation, 1, value_ptr(this->color));
-
-	glDrawArrays(GL_TRIANGLES, 0, this->numVertices);
+void Forest::draw(GLuint& worldMatrixLocation, GLuint colorLocation) {
+	this->platform.draw(worldMatrixLocation, colorLocation);
 }
 
 
