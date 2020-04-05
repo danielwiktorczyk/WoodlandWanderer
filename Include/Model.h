@@ -6,7 +6,7 @@
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
-#include "../Include/OBJloader.h"
+#include "OBJloader.h"
 
 class Model {
 public:
