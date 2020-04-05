@@ -115,18 +115,11 @@ int main(int argc, char* argv[]) {
 		cubeVAO,
 		sphereVAO);
 
-	//Model light = Model(cubeVAO, cubeVertices, white);
 	Model light = Model(cubePath, white);
-	NonCollidableModel tree = NonCollidableModel(treePath, turquoise);
-	NonCollidableModel basicCube = NonCollidableModel(cubePath, blue);
-	NonCollidableModel basicSphere = NonCollidableModel(spherePath, blue);
-	NonCollidableModel basicPlatform = NonCollidableModel(cubePath, blue);
-	Forest forest = Forest(NonCollidableModel(cubePath, green));
 	
-	// Testing only
-	glm::vec3 translation = glm::vec3(5.0f, 0.0f, 5.0f);
-	Acre acre = Acre(translation);
-	Tile tile = Tile(translation);
+	Acre acre = Acre(glm::vec3(1.0f, 1.0f, 1.0f));
+	Tile tile = Tile(glm::vec3(5.0f, 0.0f, 5.0f));
+	Forest forest = Forest(glm::vec3(1.0f, 1.0f, 1.0f));
 
 	// Baby Blue Background
 	glClearColor(0.53f, 0.81f, 0.94f, 1.0f);

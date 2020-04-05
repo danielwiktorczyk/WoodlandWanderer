@@ -11,14 +11,14 @@
 
 class Forest {
 public: 
-	Forest(Model& platform);
+	Forest(glm::vec3 translatio);
 
 	void draw(GLuint& worldMatrixLocationColor, GLuint colorLocation);
 	
-	void setTranslationMatrix(glm::mat4 translationMatrix) { this->translationMatrix = translationMatrix; };
+	void setTranslationMatrix(glm::vec3 translation) { this->translation = translation; };
 
 private:
-	Model& platform;
-	glm::mat4 translationMatrix = glm::mat4(1.0f);
-	std::vector<Acre> acres; // will be 20 x 20, square?
+	Model platform;
+	glm::vec3 translation = glm::vec3(1.0f, 1.0f, 1.0f);
+	std::vector<Acre> acres; // will be 20 x 20, square
 };

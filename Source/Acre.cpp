@@ -10,7 +10,7 @@ Acre::Acre(glm::vec3 translation) {
 	this->rendered = false;
 
 	glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
-	platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -0.5f, 0.0f));
+	platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -1.5f, 0.0f));
 	platformTransformMatrix = glm::translate(platformTransformMatrix, translation);
 	platformTransformMatrix = glm::scale(platformTransformMatrix, glm::vec3(100.0f, 1.0f, 100.0f));
 	this->platform.setModelTransformMatrix(platformTransformMatrix);
