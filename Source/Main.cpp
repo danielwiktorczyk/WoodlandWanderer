@@ -22,12 +22,11 @@
 
 int main(int argc, char* argv[]) {
 
-	srand(time(NULL));
-
 	///////////////////////////////////////////////////////////////////
 	///////////////////////// Intialization ///////////////////////////
 	///////////////////////////////////////////////////////////////////
 
+	srand(time(NULL));
 	glfwInit();
 
 #if defined(PLATFORM_OSX)
@@ -40,17 +39,18 @@ int main(int argc, char* argv[]) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 #endif
 
-	GLFWwindow* window = glfwCreateWindow(1024, 768, "Comp371 - Final Project", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(windowWidth, 768, "Comp371 - Final Project", NULL, NULL);
 	if (window == NULL) {
 		std::cerr << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
-	glfwMakeContextCurrent(window);
 
-	// Disable mouse cursor when over the window!
+	glfwMakeContextCurrent(window);
+	glfwSetCursorPosCallback(window, mouseCallback);
+	glfwSetScrollCallback(window, scrollCallback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwGetCursorPos(window, &lastMousePosX, &lastMousePosY);
+	glViewport(0, 0, windowWidth, 768);
 
 	// Initialize GLEW
 	glewExperimental = GL_TRUE; // Needed for core profile
@@ -93,6 +93,7 @@ int main(int argc, char* argv[]) {
 	GLuint colorLocation       = glGetUniformLocation(shaderProgram, "objectColor");
 	GLuint viewLocation        = glGetUniformLocation(shaderProgram, "viewPosition");
 	GLuint lightLocation       = glGetUniformLocation(shaderProgram, "lightPosition");
+	GLuint projLocation        = glGetUniformLocation(shaderProgram, "projectionMatrix");
 
 	///////////////////////////////////////////////////////////////////
 	/////////////////////////// Objects ///////////////////////////////
@@ -100,11 +101,11 @@ int main(int argc, char* argv[]) {
 
 	// Initialize the Snowman
 	Snowman snowman = Snowman(worldMatrixLocation,
-		colorLocation,
-		shaderProgram,
-		sphereVertices,
-		cubeVAO,
-		sphereVAO);
+							  colorLocation,
+							  shaderProgram,
+							  sphereVertices,
+							  cubeVAO,
+							  sphereVAO);
 
 	Model light = Model(cubeAsset, white);
 	
@@ -173,11 +174,8 @@ int main(int argc, char* argv[]) {
 		snowman.randomTranslationSnowman(window, shift, canRandomPlacement);
 		snowman.update();
 
-		setCameraVariables(window, mousePosX, mousePosY, lastMousePosX, lastMousePosY, cameraHorizontalAngle, cameraVerticalAngle, cameraLookAt, cameraSideVector);
-		Commands::panCamera(window, cameraHorizontalAngle, dx, cameraAngularSpeed);
-		Commands::tiltCamera(window, cameraVerticalAngle, dy, cameraAngularSpeed);
-		Commands::zoomCamera(window, currentFOV, dy, projectionMatrix, shaderProgram, setProjectionMatrix);
-
+		projectionMatrix = glm::perspective(fov, windowWidth / windowHeigth, 0.01f, 100.0f);
+		setProjectionMatrix(shaderProgram, projectionMatrix);
 		Commands::setWorldRotation(window, worldRotationAboutYAxis, worldRotationAboutXAxis);
 		sendViewMatrixToShader(cameraPosition, cameraLookAt, cameraUp, shaderProgram, viewLocation);
 		sendWorldRotationMatrixToShader(worldRotationMatrix, worldRotationAboutYAxis, worldRotationAboutXAxis, shaderProgram);
@@ -318,6 +316,7 @@ void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix) {
 	glUseProgram(shaderProgram);
 	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
 	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
+	glUniform3fv(projectionMatrixLocation, 1, value_ptr(projectionMatrix));
 }
 
 void setViewMatrix(int shaderProgram, glm::mat4 viewMatrix) {
@@ -339,14 +338,14 @@ void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix) {
 }
 
 void sendViewMatrixToShader(const glm::vec3& camPos,
-	const glm::vec3& camLookAt,
-	const glm::vec3 camUp,
-	const int& colorShader,
-	const GLuint& viewLocationColor) {
+							const glm::vec3& camLookAt,
+							const glm::vec3 camUp,
+							const int& colorShader,
+							const GLuint& viewLocation) {
 	glm::mat4 viewMatrix(1.0f);
 	viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
 	setViewMatrix(colorShader, viewMatrix);
-	glUniform3fv(viewLocationColor, 1, value_ptr(cameraPosition));
+	glUniform3fv(viewLocation, 1, value_ptr(cameraPosition));
 }
 
 void sendWorldRotationMatrixToShader(glm::mat4& worldRotationMatrix, const float& rotYaxis, const float& rotXaxis, const int& colorShader) {
@@ -354,39 +353,53 @@ void sendWorldRotationMatrixToShader(glm::mat4& worldRotationMatrix, const float
 	setWorldRotationMatrix(colorShader, worldRotationMatrix);
 }
 
-void setCameraVariables(GLFWwindow* window,
-	double& mousePosX,
-	double& mousePosY,
-	double& lastMousePosX,
-	double& lastMousePosY,
-	float& camHorAngle,
-	float& camVertAngle,
-	glm::vec3& cameraLookAt,
-	glm::vec3& cameraSideVector) {
+/*
+* pan and tilt camera
+*/
+void mouseCallback(GLFWwindow* window, double xPos, double yPos) {
 
-	glfwGetCursorPos(window, &mousePosX, &mousePosY);
-
-	dx = mousePosX - lastMousePosX;
-	dy = mousePosY - lastMousePosY;
-
-	lastMousePosX = mousePosX;
-	lastMousePosY = mousePosY;
-
-	theta = glm::radians(cameraHorizontalAngle);
-	phi = glm::radians(cameraVerticalAngle);
-
-	// Clamp vertical angle to [-85, 85] degrees
-	camVertAngle = glm::max(-85.0f, glm::min(85.0f, camVertAngle));
-
-	// Allow camera to rotate about horizontally
-	if (camHorAngle > 360) {
-		camHorAngle -= 360;
-	}
-	else if (camHorAngle < -360) {
-		camHorAngle += 360;
+	//to avoid big jump from detecting the mouse where it actually is
+	if (firstMouse) {
+		lastX = xPos;
+		lastY = yPos;
+		firstMouse = false;
 	}
 
-	cameraLookAt = glm::vec3(cosf(phi) * cosf(theta), sinf(phi), -cosf(phi) * sinf(theta));
-	cameraSideVector = cross(cameraLookAt, glm::vec3(0.0f, 1.0f, 0.0f));
-	normalize(cameraSideVector);
+	float xOffset = xPos - lastX;
+	float YOffset = lastY - yPos;
+	lastX = xPos;
+	lastY = yPos;
+
+	const float sensitivity = 0.05f;
+	xOffset *= sensitivity;
+	YOffset *= sensitivity;
+
+	yaw += xOffset;
+	pitch += YOffset;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 direction;
+	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	direction.y = sin(glm::radians(pitch));
+	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraLookAt = glm::normalize(direction);
+}
+
+/*
+* zoom in and zoom out
+*/
+void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
+	if (fov >= 1.0f && fov <= 45.0f) {
+		fov -= yOffset;
+	}
+	else if (fov <= 1.0f) {
+		fov = 1.0f;
+	}
+	else if (fov >= 45.0f) {
+		fov = 45.0f;
+	}
 }

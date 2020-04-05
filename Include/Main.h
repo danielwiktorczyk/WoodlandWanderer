@@ -45,21 +45,16 @@ void sendViewMatrixToShader(const glm::vec3& camPos,
 
 void sendWorldRotationMatrixToShader(glm::mat4& worldRotationMatrix, const float& rotYaxis, const float& rotXaxis, const int& colorShader);
 
-void setCameraVariables(GLFWwindow* window, 
-						double& mousePosX, 
-						double& mousePosY, 
-						double& lastMousePosX, 
-						double& lastMousePosY, 
-						float& camHorAngle,
-						float& camVertAngle,
-						glm::vec3& cameraLookAt,
-						glm::vec3& cameraSideVector);
+void mouseCallback(GLFWwindow* window, double xPos, double yPos);
+void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 
 ///////////////////////////////////////////////////////////////////
 ////////////////////////// Variables //////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-double lastMousePosX, lastMousePosY;
+extern const float windowWidth = 1024.0f;
+extern const float windowHeigth = 768.0f;
+
 
 // Camera parameters for view transform
 glm::vec3 cameraPosition(3.0f, 5.0f, 25.0f);
@@ -67,16 +62,14 @@ glm::vec3 cameraLookAt(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
 
 // Other camera parameters
-float cameraSpeed = 0.05f;
-float cameraHorizontalAngle = 90.0f;
-float cameraVerticalAngle = 0.0f;
-glm::vec3 cameraSideVector = glm::vec3(1.0f);
+bool firstMouse = true;
+float yaw = -90.0f;
+float pitch = 0.0f;
+float lastX = windowWidth / 2.0;
+float lastY = 768 / 2.0;
+float fov = 45.0f;
 
-// Set projection matrix for shader
-float currentFOV = 70.0f;
-glm::mat4 projectionMatrix = glm::perspective(currentFOV, 1024.0f / 768.0f, 0.01f, 100.0f);
-
-// Set initial view matrix
+glm::mat4 projectionMatrix = glm::perspective(fov, windowWidth / windowHeigth, 0.01f, 100.0f);
 glm::mat4 viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
 
 // World rotation
@@ -89,9 +82,3 @@ bool canScaleIncrement = true;
 bool canRotateIncrement = true;
 bool canMoveIncrement = true;
 bool canRandomPlacement = true;
-
-//Camera
-double mousePosX, mousePosY;
-double dx, dy;
-float theta, phi;
-constexpr float cameraAngularSpeed = glm::radians(5.0f);

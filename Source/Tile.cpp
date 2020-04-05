@@ -54,7 +54,7 @@ Tile::Tile(glm::vec3 translation) {
 			}
 			break;
 		case 2: // Boulder
-			colour += glm::vec3(0.1f, 0.1f, 0.1f);
+			colour += glm::vec3(0.5f, 0.1f, 0.1f);
 			switch (subcategory) {
 			case 0:
 				this->occupant = Model(boulderBigAsset, colour);
