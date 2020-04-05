@@ -15,13 +15,13 @@ public:
 	
 	void draw(GLuint& worldMatrixLocation, GLuint colorLocation);
 	
-	void setPosition(glm::mat4 pos) { this->position = pos; };
+	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->modelTransformMatrix = modelTransformMatrix; };
 
 private:
 	const GLuint& VAO;
-	glm::mat4 position = glm::mat4(1.0f);
+	glm::mat4 modelTransformMatrix = glm::mat4(1.0f);
 	glm::vec3 color;
 	const GLuint& numVertices;
-	std::vector<Tile> tiles; // will be 20 x 20, square?
+	std::vector<Tile> tiles; // 10x10, square
 	bool rendered;
 };

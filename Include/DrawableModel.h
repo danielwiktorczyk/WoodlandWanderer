@@ -13,14 +13,14 @@ public:
 
 	void draw(GLuint& worldMatrixLocation, GLuint& colorLocation);
 	
-	glm::mat4 getPosition() { return this->position; };
-	void setPosition(glm::mat4 position) { this->position = position; };
+	glm::mat4 getPosition() { return this->modelTransformMatrix; };
+	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->modelTransformMatrix = modelTransformMatrix; };
 	glm::vec3 getColor() { return this->color; };
 	void setColor(glm::vec3 color) { this->color = color; };
 
 private:
 	const GLuint& VAO;
-	glm::mat4 position = glm::mat4(1.0f);
+	glm::mat4 modelTransformMatrix = glm::mat4(1.0f);
 	glm::vec3 color;
 	const GLuint& numVertices;
 };

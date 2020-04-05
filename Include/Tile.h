@@ -15,12 +15,12 @@ public:
 	
 	void draw(GLuint& worldMatrixLocation, GLuint colorLocation);
 
-	void setPosition(glm::mat4 pos) { this->position = pos; };
+	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->modelTransformMatrix = modelTransformMatrix; };
 
 private:
 	GLuint tileVAO;
 	DrawableModel& occupant; 
-	glm::mat4 position = glm::mat4(1.0f);
+	glm::mat4 modelTransformMatrix = glm::mat4(1.0f);
 	glm::vec3 color = { 1.0f, 1.0f, 1.0f };
 	const GLuint& numVertices;
 };

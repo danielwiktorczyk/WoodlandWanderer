@@ -93,6 +93,7 @@ int main(int argc, char* argv[]) {
 	setViewMatrix(colorShaderProgram, viewMatrix);
 	setProjectionMatrix(colorShaderProgram, projectionMatrix);
 
+
 	///////////////////////////////////////////////////////////////////
 	/////////////////////////// Uniforms //////////////////////////////
 	///////////////////////////////////////////////////////////////////
@@ -116,9 +117,12 @@ int main(int argc, char* argv[]) {
 
 	DrawableModel light = DrawableModel(cubeVAO, cubeVertices, white);
 	NonCollidableModel tree = NonCollidableModel(treeVAO, treeVertices, turquoise);
+	NonCollidableModel stone = NonCollidableModel(cubeVAO, cubeVertices, blue);
 	Forest forest = Forest(cubeVAO, cubeVertices, green);
+	
+	// Testing only
 	Acre acre = Acre(cubeVAO, cubeVertices, orange, true);
-	Tile tile = Tile(cubeVAO, glm::mat4(1.0f), tree, red, cubeVertices);
+	Tile tile = Tile(cubeVAO, glm::mat4(1.0f), stone, blue, cubeVertices); // TODO Using a cube for now for testing
 
 	// Baby Blue Background
 	glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
@@ -149,53 +153,53 @@ int main(int argc, char* argv[]) {
 
 		glm::mat4 gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
 		glm::mat4 currentGridLineMatrix;
-		for (int i = -50; i < 50; i++) {
-			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, i * 1.0f)) * gridLineMatrix;
+		for (int i = -5; i < 5; i++) {
+			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, i * 10.0f)) * gridLineMatrix;
 			glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
 			glUniform3fv(colorLocation, 1, value_ptr(gridColor));
 			glDrawArrays(GL_TRIANGLES, 12, 18);
 			glDrawArrays(GL_TRIANGLES, 30, 36);
 		}
 		gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.02f, 100.0f));
-		for (int i = -50; i < 50; i++) {
-			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(i * 1.0f, -0.01f, 0.0f)) * gridLineMatrix;
+		for (int i = -5; i < 5; i++) {
+			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(i * 10.0f, -0.01f, 0.0f)) * gridLineMatrix;
 			glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
 			glUniform3fv(colorLocation, 1, value_ptr(gridColor));
 			glDrawArrays(GL_TRIANGLES, 12, 18);
 			glDrawArrays(GL_TRIANGLES, 30, 36);
 		}
 
-		// Forest
+		// Forest, TODO uhhh why is this not being displayed
 		bind(colorShaderProgram, forest.getVAO());
-		glm::mat4 forestModel = scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.0f, 100.0f));
-		forest.setPosition(forestModel);
+		glm::mat4 forestModel = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -2.0f, 0.0f)) * glm::scale(glm::mat4(1.0f), glm::vec3(1000.0f, 0.5f, 1000.0f));
+		forest.setModelTransformMatrix(forestModel); //TODO refactor into setPosition(only translation) and setMatrixTransform(scale and rotation) 
 		forest.draw(worldMatrixLocation, colorLocation);
-
+		
 		// Acre
 		bind(colorShaderProgram, cubeVAO);
 		glm::mat4 acreModel = scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.5f, 100.0f));
 		acreModel = translate(acreModel, glm::vec3(0.0f, -0.5f, 0.0f));
-		acre.setPosition(acreModel);
+		acre.setModelTransformMatrix(acreModel); //TODO refactor into setPosition(only translation) and setMatrixTransform(scale and rotation) 
 		acre.draw(worldMatrixLocation, colorLocation);
 
 		// Tile
 		bind(colorShaderProgram, cubeVAO);
 		glm::mat4 tileModel = scale(glm::mat4(1.0f), glm::vec3(10.0f, 0.5f, 10.0f));
-		tileModel = translate(tileModel, glm::vec3(0.0f, 0.0f, 0.0f));
-		tile.setPosition(tileModel);
+		tileModel = translate(tileModel, glm::vec3(5.0f, 0.0f, 5.0f));
+		tile.setModelTransformMatrix(tileModel);
 		tile.draw(worldMatrixLocation, colorLocation);
 
 		// Light
 		bind(colorShaderProgram, cubeVAO);
 		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
 		glUniform3fv(lightLocation, 1, value_ptr(lightPosition));
-		light.setPosition(lightBulbMatrix);
+		light.setModelTransformMatrix(lightBulbMatrix);
 		light.draw(worldMatrixLocation, colorLocation);
 
 		// Tree!
 		bind(colorShaderProgram, treeVAO);
 		glm::mat4 base = scale(glm::mat4(1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
-		tree.setPosition(base);
+		tree.setModelTransformMatrix(base);
 		tree.draw(worldMatrixLocation, colorLocation);
 
 		//Snowman
