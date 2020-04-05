@@ -3,7 +3,7 @@
 
 Tile::Tile(glm::vec3 translation) {	
 	//this->platform = Model(cubeAsset, red);
-	this->occupant = Model(grass1Asset, turquoise);
+	this->occupant = Model(ballTreeAsset, turquoise);
 	this->translation = translation;
 
 	/*glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
@@ -13,9 +13,6 @@ Tile::Tile(glm::vec3 translation) {
 
 	//this->platform.setModelTransformMatrix(platformTransformMatrix);
 
-	// TODO use a better random library. srand is making the same seed across all instances. Not desired!
-	// offset and scew the occupant for a more natural spawn
-	srand(time(NULL));
 	float randScale = 0.8f + (0.2f * (rand() % 100) / 100.0f);
 	randScale *= 4.0f;
 	float randRotate = (rand() % 100) / 100.0f * 3.14 * 2;

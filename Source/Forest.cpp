@@ -12,7 +12,7 @@ Forest::Forest(glm::vec3 translatio) {
 }
 
 void Forest::draw(GLuint& worldMatrixLocation, GLuint colorLocation) {
-	this->platform.draw(worldMatrixLocation, colorLocation);
+	//this->platform.draw(worldMatrixLocation, colorLocation);
 }
 
 

@@ -2,7 +2,7 @@
 
 Acre::Acre(glm::vec3 translation) {
 	this->translation = translation;
-	this->platform = Model(cubeAsset, orange);
+	this->platform = Model(cubeAsset, darkPurple);
 	this->rendered = false;
 
 	glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
