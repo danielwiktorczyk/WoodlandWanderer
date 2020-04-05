@@ -16,53 +16,57 @@ Tile::Tile(glm::vec3 translation) {
 	// TODO trivial now, need more flexible weighting
 	int category = rand() % 3;
 	int subcategory = rand() % 4;
+	glm::vec3 colour = glm::vec3(rand() % 20 / 100.0f - 0.3f, rand() % 20 / 100.0f - 0.3f, rand() % 20 / 100.0f - 0.3f);
 	switch (category) {
 		case 0: // Tree
+			colour += turquoise;
 			switch (subcategory) {
 			case 0:
-				this->occupant = Model(ballTreeAsset, turquoise);
+				this->occupant = Model(ballTreeAsset, colour);
 				break;
 			case 1: 
 				//this->occupant = Model(skinnyTreeAsset, turquoise); // TODO this breaks
-				this->occupant = Model(ballTreeAsset, turquoise);
+				this->occupant = Model(ballTreeAsset, colour);
 				break;
 			case 2: 
-				this->occupant = Model(pineTreeAsset, turquoise);
+				this->occupant = Model(pineTreeAsset, colour);
 				break;
 			case 3: 
-				this->occupant = Model(petalTreeAsset, turquoise);
+				this->occupant = Model(petalTreeAsset, colour);
 				break;
 			}
 			break;
 		case 1: // Grass
+			colour += green;
 			switch (subcategory) {
 			case 0:
-				this->occupant = Model(grass1Asset, turquoise);
+				this->occupant = Model(grass1Asset, colour);
 				break;
 			case 1:
-				this->occupant = Model(grass2Asset, turquoise);
+				this->occupant = Model(grass2Asset, colour);
 				break;
 			case 2:
-				this->occupant = Model(grass3Asset, turquoise);
+				this->occupant = Model(grass3Asset, colour);
 				break;
 			case 3:
-				this->occupant = Model(grass4Asset, turquoise);
+				this->occupant = Model(grass4Asset, colour);
 				break;
 			}
 			break;
 		case 2: // Boulder
+			colour += glm::vec3(0.1f, 0.1f, 0.1f);
 			switch (subcategory) {
 			case 0:
-				this->occupant = Model(boulderBigAsset, turquoise);
+				this->occupant = Model(boulderBigAsset, colour);
 				break;
 			case 1:
-				this->occupant = Model(boulderMedAsset, turquoise);
+				this->occupant = Model(boulderMedAsset, colour);
 				break;
 			case 2:
-				this->occupant = Model(boulderSmallAsset, turquoise);
+				this->occupant = Model(boulderSmallAsset, colour);
 				break;
 			case 3:
-				this->occupant = Model(boulderTinyAsset, turquoise);
+				this->occupant = Model(boulderTinyAsset, colour);
 				break;
 			}
 			break;
