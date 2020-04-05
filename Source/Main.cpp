@@ -117,9 +117,8 @@ int main(int argc, char* argv[]) {
 
 	Model light = Model(cubePath, white);
 	
-	Acre acre = Acre(glm::vec3(1.0f, 1.0f, 1.0f));
-	Tile tile = Tile(glm::vec3(5.0f, 0.0f, 5.0f));
-	Forest forest = Forest(glm::vec3(1.0f, 1.0f, 1.0f));
+	Acre acre = Acre(glm::vec3(0.0f, 0.0f, 0.0f));
+	Forest forest = Forest(glm::vec3(0.0f, 0.0f, 0.0f));
 
 	// Baby Blue Background
 	glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
@@ -168,7 +167,6 @@ int main(int argc, char* argv[]) {
 		// Abstractions
 		forest.draw(worldMatrixLocation, colorLocation);
 		acre.draw(worldMatrixLocation, colorLocation);
-		tile.draw(worldMatrixLocation, colorLocation);
 
 		// Light
 		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
