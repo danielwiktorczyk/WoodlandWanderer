@@ -9,7 +9,7 @@ void Forest::draw(GLuint& worldMatrixLocationColor, GLuint colorLocation) {
 	glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &(this->modelTransformMatrix)[0][0]);
 	glUniform3fv(colorLocation, 1, value_ptr(this->color));
 
-	glDrawArrays(GL_LINES, 0, this->numVertices);
+	glDrawArrays(GL_TRIANGLES, 0, this->numVertices);
 }
 
 

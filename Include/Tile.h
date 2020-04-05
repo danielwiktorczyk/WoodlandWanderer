@@ -11,16 +11,14 @@
 
 class Tile {
 public: 
-	Tile(GLuint tileVAO, glm::mat4 position, DrawableModel& occupant, glm::vec3 color, const GLuint numVertices);
+	Tile(DrawableModel& platform, DrawableModel& occupant, glm::mat4 modelTransformMatrix);
 	
 	void draw(GLuint& worldMatrixLocation, GLuint colorLocation);
 
-	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->modelTransformMatrix = modelTransformMatrix; };
+	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->translationMatrix = modelTransformMatrix; };
 
 private:
-	GLuint tileVAO;
+	DrawableModel& platform;
 	DrawableModel& occupant; 
-	glm::mat4 modelTransformMatrix = glm::mat4(1.0f);
-	glm::vec3 color = { 1.0f, 1.0f, 1.0f };
-	const GLuint& numVertices;
+	glm::mat4 translationMatrix = glm::mat4(1.0f);
 };

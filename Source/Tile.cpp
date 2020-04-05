@@ -1,10 +1,13 @@
 #include "../Include/Tile.h"
 #include <time.h>
 
-Tile::Tile(GLuint tileVAO, glm::mat4 position, DrawableModel& occupant, glm::vec3 color, const GLuint numVertices) : occupant(occupant), numVertices(numVertices) {
-	this->tileVAO = tileVAO;
-	this->modelTransformMatrix = position;
-	this->color = color;
+Tile::Tile(DrawableModel& platform, DrawableModel& occupant, glm::mat4 translationMatrix) : platform(platform), occupant(occupant) {
+	this->translationMatrix = translationMatrix;
+	glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
+	platformTransformMatrix = glm::scale(platformTransformMatrix, glm::vec3(10.0f, 1.0f, 10.0f));
+	platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -0.4f, 0.0f));
+	platformTransformMatrix = translationMatrix * platformTransformMatrix;
+	this->platform.setModelTransformMatrix(platformTransformMatrix);
 
 	// offset and scew the occupant for a more natural spawn
 	srand(time(NULL));
@@ -13,7 +16,7 @@ Tile::Tile(GLuint tileVAO, glm::mat4 position, DrawableModel& occupant, glm::vec
 	float randTranslateX = -2.0f + 4.0f * (rand() % 100) / 100.0f;
 	float randTransalteY = -2.0f + 4.0f * (rand() % 100) / 100.0f;
 
-	glm::mat4 occupantPosition = position;
+	glm::mat4 occupantPosition = translationMatrix;
 	occupantPosition = glm::scale(occupantPosition, glm::vec3(randScale, randScale, randScale));
 	occupantPosition = glm::rotate(occupantPosition, randRotate, glm::vec3(0.0f, 1.0f, 0.0f));
 	occupantPosition = glm::translate(occupantPosition, glm::vec3(randTranslateX, 0.0f, randTransalteY));
@@ -25,11 +28,7 @@ Tile::Tile(GLuint tileVAO, glm::mat4 position, DrawableModel& occupant, glm::vec
 void Tile::draw(GLuint& worldMatrixLocation, GLuint colorLocation) {
 	
 	// draw tile itself
-	glBindVertexArray(this->tileVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, this->tileVAO);
-	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &(this->modelTransformMatrix)[0][0]);
-	glUniform3fv(colorLocation, 1, value_ptr(this->color));
-	glDrawArrays(GL_TRIANGLES, 0, this->numVertices);
+	this->platform.draw(worldMatrixLocation, colorLocation);
 
 	// draw the occupant 
 	this->occupant.draw(worldMatrixLocation, colorLocation);

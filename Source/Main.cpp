@@ -117,12 +117,13 @@ int main(int argc, char* argv[]) {
 
 	DrawableModel light = DrawableModel(cubeVAO, cubeVertices, white);
 	NonCollidableModel tree = NonCollidableModel(treeVAO, treeVertices, turquoise);
-	NonCollidableModel stone = NonCollidableModel(cubeVAO, cubeVertices, blue);
+	NonCollidableModel basicCube = NonCollidableModel(cubeVAO, cubeVertices, blue);
+	NonCollidableModel basicPlatform = NonCollidableModel(cubeVAO, cubeVertices, blue);
 	Forest forest = Forest(cubeVAO, cubeVertices, green);
 	
 	// Testing only
 	Acre acre = Acre(cubeVAO, cubeVertices, orange, true);
-	Tile tile = Tile(cubeVAO, glm::mat4(1.0f), stone, blue, cubeVertices); // TODO Using a cube for now for testing
+	Tile tile = Tile(basicCube, basicPlatform, glm::translate(glm::mat4(1.0f), {5.0f, 0.0f, 5.0f})); // TODO Using a cube for now for testing
 
 	// Baby Blue Background
 	glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
