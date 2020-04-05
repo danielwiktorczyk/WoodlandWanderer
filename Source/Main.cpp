@@ -125,8 +125,8 @@ int main(int argc, char* argv[]) {
 	
 	// Testing only
 	Acre acre = Acre(NonCollidableModel(cubePath, orange));
-	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), { 5.0f, 0.0f, 5.0f });
-	Tile tile = Tile(NonCollidableModel(cubePath, yellow), tree, translationMatrix);
+	glm::vec3 translation = glm::vec3(5.0f, 0.0f, 5.0f);
+	Tile tile = Tile(translation);
 
 	// Baby Blue Background
 	glClearColor(0.53f, 0.81f, 0.94f, 1.0f);
