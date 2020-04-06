@@ -1,6 +1,6 @@
 #include "..\Include\Forest.h"
 
-Forest::Forest(Snowman snowman) : snowman(snowman) {
+Forest::Forest(Snowman& snowman) : snowman(snowman) {
 	this->platform = Model(cubeAsset, green);
 
 	glm::mat4 platformTransformMatrix = glm::mat4(1.0f);

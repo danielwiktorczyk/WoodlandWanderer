@@ -52,9 +52,6 @@
     <ClCompile Include="..\Source\OBJloader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\TestCollision\TestCollisions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\OBJloader.h">
