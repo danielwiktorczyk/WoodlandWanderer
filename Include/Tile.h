@@ -12,6 +12,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
+#define TileWidth 10.0f
 
 class Tile {
 public: 

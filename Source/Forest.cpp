@@ -30,14 +30,22 @@ void Forest::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation
 	int upperBound = (ForestWidth - 1) / 2;
 	int lowerBound = -upperBound;
 	int midpoint = (ForestWidth) / 2;
-
-	int activeAcreInX = midpoint + ((int) (this->snowman.origin.x / 10.0f));
-	int activeAcreInZ = midpoint  + ((int) (this->snowman.origin.z / 10.0f));
+	
+	float x = this->snowman.origin.x;
+	float z = this->snowman.origin.z;
+	//floor((x - 15) / 30)
+	int activeAcreInX = midpoint + 1 + ((x - AcreWidth * TileWidth / 2) / (AcreWidth * TileWidth));
+	int activeAcreInZ = midpoint  + 1 + ((z - AcreWidth * TileWidth / 2) / (AcreWidth * TileWidth));
 	acres[activeAcreInX][activeAcreInZ].setRendered(true);
-	acres[activeAcreInX + 1][activeAcreInZ].setRendered(true);
 	acres[activeAcreInX][activeAcreInZ + 1].setRendered(true);
-	acres[activeAcreInX - 1][activeAcreInZ].setRendered(true);
 	acres[activeAcreInX][activeAcreInZ - 1].setRendered(true);
+	acres[activeAcreInX + 1][activeAcreInZ].setRendered(true);
+	acres[activeAcreInX + 1][activeAcreInZ + 1].setRendered(true);
+	acres[activeAcreInX + 1][activeAcreInZ - 1].setRendered(true);
+	acres[activeAcreInX - 1][activeAcreInZ].setRendered(true);
+	acres[activeAcreInX - 1][activeAcreInZ + 1].setRendered(true);
+	acres[activeAcreInX - 1][activeAcreInZ - 1].setRendered(true);
+
 
 	for (int i = 0; i < ForestWidth; i++)
 		for (int j = 0; j < ForestWidth; j++)

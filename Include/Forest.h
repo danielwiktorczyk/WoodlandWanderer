@@ -10,7 +10,7 @@
 #include "Acre.h"
 #include "Snowman.h"
 
-#define ForestWidth 5
+#define ForestWidth 7
 
 class Forest {
 public: 
