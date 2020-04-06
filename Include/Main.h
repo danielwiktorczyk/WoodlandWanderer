@@ -36,7 +36,6 @@ void setProjectionMatrix(const int& shaderProgram);
 void setViewMatrix(const int& shaderProgram);
 
 void mouseCallback(GLFWwindow* window, double xPos, double yPos);
-void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 
 ///////////////////////////////////////////////////////////////////
 ////////////////////////// Variables //////////////////////////////

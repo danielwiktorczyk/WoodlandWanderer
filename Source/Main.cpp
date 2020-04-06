@@ -107,8 +107,8 @@ int main(int argc, char* argv[]) {
 
 	Model light    = Model(cubeAsset, white);
 	
-	Acre acre      = Acre(glm::vec3(0.0f, 0.0f, 0.0f));
-	Forest forest  = Forest(glm::vec3(0.0f, 0.0f, 0.0f));
+	Acre acre = Acre(glm::vec3(0.0f, 0.0f, 0.0f));
+	Forest forest = Forest(snowman);
 
 	// Sky
 	glClearColor(0.2f, 0.0f, 0.2f, 1.0f);

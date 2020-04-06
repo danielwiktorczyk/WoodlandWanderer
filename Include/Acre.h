@@ -12,13 +12,15 @@
 
 
 //#define Width 9
-#define Width 3
+#define AcreWidth 3
 
 class Acre {
 public:
+	Acre() = default;
 	Acre(glm::vec3 translation);
 	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 	void setTranslationMatrix(glm::vec3 translation) { this->translation = translation; };
+	void setRendered(bool rendered) { this->rendered = rendered; };
 
 private:
 	Model platform;
