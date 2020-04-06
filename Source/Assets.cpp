@@ -1,5 +1,7 @@
 #include "../Include/Assets.h"
 
+AssetsService* AssetsService::instance = nullptr;
+
 /**
 * Asset constructor
 * Takes the path to the asset and loads it to produce an object
@@ -52,22 +54,90 @@ Asset::Asset(const std::string& path) {
 * Constructs all of the objects at runtime to prevent access errors.
 * Stores them in a single object to make increase legibility in the other files
 */
-AllAssets::AllAssets() {
+AssetsService::AssetsService() {
+	std::cout << "\u001b[36m////////////////////////////////////\n";
+	std::cout <<           "/////////// Boulder Assets /////////\n";
+	std::cout <<           "////////////////////////////////////\u001b[0m\n\n";
+
 	this->boulderBig    = Asset(boulderBigAsset);
 	this->boulderMed    = Asset(boulderMedAsset);
 	this->boulderSmall  = Asset(boulderSmallAsset);
 	this->boulderTiny   = Asset(boulderTinyAsset);
+
+	std::cout << "Big Bolder vertices: "    << boulderBig.getVectorSize()   << "\n";
+	std::cout << "Medium Bolder vertices: " << boulderMed.getVectorSize()   << "\n";
+	std::cout << "Small Bolder vertices: "  << boulderSmall.getVectorSize() << "\n";
+	std::cout << "Tiny Bolder vertices: "   << boulderTiny.getVectorSize()  << "\n";
+
+	std::cout << "\u001b[32m////////////////////////////////////\n";
+	std::cout <<           "//////////// Grass Assets //////////\n";
+	std::cout <<           "////////////////////////////////////\u001b[0m\n\n";
 
 	this->grass1        = Asset(grass1Asset);
 	this->grass2        = Asset(grass2Asset);
 	this->grass3        = Asset(grass3Asset);
 	this->grass4        = Asset(grass4Asset);
 
+	std::cout << "Grass 1 vertices: " << grass1.getVectorSize() << "\n";
+	std::cout << "Grass 2 vertices: " << grass2.getVectorSize() << "\n";
+	std::cout << "Grass 3 vertices: " << grass3.getVectorSize() << "\n";
+	std::cout << "Grass 4 vertices: " << grass4.getVectorSize() << "\n\n";
+
+	std::cout << "\u001b[35m////////////////////////////////////\n";
+	std::cout <<           "//////////// Trees Assets //////////\n";
+	std::cout <<           "////////////////////////////////////\u001b[0m\n\n";
+
 	this->ballTree      = Asset(ballTreeAsset);
 	this->curvyPineTree = Asset(curvyPineTreeAsset);
 	this->petalTree     = Asset(petalTreeAsset);
 	this->pineTree      = Asset(pineTreeAsset);
 
+	std::cout << "Ball Tree vertices: "       << ballTree.getVectorSize()      << "\n";
+	std::cout << "Curvy Pine Tree vertices: " << curvyPineTree.getVectorSize() << "\n";
+	std::cout << "Petal Tree vertices: "      << petalTree.getVectorSize()     << "\n";
+	std::cout << "Pine Tree vertices: "       << pineTree.getVectorSize()      << "\n\n";
+
+	std::cout << "\u001b[33m////////////////////////////////////\n";
+	std::cout <<           "//////// Miscellaneous Assets //////\n";
+	std::cout <<           "////////////////////////////////////\u001b[0m\n\n";
+
 	this->cube          = Asset(cubeAsset);
 	this->sphere        = Asset(sphereAsset);
+
+	std::cout << "Cube vertices: "   << cube.getVectorSize()   << "\n";
+	std::cout << "Sphere vertices: " << sphere.getVectorSize() << "\n\n";
+}
+
+/**
+* Create an instance of AssetsService if one does not already exist
+*/
+void AssetsService::initInstance() {
+	if (instance == nullptr) {
+		instance = new AssetsService();
+	}
+	else {
+		std::cout << "Tried to create an instance of AssetsService, but one already exists!\n";
+	}
+}
+
+/**
+* Getter
+* @return AssetsService instance if it exists. Otherwise, returns nullptr.
+*/
+AssetsService* AssetsService::getInstance() {
+	if (instance == nullptr) {
+		std::cout << "AssetsService is not initialized. Please create AssetsService first\n";
+		return nullptr;
+	}
+	else {
+		return instance;
+	}
+}
+
+/**
+* Destroy instance
+*/
+void AssetsService::resetInstance() {
+	delete instance;
+	instance = nullptr;
 }

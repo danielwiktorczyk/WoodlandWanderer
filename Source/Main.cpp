@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
 	/////////////////////////// Objects ///////////////////////////////
 	///////////////////////////////////////////////////////////////////
 
-	AllAssets assets;
+	AssetsService::initInstance();
 
 	// Initialize the Snowman
 	Snowman snowman = Snowman(worldMatrixLocation,
@@ -108,10 +108,10 @@ int main(int argc, char* argv[]) {
 							  cubeVAO,
 							  sphereVAO);
 
-	Model light    = Model(assets.getCube().getVAO(), assets.getCube().getVectorSize(), white);
+	Model light     = Model(AssetsService::getInstance()->getCube().getVAO(), AssetsService::getInstance()->getCube().getVectorSize(), white);
 	
-	Acre acre = Acre(glm::vec3(0.0f, 0.0f, 0.0f), assets);
-	Forest forest = Forest(snowman, assets);
+	Acre acre       = Acre(glm::vec3(0.0f, 0.0f, 0.0f));
+	Forest forest   = Forest(snowman);
 
 	// Sky
 	glClearColor(0.2f, 0.0f, 0.2f, 1.0f);

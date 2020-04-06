@@ -17,7 +17,7 @@
 class Tile {
 public: 
 	Tile() = default;
-	Tile(glm::vec3 translation, AllAssets& assets);
+	Tile(glm::vec3 translation);
 	
 	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 

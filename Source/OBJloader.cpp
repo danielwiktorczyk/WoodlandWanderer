@@ -97,9 +97,9 @@ bool loadOBJ(
 		}
 
 	}
-	std::cout << "Vertex indices: " << vertexIndices.size() << std::endl;
-	std::cout << "UV indices: " << uvIndices.size() << std::endl;
-	std::cout << "Normal indices: " << normalIndices.size() << std::endl;
+	//std::cout << "Vertex indices: " << vertexIndices.size() << std::endl;
+	//std::cout << "UV indices: " << uvIndices.size() << std::endl;
+	//std::cout << "Normal indices: " << normalIndices.size() << std::endl;
 	// For each vertex of each triangle
 	for (unsigned int i = 0; i < vertexIndices.size(); i++) {
 		if (uvIndices.size() != 0) {

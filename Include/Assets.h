@@ -27,9 +27,12 @@ private:
 	GLuint numVertices;
 };
 
-class AllAssets {
+class AssetsService {
 public:
-	AllAssets();
+	static AssetsService* getInstance();
+	static void initInstance();
+	static void resetInstance();
+
 	Asset getBoulderBig()   { return this->boulderBig;   };
 	Asset getBoulderMed()   { return this->boulderMed;   };
 	Asset getBoulderSmall() { return this->boulderSmall; };
@@ -49,6 +52,8 @@ public:
 	Asset getSphere() { return this->sphere; };
 
 private:
+	AssetsService();
+	static AssetsService* instance;
 	Asset boulderBig;
 	Asset boulderMed;
 	Asset boulderSmall;

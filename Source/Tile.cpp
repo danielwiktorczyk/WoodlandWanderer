@@ -1,7 +1,7 @@
 #include "../Include/Tile.h"
 #include <time.h>
 
-Tile::Tile(glm::vec3 translation, AllAssets& assets) {
+Tile::Tile(glm::vec3 translation) {
 	//this->platform = Model(cubeAsset, red);
 	this->translation = translation;
 
@@ -22,17 +22,17 @@ Tile::Tile(glm::vec3 translation, AllAssets& assets) {
 			colour += turquoise;
 			switch (subcategory) {
 			case 0:
-				this->occupant = Model(assets.getBallTree().getVAO(), assets.getBallTree().getVectorSize(), colour);
+				this->occupant = Model(AssetsService::getInstance()->getBallTree().getVAO(), AssetsService::getInstance()->getBallTree().getVectorSize(), colour);
 				break;
 			case 1: 
 				//this->occupant = Model(skinnyTreeAsset, turquoise); // TODO this breaks
-				this->occupant = Model(assets.getBallTree().getVAO(), assets.getBallTree().getVectorSize(), colour);
+				this->occupant = Model(AssetsService::getInstance()->getBallTree().getVAO(), AssetsService::getInstance()->getBallTree().getVectorSize(), colour);
 				break;
 			case 2: 
-				this->occupant = Model(assets.getPineTree().getVAO(), assets.getPineTree().getVectorSize(), colour);
+				this->occupant = Model(AssetsService::getInstance()->getPineTree().getVAO(), AssetsService::getInstance()->getPineTree().getVectorSize(), colour);
 				break;
 			case 3: 
-				this->occupant = Model(assets.getPetalTree().getVAO(), assets.getPetalTree().getVectorSize(), colour);
+				this->occupant = Model(AssetsService::getInstance()->getPetalTree().getVAO(), AssetsService::getInstance()->getPetalTree().getVectorSize(), colour);
 				break;
 			}
 			break;
@@ -40,16 +40,16 @@ Tile::Tile(glm::vec3 translation, AllAssets& assets) {
 			colour += green;
 			switch (subcategory) {
 			case 0:
-				this->occupant = Model(assets.getGrass1().getVAO(), assets.getGrass1().getVectorSize(), colour);
+				this->occupant = Model(AssetsService::getInstance()->getGrass1().getVAO(), AssetsService::getInstance()->getGrass1().getVectorSize(), colour);
 				break;
 			case 1:
-				this->occupant = Model(assets.getGrass2().getVAO(), assets.getGrass2().getVectorSize(), colour);
+				this->occupant = Model(AssetsService::getInstance()->getGrass2().getVAO(), AssetsService::getInstance()->getGrass2().getVectorSize(), colour);
 				break;
 			case 2:
-				this->occupant = Model(assets.getGrass3().getVAO(), assets.getGrass3().getVectorSize(), colour);
+				this->occupant = Model(AssetsService::getInstance()->getGrass3().getVAO(), AssetsService::getInstance()->getGrass3().getVectorSize(), colour);
 				break;
 			case 3:
-				this->occupant = Model(assets.getGrass4().getVAO(), assets.getGrass4().getVectorSize(), colour);
+				this->occupant = Model(AssetsService::getInstance()->getGrass4().getVAO(), AssetsService::getInstance()->getGrass4().getVectorSize(), colour);
 				break;
 			}
 			break;
@@ -57,16 +57,16 @@ Tile::Tile(glm::vec3 translation, AllAssets& assets) {
 			colour += glm::vec3(0.5f, 0.1f, 0.1f);
 			switch (subcategory) {
 			case 0:
-				this->occupant = Model(assets.getBoulderBig().getVAO(), assets.getBoulderBig().getVectorSize(), colour);
+				this->occupant = Model(AssetsService::getInstance()->getBoulderBig().getVAO(), AssetsService::getInstance()->getBoulderBig().getVectorSize(), colour);
 				break;
 			case 1:
-				this->occupant = Model(assets.getBoulderMed().getVAO(), assets.getBoulderMed().getVectorSize(), colour);
+				this->occupant = Model(AssetsService::getInstance()->getBoulderMed().getVAO(), AssetsService::getInstance()->getBoulderMed().getVectorSize(), colour);
 				break;
 			case 2:
-				this->occupant = Model(assets.getBoulderSmall().getVAO(), assets.getBoulderSmall().getVectorSize(), colour);
+				this->occupant = Model(AssetsService::getInstance()->getBoulderSmall().getVAO(), AssetsService::getInstance()->getBoulderSmall().getVectorSize(), colour);
 				break;
 			case 3:
-				this->occupant = Model(assets.getBoulderTiny().getVAO(), assets.getBoulderTiny().getVectorSize(), colour);
+				this->occupant = Model(AssetsService::getInstance()->getBoulderTiny().getVAO(), AssetsService::getInstance()->getBoulderTiny().getVectorSize(), colour);
 				break;
 			}
 			break;

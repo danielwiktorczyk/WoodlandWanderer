@@ -11,11 +11,11 @@
 #include "Snowman.h"
 #include "Assets.h"
 
-#define ForestWidth 9
+#define ForestWidth 21
 
 class Forest {
 public: 
-	Forest(Snowman& snowman, AllAssets& assets);
+	Forest(Snowman& snowman);
 	void draw(const GLuint& worldMatrixLocationColor, const GLuint& colorLocation);
 private:
 	Model platform;

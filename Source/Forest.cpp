@@ -1,8 +1,8 @@
 #include "..\Include\Forest.h"
 
-Forest::Forest(Snowman& snowman, AllAssets& assets) 
+Forest::Forest(Snowman& snowman) 
 	: snowman(snowman) {
-	this->platform = Model(assets.getCube().getVAO(), assets.getCube().getVectorSize(), green);
+	this->platform = Model(AssetsService::getInstance()->getCube().getVAO(), AssetsService::getInstance()->getCube().getVectorSize(), green);
 
 	glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
 	platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -3.0f, 0.0f));
@@ -17,7 +17,7 @@ Forest::Forest(Snowman& snowman, AllAssets& assets)
 	int midpoint = (ForestWidth + 1) / 2;
 	for (int i = 0; i < ForestWidth; i++)
 		for (int j = 0; j < ForestWidth; j++) // TODO not all of them at once!
-			acres[i][j] = Acre(glm::vec3(10.0f * AcreWidth * (lowerBound + i), 0.0f, 10.0f * AcreWidth * (lowerBound + j)), assets);
+			acres[i][j] = Acre(glm::vec3(10.0f * AcreWidth * (lowerBound + i), 0.0f, 10.0f * AcreWidth * (lowerBound + j)));
 
 }
 
