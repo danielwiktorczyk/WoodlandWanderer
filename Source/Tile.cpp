@@ -4,6 +4,10 @@
 Tile::Tile(glm::vec3 translation) {	
 	//this->platform = Model(cubeAsset, red);
 	this->translation = translation;
+	
+	// TODO when first Tile is constructed, create all VBOs possible, into seperate attributes of Tile
+	// i.e. tile.trees.balltree, tile.boulder.boulderMedium 
+	// the VBO method is available in Model.cpp now, should be refactored here?
 
 	/*glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
 	platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -0.4f, 0.0f));
@@ -71,7 +75,6 @@ Tile::Tile(glm::vec3 translation) {
 			}
 			break;
 	}
-
 
 	float randScale = 0.6f + (0.4f * (rand() % 100) / 100.0f);
 	randScale *= 4.0f;

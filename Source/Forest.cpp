@@ -33,7 +33,6 @@ void Forest::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation
 	
 	float x = this->snowman.origin.x;
 	float z = this->snowman.origin.z;
-	//floor((x - 15) / 30)
 	int activeAcreInX = midpoint + 1 + ((x - AcreWidth * TileWidth / 2) / (AcreWidth * TileWidth));
 	int activeAcreInZ = midpoint  + 1 + ((z - AcreWidth * TileWidth / 2) / (AcreWidth * TileWidth));
 	acres[activeAcreInX][activeAcreInZ].setRendered(true);
