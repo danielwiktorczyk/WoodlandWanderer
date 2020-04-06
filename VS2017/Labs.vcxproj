@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Acre.cpp" />
+    <ClCompile Include="..\Source\Assets.cpp" />
     <ClCompile Include="..\Source\CollidableModel.cpp" />
     <ClCompile Include="..\Source\Commands.cpp" />
     <ClCompile Include="..\Source\Forest.cpp" />

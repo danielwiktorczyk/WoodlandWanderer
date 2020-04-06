@@ -9,12 +9,13 @@
 #include <vector>
 #include "Acre.h"
 #include "Snowman.h"
+#include "Assets.h"
 
-#define ForestWidth 7
+#define ForestWidth 9
 
 class Forest {
 public: 
-	Forest(Snowman& snowman);
+	Forest(Snowman& snowman, AllAssets& assets);
 	void draw(const GLuint& worldMatrixLocationColor, const GLuint& colorLocation);
 private:
 	Model platform;

@@ -1,13 +1,9 @@
 #include "../Include/Tile.h"
 #include <time.h>
 
-Tile::Tile(glm::vec3 translation) {	
+Tile::Tile(glm::vec3 translation, AllAssets& assets) {
 	//this->platform = Model(cubeAsset, red);
 	this->translation = translation;
-	
-	// TODO when first Tile is constructed, create all VBOs possible, into seperate attributes of Tile
-	// i.e. tile.trees.balltree, tile.boulder.boulderMedium 
-	// the VBO method is available in Model.cpp now, should be refactored here?
 
 	/*glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
 	platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -0.4f, 0.0f));
@@ -26,17 +22,17 @@ Tile::Tile(glm::vec3 translation) {
 			colour += turquoise;
 			switch (subcategory) {
 			case 0:
-				this->occupant = Model(ballTreeAsset, colour);
+				this->occupant = Model(assets.getBallTree().getVAO(), assets.getBallTree().getVectorSize(), colour);
 				break;
 			case 1: 
 				//this->occupant = Model(skinnyTreeAsset, turquoise); // TODO this breaks
-				this->occupant = Model(ballTreeAsset, colour);
+				this->occupant = Model(assets.getBallTree().getVAO(), assets.getBallTree().getVectorSize(), colour);
 				break;
 			case 2: 
-				this->occupant = Model(pineTreeAsset, colour);
+				this->occupant = Model(assets.getPineTree().getVAO(), assets.getPineTree().getVectorSize(), colour);
 				break;
 			case 3: 
-				this->occupant = Model(petalTreeAsset, colour);
+				this->occupant = Model(assets.getPetalTree().getVAO(), assets.getPetalTree().getVectorSize(), colour);
 				break;
 			}
 			break;
@@ -44,16 +40,16 @@ Tile::Tile(glm::vec3 translation) {
 			colour += green;
 			switch (subcategory) {
 			case 0:
-				this->occupant = Model(grass1Asset, colour);
+				this->occupant = Model(assets.getGrass1().getVAO(), assets.getGrass1().getVectorSize(), colour);
 				break;
 			case 1:
-				this->occupant = Model(grass2Asset, colour);
+				this->occupant = Model(assets.getGrass2().getVAO(), assets.getGrass2().getVectorSize(), colour);
 				break;
 			case 2:
-				this->occupant = Model(grass3Asset, colour);
+				this->occupant = Model(assets.getGrass3().getVAO(), assets.getGrass3().getVectorSize(), colour);
 				break;
 			case 3:
-				this->occupant = Model(grass4Asset, colour);
+				this->occupant = Model(assets.getGrass4().getVAO(), assets.getGrass4().getVectorSize(), colour);
 				break;
 			}
 			break;
@@ -61,16 +57,16 @@ Tile::Tile(glm::vec3 translation) {
 			colour += glm::vec3(0.5f, 0.1f, 0.1f);
 			switch (subcategory) {
 			case 0:
-				this->occupant = Model(boulderBigAsset, colour);
+				this->occupant = Model(assets.getBoulderBig().getVAO(), assets.getBoulderBig().getVectorSize(), colour);
 				break;
 			case 1:
-				this->occupant = Model(boulderMedAsset, colour);
+				this->occupant = Model(assets.getBoulderMed().getVAO(), assets.getBoulderMed().getVectorSize(), colour);
 				break;
 			case 2:
-				this->occupant = Model(boulderSmallAsset, colour);
+				this->occupant = Model(assets.getBoulderSmall().getVAO(), assets.getBoulderSmall().getVectorSize(), colour);
 				break;
 			case 3:
-				this->occupant = Model(boulderTinyAsset, colour);
+				this->occupant = Model(assets.getBoulderTiny().getVAO(), assets.getBoulderTiny().getVectorSize(), colour);
 				break;
 			}
 			break;

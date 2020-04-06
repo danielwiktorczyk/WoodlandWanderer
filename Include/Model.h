@@ -11,7 +11,7 @@
 class Model {
 public:
 	Model() = default;
-	Model(std::string assetPath, glm::vec3 color);
+	Model(GLuint VAO, GLuint numVertices, glm::vec3 color);
 
 	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 	
@@ -21,12 +21,9 @@ public:
 	void setColor(glm::vec3 color) { this->color = color; };
 
 private:
-	std::string assetPath;
-	glm::vec3 color;
 	GLuint VAO;
-	glm::mat4 modelTransformMatrix = glm::mat4(1.0f);
 	GLuint numVertices;
-
-	void setupVBO();
+	glm::vec3 color;
+	glm::mat4 modelTransformMatrix = glm::mat4(1.0f);
 };
 

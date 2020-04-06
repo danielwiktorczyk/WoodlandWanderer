@@ -10,14 +10,13 @@
 #include "Tile.h"
 #include "../Include/Assets.h"
 
-
 //#define Width 9
 #define AcreWidth 3
 
 class Acre {
 public:
 	Acre() = default;
-	Acre(glm::vec3 translation);
+	Acre(glm::vec3 translation, AllAssets& assets);
 	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 	void setTranslationMatrix(glm::vec3 translation) { this->translation = translation; };
 	void setRendered(bool rendered) { this->rendered = rendered; };

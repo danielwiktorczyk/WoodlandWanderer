@@ -9,5 +9,5 @@
 
 class NonCollidableModel : public Model {
 public:
-	NonCollidableModel(std::string assetPath, glm::vec3 color);
+	NonCollidableModel(GLuint VAO, GLuint numVertices, glm::vec3 color);
 };

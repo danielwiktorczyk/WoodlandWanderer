@@ -1,3 +1,4 @@
 #include "..\Include\NonCollidableModel.h"
 
-NonCollidableModel::NonCollidableModel(std::string assetPath, glm::vec3 color) : Model(assetPath, color) { }
+NonCollidableModel::NonCollidableModel(GLuint VAO, GLuint numVertices, glm::vec3 color)
+	: Model(VAO, numVertices, color) { }

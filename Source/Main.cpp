@@ -27,6 +27,7 @@ int main(int argc, char* argv[]) {
 	///////////////////////////////////////////////////////////////////
 
 	srand(time(NULL));
+	glewExperimental = GL_TRUE;
 	glfwInit();
 
 #if defined(PLATFORM_OSX)
@@ -97,6 +98,8 @@ int main(int argc, char* argv[]) {
 	/////////////////////////// Objects ///////////////////////////////
 	///////////////////////////////////////////////////////////////////
 
+	AllAssets assets;
+
 	// Initialize the Snowman
 	Snowman snowman = Snowman(worldMatrixLocation,
 							  colorLocation,
@@ -105,10 +108,10 @@ int main(int argc, char* argv[]) {
 							  cubeVAO,
 							  sphereVAO);
 
-	Model light    = Model(cubeAsset, white);
+	Model light    = Model(assets.getCube().getVAO(), assets.getCube().getVectorSize(), white);
 	
-	Acre acre = Acre(glm::vec3(0.0f, 0.0f, 0.0f));
-	Forest forest = Forest(snowman);
+	Acre acre = Acre(glm::vec3(0.0f, 0.0f, 0.0f), assets);
+	Forest forest = Forest(snowman, assets);
 
 	// Sky
 	glClearColor(0.2f, 0.0f, 0.2f, 1.0f);
