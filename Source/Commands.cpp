@@ -26,63 +26,21 @@ void Commands::setRenderingMode(GLFWwindow* window) {
 }
 
 /**
-* Pan the camera
+* Move the camera in the world
 */
-void Commands::panCamera(GLFWwindow* window, float& camHorAng, const double& dx, const float& camAngSpeed) {
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
-		camHorAng -= dx * camAngSpeed;
-	}
-}
-
-/**
-* Tilt the camera
-*/
-void Commands::tiltCamera(GLFWwindow* window, float& camVertAng, const double& dy, const float& camAngSpeed) {
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS) {
-		camVertAng -= dy * camAngSpeed;
-	}
-}
-
-/**
-* Zoom the camera by holding the left mouse button and moving the mouse
-*/
-void Commands::zoomCamera(GLFWwindow* window, 
-						  float& currentFOV, 
-						  const double& dy, 
-						  glm::mat4& projMatrix, 
-						  const int& colorShader, 
-						  std::function<void(int, glm::mat4)> setProjMatrix) {
-	// Camera Zooming
-	float cameraZoomSpeed = 0.001f;
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-		currentFOV += cameraZoomSpeed * dy;
-
-		projMatrix = glm::perspective(currentFOV, 1024.0f / 768.0f, 0.01f, 100.0f);
-
-		setProjMatrix(colorShader, projMatrix);
-	}
-}
-
-/**
-* Set the world orientation
-*/
-void Commands::setWorldRotation(GLFWwindow* window, float& rotYaxis, float& rotXaxis) {
-	float worldRotationSpeed = 0.005f;
+void Commands::processCameraDirection(GLFWwindow* window, glm::vec3& cameraPos, glm::vec3& cameraLookAt, glm::vec3& cameraUp, float deltaTime) {
+	float cameraSpeed = deltaTime + 0.1;
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-		rotYaxis += worldRotationSpeed;
+		cameraPos += cameraSpeed * cameraLookAt;
 	}
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-		rotYaxis -= worldRotationSpeed;
+		cameraPos -= cameraSpeed * cameraLookAt;
 	}
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-		rotXaxis += worldRotationSpeed;
+		cameraPos -= glm::normalize(glm::cross(cameraLookAt, cameraUp)) * cameraSpeed;
 	}
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		rotXaxis -= worldRotationSpeed;
-	}
-	if (glfwGetKey(window, GLFW_KEY_HOME) == GLFW_PRESS) {
-		rotXaxis = 0.0f;
-		rotYaxis = 0.0f;
+		cameraPos += glm::normalize(glm::cross(cameraLookAt, cameraUp)) * cameraSpeed;
 	}
 }

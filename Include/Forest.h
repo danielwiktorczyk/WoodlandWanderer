@@ -13,7 +13,7 @@ class Forest {
 public: 
 	Forest(glm::vec3 translatio);
 
-	void draw(GLuint& worldMatrixLocationColor, GLuint colorLocation);
+	void draw(const GLuint& worldMatrixLocationColor, const GLuint& colorLocation);
 	
 	void setTranslationMatrix(glm::vec3 translation) { this->translation = translation; };
 

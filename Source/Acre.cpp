@@ -21,7 +21,7 @@ Acre::Acre(glm::vec3 translation) {
 			tiles[i][j] = Tile(translation + glm::vec3(10.0f * (lowerBound + i), 0.0f, 10.0f * (lowerBound + j)));
 }
 
-void Acre::draw(GLuint& worldMatrixLocation, GLuint colorLocation) {
+void Acre::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
 	this->platform.draw(worldMatrixLocation, colorLocation);
 	
 	for (int i = 0; i < Width; i++)
