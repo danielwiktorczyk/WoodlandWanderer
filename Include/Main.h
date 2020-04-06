@@ -42,7 +42,7 @@ void mouseCallback(GLFWwindow* window, double xPos, double yPos);
 ///////////////////////////////////////////////////////////////////
 
 extern const float windowWidth = 1024.0f;
-extern const float windowHeigth = 768.0f;
+extern const float windowHeight = 768.0f;
 
 
 // Camera parameters for view transform
@@ -59,7 +59,7 @@ float lastY = 768 / 2.0;
 float fov = 45.0f;
 float lastFrame = 0.0f;
 
-glm::mat4 projectionMatrix = glm::perspective(fov, windowWidth / windowHeigth, 0.01f, 100.0f);
+glm::mat4 projectionMatrix = glm::perspective(fov, windowWidth / windowHeight, 0.01f, 100.0f);
 glm::mat4 viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
 
 // World rotation

@@ -1,6 +1,6 @@
 #include "..\Include\Forest.h"
 
-Forest::Forest(Snowman snowman) : snowman(snowman) {
+Forest::Forest(Snowman& snowman) : snowman(snowman) {
 	this->platform = Model(cubeAsset, green);
 
 	glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
@@ -31,8 +31,8 @@ void Forest::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation
 	int lowerBound = -upperBound;
 	int midpoint = (ForestWidth) / 2;
 
-	int activeAcreInX = midpoint + ((int) (this->snowman.origin.x / 10.0f));
-	int activeAcreInZ = midpoint  + ((int) (this->snowman.origin.z / 10.0f));
+	int activeAcreInX = midpoint + ((int) (this->snowman.origin.x / (AcreWidth * 10.0f)));
+	int activeAcreInZ = midpoint  + ((int) (this->snowman.origin.z / (AcreWidth * 10.0f)));
 	acres[activeAcreInX][activeAcreInZ].setRendered(true);
 	acres[activeAcreInX + 1][activeAcreInZ].setRendered(true);
 	acres[activeAcreInX][activeAcreInZ + 1].setRendered(true);
