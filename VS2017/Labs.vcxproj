@@ -20,6 +20,7 @@
     <ClCompile Include="..\Source\NonCollidableModel.cpp" />
     <ClCompile Include="..\Source\OBJloader.cpp" />
     <ClCompile Include="..\Source\Snowman.cpp" />
+    <ClCompile Include="..\Source\TestCollision\TestCollisions.cpp" />
     <ClCompile Include="..\Source\Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
