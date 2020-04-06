@@ -14,10 +14,10 @@
 
 class Forest {
 public: 
-	Forest(Snowman& snowman);
+	Forest(Snowman snowman);
 	void draw(const GLuint& worldMatrixLocationColor, const GLuint& colorLocation);
 private:
 	Model platform;
-	Snowman& snowman;
+	Snowman snowman;
 	std::vector< std::vector<Acre> > acres;
 };
