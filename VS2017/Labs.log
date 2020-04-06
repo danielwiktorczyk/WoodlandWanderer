@@ -2,13 +2,15 @@
 C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(29,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(42,53): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
 C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(42,40): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(53,19): warning C4244: 'argument': conversion from 'const float' to 'GLsizei', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(131,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(355,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(356,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(360,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(361,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(362,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(363,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(389,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(52,32): warning C4244: 'argument': conversion from 'const float' to 'GLsizei', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(52,19): warning C4244: 'argument': conversion from 'const float' to 'GLsizei', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(130,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(337,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(338,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(342,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(343,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(344,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\claul\Documents\Projects\WoodlandWanderer\Source\Main.cpp(345,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Model.cpp
+  Generating Code...
   Labs.vcxproj -> C:\Users\claul\Documents\Projects\WoodlandWanderer\VS2017\/../Bin/Labs-Debug.exe

@@ -32,13 +32,8 @@ int compileAndLinkShaders(const std::string vertexShaderSource, const std::strin
 
 GLuint setupModelVBO_OLD(std::string path, int& vertexCount);
 
-void setProjectionMatrix(int shaderProgram);
-void setViewMatrix(int shaderProgram);
-void setWorldRotationMatrix(int shaderProgram);
-
-void sendViewMatrixToShader(const int& shader);
-
-void sendWorldRotationMatrixToShader(const int& shader);
+void setProjectionMatrix(const int& shaderProgram);
+void setViewMatrix(const int& shaderProgram);
 
 void mouseCallback(GLFWwindow* window, double xPos, double yPos);
 void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);

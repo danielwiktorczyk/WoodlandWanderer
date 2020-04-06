@@ -13,5 +13,4 @@ public:
 	static void closeWindow(GLFWwindow* window);
 	static void setRenderingMode(GLFWwindow* window);
 	static void processCameraDirection(GLFWwindow* window, glm::vec3& cameraPos, glm::vec3& cameraLookAt, glm::vec3& cameraUp, float deltaTime);
-	static void setWorldRotation(GLFWwindow* window, float& rotYaxis, float& rotXaxis);
 };
