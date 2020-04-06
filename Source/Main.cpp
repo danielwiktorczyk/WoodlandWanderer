@@ -22,12 +22,11 @@
 
 int main(int argc, char* argv[]) {
 
-	srand(time(NULL));
-
 	///////////////////////////////////////////////////////////////////
 	///////////////////////// Intialization ///////////////////////////
 	///////////////////////////////////////////////////////////////////
 
+	srand(time(NULL));
 	glfwInit();
 
 #if defined(PLATFORM_OSX)
@@ -40,17 +39,17 @@ int main(int argc, char* argv[]) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 #endif
 
-	GLFWwindow* window = glfwCreateWindow(1024, 768, "Comp371 - Final Project", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "Comp371 - Final Project", NULL, NULL);
 	if (window == NULL) {
 		std::cerr << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
-	glfwMakeContextCurrent(window);
 
-	// Disable mouse cursor when over the window!
+	glfwMakeContextCurrent(window);
+	glfwSetCursorPosCallback(window, mouseCallback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwGetCursorPos(window, &lastMousePosX, &lastMousePosY);
+	glViewport(0, 0, windowWidth, windowHeight);
 
 	// Initialize GLEW
 	glewExperimental = GL_TRUE; // Needed for core profile
@@ -81,9 +80,8 @@ int main(int argc, char* argv[]) {
 	int shaderProgram = compileAndLinkShaders("../References/Shaders/3.3.shader.vs", "../References/Shaders/3.3.shader.fs");
 
 	// Set View and Projection matrices on both shaders
-	setViewMatrix(shaderProgram, viewMatrix);
-	setProjectionMatrix(shaderProgram, projectionMatrix);
-
+	setViewMatrix(shaderProgram);
+	setProjectionMatrix(shaderProgram);
 
 	///////////////////////////////////////////////////////////////////
 	/////////////////////////// Uniforms //////////////////////////////
@@ -93,6 +91,7 @@ int main(int argc, char* argv[]) {
 	GLuint colorLocation       = glGetUniformLocation(shaderProgram, "objectColor");
 	GLuint viewLocation        = glGetUniformLocation(shaderProgram, "viewPosition");
 	GLuint lightLocation       = glGetUniformLocation(shaderProgram, "lightPosition");
+	GLuint projLocation        = glGetUniformLocation(shaderProgram, "projectionMatrix");
 
 	///////////////////////////////////////////////////////////////////
 	/////////////////////////// Objects ///////////////////////////////
@@ -100,16 +99,16 @@ int main(int argc, char* argv[]) {
 
 	// Initialize the Snowman
 	Snowman snowman = Snowman(worldMatrixLocation,
-		colorLocation,
-		shaderProgram,
-		sphereVertices,
-		cubeVAO,
-		sphereVAO);
+							  colorLocation,
+							  shaderProgram,
+							  sphereVertices,
+							  cubeVAO,
+							  sphereVAO);
 
-	Model light = Model(cubeAsset, white);
+	Model light    = Model(cubeAsset, white);
 	
 	Acre acre = Acre(glm::vec3(0.0f, 0.0f, 0.0f));
-	Forest forest = Forest(glm::vec3(0.0f, 0.0f, 0.0f));
+	Forest forest = Forest(snowman);
 
 	// Sky
 	glClearColor(0.2f, 0.0f, 0.2f, 1.0f);
@@ -126,6 +125,11 @@ int main(int argc, char* argv[]) {
 	///////////////////////////////////////////////////////////////////
 
 	while (!glfwWindowShouldClose(window)) {
+		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &glm::mat4(1.0f)[0][0]);
+
+		float currentFrame = glfwGetTime();
+		float deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 
 		// For movement, if shift is held, it means a small movement for rotation, scaling, and transposing
 		bool shift = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS;
@@ -134,6 +138,7 @@ int main(int argc, char* argv[]) {
 
 		Commands::closeWindow(window);
 		Commands::setRenderingMode(window);
+		Commands::processCameraDirection(window, cameraPosition, cameraLookAt, cameraUp, deltaTime);
 		
 		glUseProgram(shaderProgram);
 
@@ -173,14 +178,8 @@ int main(int argc, char* argv[]) {
 		snowman.randomTranslationSnowman(window, shift, canRandomPlacement);
 		snowman.update();
 
-		setCameraVariables(window, mousePosX, mousePosY, lastMousePosX, lastMousePosY, cameraHorizontalAngle, cameraVerticalAngle, cameraLookAt, cameraSideVector);
-		Commands::panCamera(window, cameraHorizontalAngle, dx, cameraAngularSpeed);
-		Commands::tiltCamera(window, cameraVerticalAngle, dy, cameraAngularSpeed);
-		Commands::zoomCamera(window, currentFOV, dy, projectionMatrix, shaderProgram, setProjectionMatrix);
-
-		Commands::setWorldRotation(window, worldRotationAboutYAxis, worldRotationAboutXAxis);
-		sendViewMatrixToShader(cameraPosition, cameraLookAt, cameraUp, shaderProgram, viewLocation);
-		sendWorldRotationMatrixToShader(worldRotationMatrix, worldRotationAboutYAxis, worldRotationAboutXAxis, shaderProgram);
+		setProjectionMatrix(shaderProgram);
+		setViewMatrix(shaderProgram);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -314,79 +313,55 @@ GLuint setupModelVBO_OLD(std::string path, int& vertexCount) {
 	return VAO;
 }
 
-void setProjectionMatrix(int shaderProgram, glm::mat4 projectionMatrix) {
+void setProjectionMatrix(const int& shaderProgram) {
+	projectionMatrix = glm::perspective(fov, windowWidth / windowHeight, 0.01f, 100.0f);
 	glUseProgram(shaderProgram);
 	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
 	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
 }
 
-void setViewMatrix(int shaderProgram, glm::mat4 viewMatrix) {
+void setViewMatrix(const int& shaderProgram) {
+	viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
 	glUseProgram(shaderProgram);
 	GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
 	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
 }
 
-void setWorldMatrix(int shaderProgram, glm::mat4 worldMatrix) {
-	glUseProgram(shaderProgram);
-	GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
-	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
-}
+/*
+* pan and tilt camera
+*/
+void mouseCallback(GLFWwindow* window, double xPos, double yPos) {
 
-void setWorldRotationMatrix(int shaderProgram, glm::mat4 worldRotationMatrix) {
-	glUseProgram(shaderProgram);
-	GLuint worldRotationMatrixLocation = glGetUniformLocation(shaderProgram, "worldRotationMatrix");
-	glUniformMatrix4fv(worldRotationMatrixLocation, 1, GL_FALSE, &worldRotationMatrix[0][0]);
-}
-
-void sendViewMatrixToShader(const glm::vec3& camPos,
-	const glm::vec3& camLookAt,
-	const glm::vec3 camUp,
-	const int& colorShader,
-	const GLuint& viewLocationColor) {
-	glm::mat4 viewMatrix(1.0f);
-	viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
-	setViewMatrix(colorShader, viewMatrix);
-	glUniform3fv(viewLocationColor, 1, value_ptr(cameraPosition));
-}
-
-void sendWorldRotationMatrixToShader(glm::mat4& worldRotationMatrix, const float& rotYaxis, const float& rotXaxis, const int& colorShader) {
-	worldRotationMatrix = rotate(glm::mat4(1.0f), worldRotationAboutYAxis, glm::vec3(0.0f, 1.0f, 0.0f)) * rotate(glm::mat4(1.0f), worldRotationAboutXAxis, glm::vec3(1.0f, 0.0f, 0.0f));
-	setWorldRotationMatrix(colorShader, worldRotationMatrix);
-}
-
-void setCameraVariables(GLFWwindow* window,
-	double& mousePosX,
-	double& mousePosY,
-	double& lastMousePosX,
-	double& lastMousePosY,
-	float& camHorAngle,
-	float& camVertAngle,
-	glm::vec3& cameraLookAt,
-	glm::vec3& cameraSideVector) {
-
-	glfwGetCursorPos(window, &mousePosX, &mousePosY);
-
-	dx = mousePosX - lastMousePosX;
-	dy = mousePosY - lastMousePosY;
-
-	lastMousePosX = mousePosX;
-	lastMousePosY = mousePosY;
-
-	theta = glm::radians(cameraHorizontalAngle);
-	phi = glm::radians(cameraVerticalAngle);
-
-	// Clamp vertical angle to [-85, 85] degrees
-	camVertAngle = glm::max(-85.0f, glm::min(85.0f, camVertAngle));
-
-	// Allow camera to rotate about horizontally
-	if (camHorAngle > 360) {
-		camHorAngle -= 360;
-	}
-	else if (camHorAngle < -360) {
-		camHorAngle += 360;
+	//to avoid big jump from detecting the mouse where it actually is
+	if (firstMouse) {
+		lastX = xPos;
+		lastY = yPos;
+		firstMouse = false;
 	}
 
-	cameraLookAt = glm::vec3(cosf(phi) * cosf(theta), sinf(phi), -cosf(phi) * sinf(theta));
-	cameraSideVector = cross(cameraLookAt, glm::vec3(0.0f, 1.0f, 0.0f));
-	normalize(cameraSideVector);
+	float xOffset = xPos - lastX;
+	float YOffset = lastY - yPos;
+	lastX = xPos;
+	lastY = yPos;
+
+	const float sensitivity = 0.05f;
+	xOffset *= sensitivity;
+	YOffset *= sensitivity;
+
+	yaw += xOffset;
+	pitch += YOffset;
+
+	if (pitch > 89.0f) {
+		pitch = 89.0f;
+	}
+
+	if (pitch < -89.0f) {
+		pitch = -89.0f;
+	}
+
+	glm::vec3 direction;
+	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	direction.y = sin(glm::radians(pitch));
+	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraLookAt = glm::normalize(direction);
 }

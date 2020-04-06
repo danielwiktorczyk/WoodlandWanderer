@@ -13,7 +13,7 @@ public:
 	Model() = default;
 	Model(std::string assetPath, glm::vec3 color);
 
-	void draw(GLuint& worldMatrixLocation, GLuint& colorLocation);
+	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 	
 	glm::mat4 getPosition() { return this->modelTransformMatrix; };
 	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->modelTransformMatrix = modelTransformMatrix; };

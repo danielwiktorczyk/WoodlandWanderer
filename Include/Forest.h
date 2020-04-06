@@ -8,17 +8,16 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 #include "Acre.h"
+#include "Snowman.h"
+
+#define ForestWidth 5
 
 class Forest {
 public: 
-	Forest(glm::vec3 translatio);
-
-	void draw(GLuint& worldMatrixLocationColor, GLuint colorLocation);
-	
-	void setTranslationMatrix(glm::vec3 translation) { this->translation = translation; };
-
+	Forest(Snowman& snowman);
+	void draw(const GLuint& worldMatrixLocationColor, const GLuint& colorLocation);
 private:
 	Model platform;
-	glm::vec3 translation = glm::vec3(1.0f, 1.0f, 1.0f);
-	std::vector<Acre> acres; // will be 20 x 20, square
+	Snowman& snowman;
+	std::vector< std::vector<Acre> > acres;
 };

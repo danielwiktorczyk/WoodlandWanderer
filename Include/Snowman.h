@@ -10,6 +10,7 @@
 
 class Snowman {
 public:
+	Snowman() = default;
 	Snowman(GLuint worldMatrixColorLoc, 
 			GLuint colorLoc, 
 			int colshader, 
