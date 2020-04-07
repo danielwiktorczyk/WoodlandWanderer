@@ -21,6 +21,8 @@ void Firefly::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocatio
 	glm::mat4 savedLocation = this->getModelTransformMatrix();
 
 	glm::mat4 flightPath = glm::translate(savedLocation, glm::vec3(5 * cos(2 * this->animation), 3 * sin(this->animation), 4 * cos(3 * this->animation)));
+	float pulsation = 1.0f - 0.5 * sin(5.0 * animation);
+	flightPath = glm::scale(flightPath, glm::vec3(pulsation, pulsation, pulsation));
 	this->setModelTransformMatrix(flightPath);
 
 	Model::draw(worldMatrixLocation, colorLocation);
