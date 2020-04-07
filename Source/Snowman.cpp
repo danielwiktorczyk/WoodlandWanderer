@@ -16,6 +16,7 @@ Snowman::Snowman(GLuint worldMatrixColorLoc,
 	this->sphereVertices = theSphereVertices;
 	this->cubeVAO = theCubeVAO;
 	this->sphereVAO = theSphereVAO;
+	this->globalSpeed = 5.0f;
 
 	this->animate = 0.0f;
 	this->animateHat = 0.0f;
@@ -118,7 +119,7 @@ void Snowman::drawBody(glm::mat4 part, glm::vec3 color) {
 * Change the snowman's size using the U and J keys
 */
 void Snowman::scaleSnowman(GLFWwindow* window, const bool& shift, bool& canScaleIncrement) {
-	float snowmanScalingSpeed = 0.005f;
+	float snowmanScalingSpeed = globalSpeed * 0.005f;
 	bool scaleUp = glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS;
 	bool scaleDown = glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS;
 
@@ -138,7 +139,7 @@ void Snowman::scaleSnowman(GLFWwindow* window, const bool& shift, bool& canScale
 * Rotate the snowman using the Q and E keys
 */
 void Snowman::rotateSnowman(GLFWwindow* window, const bool& shift, bool& canRotateIncrement) {
-	float snowmanRotationSpeed = 0.0064f; // degrees
+	float snowmanRotationSpeed = globalSpeed * 0.0064f; // degrees
 	bool rotateLeft = glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS;
 	bool rotateRight = glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS;
 
@@ -149,35 +150,34 @@ void Snowman::rotateSnowman(GLFWwindow* window, const bool& shift, bool& canRota
 			if (this->rotation >= 2 * M_PI) {
 				this->rotation -= 2 * M_PI;
 			}
-			this->animateHat -= 0.01f;
+			this->animateHat -= globalSpeed * 0.01f;
 		}
 		else if (canRotateIncrement) {
 			this->rotation += 10 * snowmanRotationSpeed;
 			if (this->rotation >= 2 * M_PI) {
 				this->rotation -= 2 * M_PI;
 			}
-			this->animateHat -= 0.01f;
+			this->animateHat -= globalSpeed * 0.01f;
 		}
 	}
 
 	// Rotate snowman right 5 degrees
-	if (rotateRight && (!shift || canRotateIncrement)) {
+	if (rotateRight) {
 		if (!shift) {
 			this->rotation -= snowmanRotationSpeed;
 			if (this->rotation <= 2 * M_PI) {
 				this->rotation += 2 * M_PI;
 			}
-			this->animateHat += 0.01f;
+			this->animateHat += globalSpeed * 0.01f;
 		}
 		else if (canRotateIncrement) {
 			this->rotation -= 10 * snowmanRotationSpeed;
 			if (this->rotation <= 2 * M_PI) {
 				this->rotation += 2 * M_PI;
 			}
-			this->animateHat += 0.01f;
+			this->animateHat += globalSpeed * 0.01f;
 		}
 	}
-
 	canRotateIncrement = !(rotateLeft || rotateRight);
 }
 
@@ -187,7 +187,7 @@ void Snowman::rotateSnowman(GLFWwindow* window, const bool& shift, bool& canRota
 void Snowman::translateSnowman(GLFWwindow* window, const bool& shift, bool& canMoveIncrement) {
 
 	// Snowman Translation by WASD keys
-	float snowmanTranslationSpeed = 0.03f;
+	float snowmanTranslationSpeed = globalSpeed * 0.03f;
 	bool moveLeft = glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS;
 	bool moveRight = glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS;
 	bool moveUp = glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS;
@@ -199,14 +199,14 @@ void Snowman::translateSnowman(GLFWwindow* window, const bool& shift, bool& canM
 			this->origin.x += cos(this->rotation) * snowmanTranslationSpeed;
 			this->origin.z -= sin(this->rotation) * snowmanTranslationSpeed;
 			if (!moveUp && !moveDown) {
-				this->animate += 0.02f;
+				this->animate += globalSpeed * 0.02f;
 			}
 		}
 		else if (canMoveIncrement) {
 			this->origin.x += cos(this->rotation) * 10.0f * snowmanTranslationSpeed;
 			this->origin.z -= sin(this->rotation) * 10.0f * snowmanTranslationSpeed;
 			if (!moveUp && !moveDown) {
-				this->animate += 10.0f * 0.02f;
+				this->animate += globalSpeed * 10.0f * 0.02f;
 			}
 		}
 	}
@@ -217,13 +217,13 @@ void Snowman::translateSnowman(GLFWwindow* window, const bool& shift, bool& canM
 			this->origin.x -= cos(this->rotation) * snowmanTranslationSpeed;
 			this->origin.z += sin(this->rotation) * snowmanTranslationSpeed;
 			if (!moveUp && !moveDown)
-				this->animate += 0.02f;
+				this->animate += globalSpeed * 0.02f;
 		}
 		else if (canMoveIncrement) {
 			this->origin.x -= cos(this->rotation) * 10.0f * snowmanTranslationSpeed;
 			this->origin.z += sin(this->rotation) * 10.0f * snowmanTranslationSpeed;
 			if (!moveUp && !moveDown)
-				this->animate += 10.0f * 0.02f;
+				this->animate += globalSpeed * 10.0f * 0.02f;
 		}
 	}
 
@@ -232,12 +232,12 @@ void Snowman::translateSnowman(GLFWwindow* window, const bool& shift, bool& canM
 		if (!shift) {
 			this->origin.x += sin(this->rotation) * snowmanTranslationSpeed;
 			this->origin.z += cos(this->rotation) * snowmanTranslationSpeed;
-			this->animate += 0.02f;
+			this->animate += globalSpeed * 0.02f;
 		}
 		else if (canMoveIncrement) {
 			this->origin.x += sin(this->rotation) * 10.0f * snowmanTranslationSpeed;
 			this->origin.z += cos(this->rotation) * 10.0f * snowmanTranslationSpeed;
-			this->animate += 10.0f * 0.02f;
+			this->animate += globalSpeed * 10.0f * 0.02f;
 		}
 	}
 
@@ -246,12 +246,12 @@ void Snowman::translateSnowman(GLFWwindow* window, const bool& shift, bool& canM
 		if (!shift) {
 			this->origin.x -= sin(this->rotation) * snowmanTranslationSpeed;
 			this->origin.z -= cos(this->rotation) * snowmanTranslationSpeed;
-			this->animate -= 0.02f;
+			this->animate -= globalSpeed * 0.02f;
 		}
 		else if (canMoveIncrement) {
 			this->origin.x -= sin(this->rotation) * 10.0f * snowmanTranslationSpeed;
 			this->origin.z -= cos(this->rotation) * 10.0f * snowmanTranslationSpeed;
-			this->animate -= 10.0f * 0.02f;
+			this->animate -= globalSpeed * 10.0f * 0.02f;
 		}
 	}
 	canMoveIncrement = !(moveLeft || moveRight || moveUp || moveDown);

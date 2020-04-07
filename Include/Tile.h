@@ -11,6 +11,7 @@
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
+#include "Firefly.h"
 
 #define TileWidth 10.0f
 
@@ -26,5 +27,6 @@ public:
 private:
 	Model platform;
 	Model occupant; 
+	Firefly firefly;
 	glm::vec3 translation = glm::vec3(0.0f, 0.0f, 0.0f);
 };

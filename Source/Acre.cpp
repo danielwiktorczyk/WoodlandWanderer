@@ -3,6 +3,7 @@
 Acre::Acre(glm::vec3 translation) {
 	this->translation = translation;
 	this->rendered = false;
+	this->initialized = false;
 
 	this->platform = Model(AssetsService::getInstance()->getCube().getVAO(), AssetsService::getInstance()->getCube().getVectorSize(), darkPurple);
 	glm::mat4 platformTransformMatrix = glm::mat4(1.0f);

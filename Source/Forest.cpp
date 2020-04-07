@@ -12,13 +12,6 @@ Forest::Forest(Snowman& snowman)
 	this->acres.resize(ForestWidth);
 	for (int i = 0; i < ForestWidth; ++i)
 		this->acres[i].resize(ForestWidth);
-	int upperBound = (ForestWidth - 1) / 2;
-	int lowerBound = -upperBound;
-	int midpoint = (ForestWidth + 1) / 2;
-	for (int i = 0; i < ForestWidth; i++)
-		for (int j = 0; j < ForestWidth; j++) // TODO not all of them at once!
-			acres[i][j] = Acre(glm::vec3(10.0f * AcreWidth * (lowerBound + i), 0.0f, 10.0f * AcreWidth * (lowerBound + j)));
-
 }
 
 void Forest::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
@@ -28,25 +21,24 @@ void Forest::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation
 		for (int j = 0; j < ForestWidth; j++)
 			acres[i][j].setRendered(false);
 
-	int upperBound = (ForestWidth - 1) / 2;
-	int lowerBound = -upperBound;
-	int midpoint = (ForestWidth) / 2;
-	
 	float x = this->snowman.origin.x;
 	float z = this->snowman.origin.z;
-	int activeAcreInX = midpoint + 1 + ((x - AcreWidth * TileWidth / 2) / (AcreWidth * TileWidth));
-	int activeAcreInZ = midpoint  + 1 + ((z - AcreWidth * TileWidth / 2) / (AcreWidth * TileWidth));
-	acres[activeAcreInX][activeAcreInZ].setRendered(true);
-	acres[activeAcreInX][activeAcreInZ + 1].setRendered(true);
-	acres[activeAcreInX][activeAcreInZ - 1].setRendered(true);
-	acres[activeAcreInX + 1][activeAcreInZ].setRendered(true);
-	acres[activeAcreInX + 1][activeAcreInZ + 1].setRendered(true);
-	acres[activeAcreInX + 1][activeAcreInZ - 1].setRendered(true);
-	acres[activeAcreInX - 1][activeAcreInZ].setRendered(true);
-	acres[activeAcreInX - 1][activeAcreInZ + 1].setRendered(true);
-	acres[activeAcreInX - 1][activeAcreInZ - 1].setRendered(true);
+	int midpoint = (ForestWidth) / 2;
+	int upperBound = (ForestWidth - 1) / 2;
+	int lowerBound = -upperBound;
+	int snowmanAcreInX = midpoint + 1 + ((x - AcreWidth * TileWidth / 2) / (AcreWidth * TileWidth));
+	int snowmanAcreInZ = midpoint + 1 + ((z - AcreWidth * TileWidth / 2) / (AcreWidth * TileWidth));
 
-
+	for (int i = snowmanAcreInX - 1; i <= snowmanAcreInX + 1; i++) {
+		for (int j = snowmanAcreInZ - 1; j <= snowmanAcreInZ + 1; j++) {
+			if (!acres[i][j].isInitialized()) {
+				acres[i][j] = Acre(glm::vec3(AcreWidth * TileWidth * (i - midpoint), 0.0f, AcreWidth * TileWidth * (j - midpoint)));
+				acres[i][j].setInitialized(true);
+			}
+			acres[i][j].setRendered(true);
+		}
+	}
+		
 	for (int i = 0; i < ForestWidth; i++)
 		for (int j = 0; j < ForestWidth; j++)
 			acres[i][j].draw(worldMatrixLocation, colorLocation);
