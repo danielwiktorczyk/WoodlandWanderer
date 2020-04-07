@@ -11,7 +11,7 @@
 #include "Snowman.h"
 #include "Assets.h"
 
-#define ForestWidth 121
+#define ForestWidth 169
 
 class Forest {
 public: 

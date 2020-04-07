@@ -16,7 +16,7 @@ Firefly::Firefly(GLuint VAO, GLuint numVertices, glm::vec3 color)
 
 void Firefly::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
 	
-	this->animation += 0.001;
+	this->animation += 0.005;
 	if (this->animation >= 6.3)
 		this->animation = 0.0;
 

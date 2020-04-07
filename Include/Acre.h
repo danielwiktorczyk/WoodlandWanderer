@@ -10,8 +10,8 @@
 #include "Tile.h"
 #include "../Include/Assets.h"
 
-//#define Width 3
-#define AcreWidth 9
+//#define AcreWidth 3 // for testing and visualizing
+#define AcreWidth 9 // for production
 
 class Acre {
 public:
@@ -20,10 +20,14 @@ public:
 	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 	void setTranslationMatrix(glm::vec3 translation) { this->translation = translation; };
 	void setRendered(bool rendered) { this->rendered = rendered; };
+	bool isRendered() { return this->rendered; };
+	void setInitialized(bool initialized) { this->initialized = initialized; };
+	bool isInitialized() { return this->initialized; };
 
 private:
 	Model platform;
 	glm::vec3 translation = glm::vec3(1.0f, 1.0f, 1.0f);
 	std::vector< std::vector<Tile> > tiles; // M x M square, where M is ODD
 	bool rendered;
+	bool initialized;
 };
