@@ -86,7 +86,8 @@ Tile::Tile(glm::vec3 translation) {
 
 	this->occupant.setModelTransformMatrix(occupantPosition);
 
-	if (rand() % 10 == 0) {
+	int fireflyChance = 100;
+	if (rand() % 100 <= fireflyChance) {
 		this->firefly = Firefly(AssetsService::getInstance()->getSphere().getVAO(), AssetsService::getInstance()->getSphere().getVectorSize(), yellow);
 		
 		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), this->translation);
