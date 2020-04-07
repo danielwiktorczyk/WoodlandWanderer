@@ -85,9 +85,17 @@ Tile::Tile(glm::vec3 translation) {
 	occupantPosition = glm::rotate(occupantPosition, randRotate, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	this->occupant.setModelTransformMatrix(occupantPosition);
+
+	if (rand() % 10 == 0) {
+		this->firefly = Firefly(AssetsService::getInstance()->getSphere().getVAO(), AssetsService::getInstance()->getSphere().getVectorSize(), yellow);
+		
+		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), this->translation);
+		this->firefly.setModelTransformMatrix(translationMatrix * this->firefly.getModelTransformMatrix());
+	}
 }
 
 void Tile::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
 	//this->platform.draw(worldMatrixLocation, colorLocation);
 	this->occupant.draw(worldMatrixLocation, colorLocation);
+	this->firefly.draw(worldMatrixLocation, colorLocation);
 }

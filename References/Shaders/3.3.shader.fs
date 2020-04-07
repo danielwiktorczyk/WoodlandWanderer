@@ -12,7 +12,8 @@ out vec4 FragColor;
 void main() {
 // Add Ambient light, part 1/3 for Phong Point Lighting
 	vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
-	float ambientFactor = 0.24;
+	//float ambientFactor = 0.01;
+	float ambientFactor = 0.1;
 	vec3 ambientLight = ambientFactor * lightColor;
 		
 // Add Diffuse lighting, part 2/3 for Phong Point Lighting
@@ -22,13 +23,14 @@ void main() {
 	vec3 diffusedLight = diff * lightColor; // Diffuse impact
 		
 // Add Specular lighting, part 3/3 for Phong Point Lighting
-	float specularStrength = 0.8;
+	float specularStrength = 0.01;
 	vec3 viewDirection = normalize(viewPosition - FragPos);
 	vec3 reflectDirection = reflect(-lightDirection, norm);
-	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), 16);
+	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), 2);
 	vec3 specularLight = specularStrength * spec * lightColor;
 		
 // Result of Phong Point Lighting: 
-	vec3 result = (ambientLight + diffusedLight + specularLight) * objectColor;
+	//vec3 result = (ambientLight + diffusedLight + specularLight) * objectColor;
+	vec3 result = (ambientLight + specularLight) * objectColor;
 	FragColor = vec4(result, 1.0f);
 };

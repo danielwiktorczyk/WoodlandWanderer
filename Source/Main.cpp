@@ -147,7 +147,7 @@ int main(int argc, char* argv[]) {
 
 		glm::mat4 gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
 		glm::mat4 currentGridLineMatrix;
-		for (int i = -5; i < 5; i++) {
+		for (int i = -ForestWidth; i < ForestWidth; i++) {
 			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, 5.0f + i * 10.0f)) * gridLineMatrix;
 			glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
 			glUniform3fv(colorLocation, 1, value_ptr(gridColor));
@@ -155,7 +155,7 @@ int main(int argc, char* argv[]) {
 			glDrawArrays(GL_TRIANGLES, 30, 36);
 		}
 		gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.02f, 100.0f));
-		for (int i = -5; i < 5; i++) {
+		for (int i = -ForestWidth; i < ForestWidth; i++) {
 			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(5.0f + i * 10.0f, -0.01f, 0.0f)) * gridLineMatrix;
 			glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
 			glUniform3fv(colorLocation, 1, value_ptr(gridColor));
@@ -165,7 +165,6 @@ int main(int argc, char* argv[]) {
 
 		// Abstractions
 		forest.draw(worldMatrixLocation, colorLocation);
-		acre.draw(worldMatrixLocation, colorLocation);
 
 		// Light
 		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
