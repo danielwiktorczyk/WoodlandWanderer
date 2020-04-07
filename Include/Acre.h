@@ -10,8 +10,8 @@
 #include "Tile.h"
 #include "../Include/Assets.h"
 
-//#define Width 9
-#define AcreWidth 3
+//#define Width 3
+#define AcreWidth 9
 
 class Acre {
 public:
