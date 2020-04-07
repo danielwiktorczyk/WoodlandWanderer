@@ -3,8 +3,10 @@
 Firefly::Firefly(GLuint VAO, GLuint numVertices, glm::vec3 color)
 	: NonCollidableModel(VAO, numVertices, color) { 
 
+
 	glm::mat4 transformMatrix = glm::mat4(1.0f);
-	transformMatrix = glm::translate(transformMatrix, glm::vec3(0.0f, +5.0f, 0.0f));
+	float fireflyOffset = 6.0f - 5 * sin((rand() % 314) / 3.14f);
+	transformMatrix = glm::translate(transformMatrix, glm::vec3(fireflyOffset, fireflyOffset, fireflyOffset));
 	transformMatrix = glm::scale(transformMatrix, glm::vec3(0.14f, 0.14f, 0.14f));
 
 	this->setModelTransformMatrix(transformMatrix);
