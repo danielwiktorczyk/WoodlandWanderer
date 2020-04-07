@@ -28,6 +28,6 @@ private:
 	Model platform;
 	glm::vec3 translation = glm::vec3(1.0f, 1.0f, 1.0f);
 	std::vector< std::vector<Tile> > tiles; // M x M square, where M is ODD
-	bool rendered;
-	bool initialized;
+	bool rendered; // visible, to be drawn each loop
+	bool initialized; // not - default
 };

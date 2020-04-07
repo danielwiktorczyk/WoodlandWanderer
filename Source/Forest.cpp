@@ -12,7 +12,6 @@ Forest::Forest(Snowman& snowman)
 	this->acres.resize(ForestWidth);
 	for (int i = 0; i < ForestWidth; ++i)
 		this->acres[i].resize(ForestWidth);
-
 }
 
 void Forest::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
@@ -40,7 +39,6 @@ void Forest::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation
 		}
 	}
 		
-
 	for (int i = 0; i < ForestWidth; i++)
 		for (int j = 0; j < ForestWidth; j++)
 			acres[i][j].draw(worldMatrixLocation, colorLocation);

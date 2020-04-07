@@ -120,8 +120,7 @@ int main(int argc, char* argv[]) {
 	//////////////////////////// Light ////////////////////////////////
 	///////////////////////////////////////////////////////////////////
 
-	glm::vec3 lightPosition = glm::vec3(15.0f, 20.0f, 5.0f);
-	glUniform3fv(lightLocation, 1, value_ptr(lightPosition));
+	glm::vec3 lightPosition = glm::vec3(15.0f, 1000.0f, 5.0f);
 
 	///////////////////////////////////////////////////////////////////
 	///////////////////////// Render Loop /////////////////////////////
@@ -169,7 +168,6 @@ int main(int argc, char* argv[]) {
 
 		// Light
 		glm::mat4 lightBulbMatrix = translate(glm::mat4(1.0f), lightPosition) * scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
-		glUniform3fv(lightLocation, 1, value_ptr(lightPosition));
 		light.setModelTransformMatrix(lightBulbMatrix);
 		light.draw(worldMatrixLocation, colorLocation);
 
