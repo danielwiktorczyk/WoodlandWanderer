@@ -5,7 +5,7 @@ Firefly::Firefly(GLuint VAO, GLuint numVertices, glm::vec3 color)
 
 	glm::mat4 transformMatrix = glm::mat4(1.0f);
 	transformMatrix = glm::translate(transformMatrix, glm::vec3(0.0f, +5.0f, 0.0f));
-	transformMatrix = glm::scale(transformMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+	transformMatrix = glm::scale(transformMatrix, glm::vec3(0.14f, 0.14f, 0.14f));
 
 	this->setModelTransformMatrix(transformMatrix);
 	this->animation = (rand() % 6) * 1.0;
