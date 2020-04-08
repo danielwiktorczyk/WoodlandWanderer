@@ -42,6 +42,7 @@
     <ClInclude Include="..\Include\Main.h" />
     <ClInclude Include="..\Include\NonCollidableModel.h" />
     <ClInclude Include="..\Include\OBJloader.h" />
+    <ClInclude Include="..\Include\Parameters.h" />
     <ClInclude Include="..\Include\SmallRock.h" />
     <ClInclude Include="..\Include\Snowman.h" />
     <ClInclude Include="..\Include\Tile.h" />

@@ -1,8 +1,9 @@
 #pragma once
-#pragma once
 #include "Model.h"
 #include "../Include/Colours.h"
 #include "../Include/Assets.h"
+#include "Firefly.h"
+#include "Parameters.h"
 #include "Tree.h"
 #include "Grass.h"
 #include "BigRock.h"
@@ -16,9 +17,6 @@
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
-#include "Firefly.h"
-
-#define TileWidth 10.0f
 
 class Tile {
 public: 
@@ -28,6 +26,7 @@ public:
 	
 	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 	void setTranslation(glm::vec3 translation) { this->translation = translation; };
+	Model* getOccupant() { return this->occupant; }
 
 private:
 	Model platform;

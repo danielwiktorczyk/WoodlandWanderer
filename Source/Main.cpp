@@ -11,7 +11,7 @@
 * Daniel  Wiktorczyk - 40060894
 *
 *
-* SOURCES
+* RESOURCES
 * - Lab tutorials & learnopengl.com
 * - Simple grass:        https://www.blendswap.com/blend/24539
 * - Low Poly trees pack: https://www.blendswap.com/blend/23720

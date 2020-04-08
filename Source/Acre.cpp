@@ -31,3 +31,19 @@ void Acre::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) 
 				tiles[i][j].draw(worldMatrixLocation, colorLocation);
 	}
 }
+
+std::vector<CollidableModel> Acre::getAllCollidables() {
+	std::vector<CollidableModel> collidables;
+	
+	for (int i = 0; i < AcreWidth; i++) {
+		for (int j = 0; j < AcreWidth; j++) {
+			Model* occupant = tiles[i][j].getOccupant();
+			typeid(occupant);
+			//if (typeid(occupant) == typeid(CollidableModel)) {
+			//	collidables.emplace_back(occupant);
+			//}
+		}
+	}
+		
+	return collidables;
+}

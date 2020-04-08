@@ -111,6 +111,12 @@
     <ClInclude Include="..\Include\Firefly.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\Camera.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Parameters.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\Include\Tree.h">
       <Filter>Include Files</Filter>
     </ClInclude>
