@@ -247,7 +247,7 @@ void Snowman::translateSnowman(GLFWwindow* window, const bool& shift, bool& canM
 	}
 
 	// Move snowman down (- z direction)
-	if (moveDown && keyS){
+	if (moveDown && keyS) {
 		if (!shift) {
 			this->origin.x -= sin(this->rotation) * snowmanTranslationSpeed;
 			this->origin.z -= cos(this->rotation) * snowmanTranslationSpeed;
@@ -283,24 +283,34 @@ void Snowman::randomTranslationSnowman(GLFWwindow* window, const bool& shift, bo
 * Check collision of the snowman to another collider object using its vec3
 */
 bool Snowman::CheckCollision(std::vector<CollidableModel> colliders) {
- 	bool collisionX = false;
+	bool collisionX = false;
 	bool collisionZ = false;
 
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
 		glm::vec3 scaleCollider = collider.getColliderScale();
 
-		collisionX = origin.x + (positionCollider.x * scaleCollider.x) >= positionCollider.x &&
-			positionCollider.x + (positionCollider.x * scaleCollider.x) >= origin.x;
+		collisionX = origin.x >= positionCollider.x &&
+					 positionCollider.x >= origin.x;
 
-		collisionZ = origin.z + (positionCollider.z * scaleCollider.z) >= positionCollider.z &&
-			positionCollider.z + (positionCollider.z * scaleCollider.z) >= origin.z;
+		if (collisionX) {
+			keyD = false;
+			keyA = false;
+		}
+		else {
+			keyD = true;
+			keyA = true;
+		}
+
+		collisionZ = origin.z >= positionCollider.z &&
+					 positionCollider.z >= origin.z;
 
 		if (collisionX && collisionZ) {
 			break;
 		}
 	}
 
+	std::cout << collisionX << " " << collisionZ << std::endl;
 	return collisionX && collisionZ;
 }
 
@@ -308,16 +318,33 @@ void Snowman::CheckCollisionX(std::vector<CollidableModel> colliders, bool isCol
 
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
-		glm::vec3 scaleCollider = collider.getColliderScale();
+
+		//if (isColliding) {
+		//	//std::cout << "isColling is true!" << std::endl;
+		//	//std::cout << "origin.x: " << origin.x << std::endl;
+		//	//std::cout << "origin.x + 1.75: " << origin.x + 1.75 << std::endl;
+
+		//	//std::cout << "collider.x: " << positionCollider.x << std::endl;
+		//	//std::cout << "collider.x + 1.75: " << positionCollider.x + 1.75 << std::endl;
+		//	//
+		//	//std::cout << "origin.z: " << origin.z << std::endl;
+		//	//std::cout << "origin.z + 1.75: " << origin.z + 1.75 << std::endl;
+
+		//	//std::cout << "collider.z: " << positionCollider.z << std::endl;
+		//	//std::cout << "collider.z + 1.75: " << positionCollider.z + 1.75 << std::endl;
+
+		//	std::cout << "hi" << std::endl;
+		//}
+
 		// keyA
-		if ((origin.x + (positionCollider.x * scaleCollider.x) - positionCollider.x) > 0 &&
-			(static_cast<double>(origin.x) + static_cast<double>(positionCollider.x) * scaleCollider.x - positionCollider.x) < 0.1 && isColliding) {
+		if ((origin.x - positionCollider.x) > 0 &&
+			(origin.x - positionCollider.x) < 0.1 && isColliding) {
 			keyA = false;
 			keyD = true;
 		}
 		// keyD
-		if ((positionCollider.x + (positionCollider.x * scaleCollider.x) - origin.x) > 0 &&
-			(static_cast<double>(positionCollider.x) + static_cast<double>(positionCollider.x) * scaleCollider.x - origin.x) < 0.1 && isColliding) {
+		else if ((positionCollider.x + 1.75f - origin.x) > 0 &&
+			(positionCollider.x + 1.75f - origin.x) < 0.1 && isColliding) {
 			keyA = false;
 			keyD = true;
 		}
@@ -332,16 +359,35 @@ void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isCol
 
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
-		glm::vec3 scaleCollider = collider.getColliderScale();
-		// keyA
-		if ((origin.z + (positionCollider.z * scaleCollider.z) - positionCollider.x) > 0 &&
-			(static_cast<double>(origin.z) + static_cast<double>(positionCollider.z) * scaleCollider.z - positionCollider.z) < 0.1 && isColliding) {
+
+		//if (isColliding) {
+		//	//std::cout << "isColling is true!" << std::endl;
+		//	//std::cout << "origin.x: " << origin.x << std::endl;
+		//	//std::cout << "origin.x + 1.75: " << origin.x + 1.75 << std::endl;
+
+		//	//std::cout << "collider.x: " << positionCollider.x << std::endl;
+		//	//std::cout << "collider.x + 1.75: " << positionCollider.x + 1.75 << std::endl;
+		//	//
+		//	//std::cout << "origin.z: " << origin.z << std::endl;
+		//	//std::cout << "origin.z + 1.75: " << origin.z + 1.75 << std::endl;
+
+		//	//std::cout << "collider.z: " << positionCollider.z << std::endl;
+		//	//std::cout << "collider.z + 1.75: " << positionCollider.z + 1.75 << std::endl;
+
+		//	std::cout << "hi" << std::endl;
+		//}
+
+		// keyW
+		if ((origin.z + 4.0f - positionCollider.z) > 0 &&
+			(origin.z + 4.0f - positionCollider.z) < 1.0f && isColliding) {
+			std::cout << "keyW is false" << std::endl;
+
 			keyW = false;
 			keyS = true;
 		}
-		// keyD
-		if ((positionCollider.z + (positionCollider.z * scaleCollider.z) - origin.z) > 0 &&
-			(static_cast<double>(positionCollider.z) + static_cast<double>(positionCollider.z) * scaleCollider.z - origin.z) < 0.1 && isColliding) {
+		// keyS
+		else if ((positionCollider.z + 1.5f - origin.z) > 0 &&
+				 (positionCollider.z + 1.5f - origin.z) < 0.1 && isColliding) {
 			keyW = true;
 			keyS = false;
 		}

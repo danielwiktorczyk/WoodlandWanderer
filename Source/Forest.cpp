@@ -59,8 +59,8 @@ std::vector<CollidableModel> Forest::getNearbyCollidables() {
 		for (int j = snowmanAcreInZ - 1; j <= snowmanAcreInZ + 1; j++) { // for the 3 acres from snowman's front to rear
 			std::vector<CollidableModel> collidablesInAcre = acres[i][j].getAllCollidables();
 			for (auto collidable : collidablesInAcre) {
-				if (collidable.getColliderPosition().x - snowmanX <= 4.0f && 
-					collidable.getColliderPosition().z - snowmanZ <= 4.0f)
+				if (collidable.getColliderPosition().x - snowmanX <= 2.0f && 
+					collidable.getColliderPosition().z - snowmanZ <= 2.0f)
 					nearbyCollidables.emplace_back(collidable);
 			}
 		}

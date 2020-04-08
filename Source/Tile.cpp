@@ -82,7 +82,7 @@ Tile::Tile(glm::vec3 translation) {
 	occupantPosition = glm::translate(occupantPosition, glm::vec3(randTranslateX, 0.0f, randTransalteY));
 	occupantPosition = glm::translate(occupantPosition, translation);
 	occupantPosition = glm::scale(occupantPosition, glm::vec3(randScale, randScale, randScale));
-	occupantPosition = glm::rotate(occupantPosition, randRotate, glm::vec3(0.0f, 1.0f, 0.0f));
+	//occupantPosition = glm::rotate(occupantPosition, randRotate, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	this->occupant->setModelTransformMatrix(occupantPosition);
 

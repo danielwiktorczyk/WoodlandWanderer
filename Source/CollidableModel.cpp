@@ -49,25 +49,23 @@ void CollidableModel::draw(const GLuint& worldMatrixLocation, const GLuint& colo
 }
 
 glm::vec3 CollidableModel::getColliderPosition() {
-	glm::mat4 transformation;
 	glm::vec3 scale;
 	glm::quat rotation;
 	glm::vec3 translation;
 	glm::vec3 skew;
 	glm::vec4 perspective;
-	glm::decompose(transformation, scale, rotation, translation, skew, perspective);
+	glm::decompose(this->colliderTransformMatrix, scale, rotation, translation, skew, perspective);
 
 	return translation;
 }
 
 glm::vec3 CollidableModel::getColliderScale() {
-	glm::mat4 transformation;
 	glm::vec3 scale;
 	glm::quat rotation;
 	glm::vec3 translation;
 	glm::vec3 skew;
 	glm::vec4 perspective;
-	glm::decompose(transformation, scale, rotation, translation, skew, perspective);
+	glm::decompose(this->colliderTransformMatrix, scale, rotation, translation, skew, perspective);
 
-	return scale;
+	return { this->colliderTransformMatrix[0].x, 0, this->colliderTransformMatrix[0].z };
 }
