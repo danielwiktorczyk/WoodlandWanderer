@@ -15,12 +15,13 @@ public:
 	virtual ~CollidableModel();
 
 	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) override;
-	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) override;
 	glm::mat4 getColliderTransformMatrix() { return colliderTransformMatrix; }
-	GLuint getColliderVAO() { return colliderVAO; }
+	GLuint    getColliderVAO() { return colliderVAO; }
 	glm::vec3 getColliderPosition();
 	glm::vec3 getColliderScale();
-	glm::vec3 getCollidableDimensions();
+	glm::vec3 getCollidableDimensions() { return glm::vec3(this->getColliderScale().x, 0, this->getColliderScale().z); };
+	//void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) override;
+
 private:
 	GLuint colliderVAO;
 	glm::mat4 colliderTransformMatrix;

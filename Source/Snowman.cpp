@@ -281,12 +281,11 @@ void Snowman::randomTranslationSnowman(GLFWwindow* window, const bool& shift, bo
 
 /**
 * Check collision of the snowman to another collider object using its vec3
+* @return true if the object is colliding & false otherwise.
 */
 bool Snowman::CheckCollision(std::vector<CollidableModel> colliders) {
 	bool collisionX = false;
 	bool collisionZ = false;
-
-	bool startsCollide = false;
 
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
@@ -299,29 +298,32 @@ bool Snowman::CheckCollision(std::vector<CollidableModel> colliders) {
 					 positionCollider.z + collider.getCollidableDimensions().z >= origin.z;
 
 		if (collisionX && collisionZ) {
-			startsCollide = true;
 			break;
 		}
 	}
 
-	std::cout << collisionX << " " << collisionZ << std::endl;
+	//std::cout << collisionX << " " << collisionZ << std::endl; --> uncomment for debug purpose. 
 	return collisionX && collisionZ;
 }
 
+/**
+* If the snowman is colliding, check if it is colliding on the x axis
+* Disabled the key associated that is going in the direction of the collision
+*/
 void Snowman::CheckCollisionX(std::vector<CollidableModel> colliders, bool isColliding) {
 
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
 
 		// keyA
-		if (((origin.x) - positionCollider.x) > -10.f &&
-			(origin.x) - positionCollider.x < 0.0f && isColliding) {
+		if ((origin.x - positionCollider.x) > -10.f &&
+			(origin.x - positionCollider.x) < -1.0f && isColliding) {
 			keyA = false;
 			keyD = true;
 		}
 		// keyD
-		else if (((positionCollider.x) - origin.x) > -10.0f &&
-			(positionCollider.x - origin.x) < 0.0f && isColliding) {
+		else if ((positionCollider.x - origin.x) > -10.0f &&
+				 (positionCollider.x - origin.x) <  0.0f  && isColliding) {
 			keyA = true;
 			keyD = false;
 		}
@@ -332,14 +334,18 @@ void Snowman::CheckCollisionX(std::vector<CollidableModel> colliders, bool isCol
 	}
 }
 
+/**
+* If the snowman is colliding, check if it is colliding on the z axis
+* Disabled the key associated that is going in the direction of the collision
+*/
 void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isColliding) {
 
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
 
 		// keyW
-		if (((origin.z) - positionCollider.z) > -10.0f &&
-			((origin.z) - positionCollider.z) < 0.0f && isColliding) {
+		if ((origin.z - positionCollider.z) > -10.0f &&
+			(origin.z - positionCollider.z) < -1.0f  && isColliding) {
 
 			keyW = false;
 			keyS = true;
@@ -357,9 +363,11 @@ void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isCol
 	}
 }
 
-
-glm::vec3 Snowman::getDimensions()
-{
+/**
+* Get the dimensions of the snowman
+* @return snowman dimensions
+*/
+glm::vec3 Snowman::getDimensions() {
 	float width = scaleFactor * chubbyFactor * 4.0;
 	float height = scaleFactor * (2.0f + 9.5f - 0.5f * cos(2.0f * animate));
 

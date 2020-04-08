@@ -22,32 +22,8 @@ void CollidableModel::setModelTransformMatrix(glm::mat4 modelTransformMatrix) {
 };
 
 /**
-* DEBUG: Overloading Model::draw() to draw the collider box
+* Get the collider's position from the transformation matrix
 */
-void CollidableModel::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
-	// This is for drawing collidable object
-	glDisable(GL_CULL_FACE);
-
-	glBindVertexArray(this->getVAO());
-	glBindBuffer(GL_ARRAY_BUFFER, this->getVAO());
-
-	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &(this->getModelTransformMatrix())[0][0]);
-	glUniform3fv(colorLocation, 1, value_ptr(this->getColor()));
-
-	glDrawArrays(GL_TRIANGLES, 0, this->getNumVertices());
-
-	// This is for drawing the collider box for Debugging
-
-	glBindVertexArray(this->getColliderVAO());
-	glBindBuffer(GL_ARRAY_BUFFER, this->getColliderVAO());
-
-	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &(this->getColliderTransformMatrix())[0][0]);
-	glUniform3fv(colorLocation, 1, value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
-
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	glEnable(GL_CULL_FACE);
-}
-
 glm::vec3 CollidableModel::getColliderPosition() {
 	glm::vec3 scale;
 	glm::quat rotation;
@@ -59,6 +35,9 @@ glm::vec3 CollidableModel::getColliderPosition() {
 	return translation;
 }
 
+/**
+* Get the collider's scale from the transformation matrix
+*/
 glm::vec3 CollidableModel::getColliderScale() {
 	glm::vec3 scale;
 	glm::quat rotation;
@@ -70,6 +49,29 @@ glm::vec3 CollidableModel::getColliderScale() {
 	return scale;
 }
 
-glm::vec3 CollidableModel::getCollidableDimensions() {
-	return glm::vec3(this->getColliderScale().x, 0, this->getColliderScale().z);
-}
+/**
+* DEBUG: Overloading Model::draw() to draw the collider box
+*/
+//void CollidableModel::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
+//	// This is for drawing collidable object
+//	glDisable(GL_CULL_FACE);
+//
+//	glBindVertexArray(this->getVAO());
+//	glBindBuffer(GL_ARRAY_BUFFER, this->getVAO());
+//
+//	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &(this->getModelTransformMatrix())[0][0]);
+//	glUniform3fv(colorLocation, 1, value_ptr(this->getColor()));
+//
+//	glDrawArrays(GL_TRIANGLES, 0, this->getNumVertices());
+//
+//	// This is for drawing the collider box for Debugging
+//
+//	glBindVertexArray(this->getColliderVAO());
+//	glBindBuffer(GL_ARRAY_BUFFER, this->getColliderVAO());
+//
+//	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &(this->getColliderTransformMatrix())[0][0]);
+//	glUniform3fv(colorLocation, 1, value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
+//
+//	glDrawArrays(GL_TRIANGLES, 0, 36);
+//	glEnable(GL_CULL_FACE);
+//}
