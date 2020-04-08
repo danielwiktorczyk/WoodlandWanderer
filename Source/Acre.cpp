@@ -32,14 +32,14 @@ void Acre::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) 
 	}
 }
 
-std::vector<Model> Acre::getAllCollidables() {
-	std::vector<Model> collidables;
+std::vector<CollidableModel> Acre::getAllCollidables() {
+	std::vector<CollidableModel> collidables;
 	
 	for (int i = 0; i < AcreWidth; i++) {
 		for (int j = 0; j < AcreWidth; j++) {
 			Model* occupant = tiles[i][j].getOccupant();
-			if (occupant->isCollidable()) {
-				collidables.emplace_back(*occupant);
+			if (dynamic_cast<CollidableModel*>(occupant)) {
+				collidables.emplace_back(*(dynamic_cast<CollidableModel*>(occupant)));
 			}
 		}
 	}

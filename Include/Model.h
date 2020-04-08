@@ -16,9 +16,6 @@ public:
 
 	virtual void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 	
-	virtual glm::vec3 getColliderPosition() { return glm::vec3(1.0f); };
-	virtual glm::vec3 getColliderScale() { return glm::vec3(1.0f); };
-	virtual bool isCollidable() { return false; };
 	virtual void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->modelTransformMatrix = modelTransformMatrix; };
 	glm::mat4 getModelTransformMatrix() { return this->modelTransformMatrix; };
 	glm::vec3 getColor() { return this->color; };

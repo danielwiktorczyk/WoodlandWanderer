@@ -16,7 +16,7 @@ class Forest {
 public: 
 	Forest(Snowman& snowman);
 	void draw(const GLuint& worldMatrixLocationColor, const GLuint& colorLocation);
-	std::vector<Model> Forest::getNearbyCollidables();
+	std::vector<CollidableModel> Forest::getNearbyCollidables();
 private:
 	Model platform;
 	Snowman& snowman;
