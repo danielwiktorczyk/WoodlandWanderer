@@ -328,14 +328,14 @@ void Snowman::CheckCollisionX(std::vector<CollidableModel> colliders, bool isCol
 		//}
 
 		// keyA
-		if ((origin.x - positionCollider.x) > 0 &&
-			(origin.x - positionCollider.x) < 0.1 && isColliding) {
+		if (((origin.x) - positionCollider.x) > -10.f &&
+			(origin.x) - positionCollider.x < 0.0f && isColliding) {
 			keyA = false;
 			keyD = true;
 		}
 		// keyD
-		else if ((positionCollider.x + 1.75f - origin.x) > 0 &&
-			(positionCollider.x + 1.75f - origin.x) < 0.1 && isColliding) {
+		else if (((positionCollider.x) - origin.x) > -10.0f &&
+			(positionCollider.x - origin.x) < 0.0f && isColliding) {
 			keyA = false;
 			keyD = true;
 		}
@@ -369,16 +369,15 @@ void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isCol
 		//}
 
 		// keyW
-		if ((origin.z + 4.0f - positionCollider.z) > 0 &&
-			(origin.z + 4.0f - positionCollider.z) < 1.0f && isColliding) {
-			std::cout << "keyW is false" << std::endl;
+		if (((origin.z) - positionCollider.z) > -10.0f &&
+			((origin.z) - positionCollider.z) < 0.0f && isColliding) {
 
 			keyW = false;
 			keyS = true;
 		}
 		// keyS
-		else if ((positionCollider.z + 1.5f - origin.z) > 0 &&
-				 (positionCollider.z + 1.5f - origin.z) < 0.1 && isColliding) {
+		else if (((positionCollider.z + collider.getCollidableDimensions().z) - origin.z) > 0 &&
+				 ((positionCollider.z + collider.getCollidableDimensions().z) - origin.z) < 1.0f && isColliding) {
 			keyW = true;
 			keyS = false;
 		}
@@ -392,8 +391,8 @@ void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isCol
 
 glm::vec3 Snowman::getDimensions()
 {
-	float width = scaleFactor * scaleFactor * chubbyFactor * 4.0;
-	float height = scaleFactor * scaleFactor * (2.0f + 9.5f - 0.5f * cos(2.0f * animate));
+	float width = scaleFactor * chubbyFactor * 4.0;
+	float height = scaleFactor * (2.0f + 9.5f - 0.5f * cos(2.0f * animate));
 
 	return glm::vec3(width, height, width);
 }

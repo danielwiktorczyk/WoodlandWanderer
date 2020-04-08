@@ -174,8 +174,8 @@ int main(int argc, char* argv[]) {
 		//Snowman
 		std::vector<CollidableModel> collidables = forest.getNearbyCollidables();
 		bool checker = snowman.CheckCollision(collidables);
-		//snowman.CheckCollisionX(collidables, checker);
-		//snowman.CheckCollisionZ(collidables, checker);
+		snowman.CheckCollisionX(collidables, checker);
+		snowman.CheckCollisionZ(collidables, checker);
 		snowman.draw();
 		snowman.scaleSnowman(window, shift, canScaleIncrement);
 		snowman.rotateSnowman(window, shift, canRandomPlacement);
