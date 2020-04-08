@@ -286,6 +286,8 @@ bool Snowman::CheckCollision(std::vector<CollidableModel> colliders) {
 	bool collisionX = false;
 	bool collisionZ = false;
 
+	bool startsCollide = false;
+
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
 		glm::vec3 scaleCollider = collider.getColliderScale();
@@ -297,6 +299,7 @@ bool Snowman::CheckCollision(std::vector<CollidableModel> colliders) {
 					 positionCollider.z + collider.getCollidableDimensions().z >= origin.z;
 
 		if (collisionX && collisionZ) {
+			startsCollide = true;
 			break;
 		}
 	}
@@ -310,23 +313,6 @@ void Snowman::CheckCollisionX(std::vector<CollidableModel> colliders, bool isCol
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
 
-		//if (isColliding) {
-		//	//std::cout << "isColling is true!" << std::endl;
-		//	//std::cout << "origin.x: " << origin.x << std::endl;
-		//	//std::cout << "origin.x + 1.75: " << origin.x + 1.75 << std::endl;
-
-		//	//std::cout << "collider.x: " << positionCollider.x << std::endl;
-		//	//std::cout << "collider.x + 1.75: " << positionCollider.x + 1.75 << std::endl;
-		//	//
-		//	//std::cout << "origin.z: " << origin.z << std::endl;
-		//	//std::cout << "origin.z + 1.75: " << origin.z + 1.75 << std::endl;
-
-		//	//std::cout << "collider.z: " << positionCollider.z << std::endl;
-		//	//std::cout << "collider.z + 1.75: " << positionCollider.z + 1.75 << std::endl;
-
-		//	std::cout << "hi" << std::endl;
-		//}
-
 		// keyA
 		if (((origin.x) - positionCollider.x) > -10.f &&
 			(origin.x) - positionCollider.x < 0.0f && isColliding) {
@@ -336,8 +322,8 @@ void Snowman::CheckCollisionX(std::vector<CollidableModel> colliders, bool isCol
 		// keyD
 		else if (((positionCollider.x) - origin.x) > -10.0f &&
 			(positionCollider.x - origin.x) < 0.0f && isColliding) {
-			keyA = false;
-			keyD = true;
+			keyA = true;
+			keyD = false;
 		}
 		else {
 			keyA = true;
@@ -350,23 +336,6 @@ void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isCol
 
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
-
-		//if (isColliding) {
-		//	//std::cout << "isColling is true!" << std::endl;
-		//	//std::cout << "origin.x: " << origin.x << std::endl;
-		//	//std::cout << "origin.x + 1.75: " << origin.x + 1.75 << std::endl;
-
-		//	//std::cout << "collider.x: " << positionCollider.x << std::endl;
-		//	//std::cout << "collider.x + 1.75: " << positionCollider.x + 1.75 << std::endl;
-		//	//
-		//	//std::cout << "origin.z: " << origin.z << std::endl;
-		//	//std::cout << "origin.z + 1.75: " << origin.z + 1.75 << std::endl;
-
-		//	//std::cout << "collider.z: " << positionCollider.z << std::endl;
-		//	//std::cout << "collider.z + 1.75: " << positionCollider.z + 1.75 << std::endl;
-
-		//	std::cout << "hi" << std::endl;
-		//}
 
 		// keyW
 		if (((origin.z) - positionCollider.z) > -10.0f &&
