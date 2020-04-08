@@ -16,7 +16,7 @@ public:
 
 	virtual void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 	
-	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->modelTransformMatrix = modelTransformMatrix; };
+	virtual void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->modelTransformMatrix = modelTransformMatrix; };
 	glm::mat4 getModelTransformMatrix() { return this->modelTransformMatrix; };
 	glm::vec3 getColor() { return this->color; };
 	void setColor(glm::vec3 color) { this->color = color; };
