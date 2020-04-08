@@ -23,6 +23,7 @@
     <ClCompile Include="..\Source\OBJloader.cpp" />
     <ClCompile Include="..\Source\Snowman.cpp" />
     <ClCompile Include="..\Source\Tile.cpp" />
+    <ClCompile Include="..\Source\Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Acre.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="..\Include\OBJloader.h" />
     <ClInclude Include="..\Include\Snowman.h" />
     <ClInclude Include="..\Include\Tile.h" />
+    <ClInclude Include="..\Include\Tree.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\References\Shaders\3.3.shader.fs" />

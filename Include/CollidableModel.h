@@ -9,5 +9,13 @@
 
 class CollidableModel : public Model {
 public:
-	CollidableModel(GLuint VAO, GLuint numVertices, glm::vec3 color);
+	CollidableModel(GLuint VAO, GLuint colliderVAO, GLuint numVertices, glm::vec3 color);
+	virtual ~CollidableModel();
+	void setColliderTransformMatrix(glm::mat4 colliderMatrix);
+	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) override;
+	glm::mat4 getColliderTransformMatrix() { return colliderTransformMatrix; }
+	GLuint getColliderVAO() { return colliderVAO; }
+private:
+	GLuint colliderVAO;
+	glm::mat4 colliderTransformMatrix;
 };

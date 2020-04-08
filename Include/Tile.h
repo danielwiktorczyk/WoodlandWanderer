@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "../Include/Colours.h"
 #include "../Include/Assets.h"
+#include "Tree.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -18,15 +19,15 @@
 class Tile {
 public: 
 	Tile() = default;
+	~Tile();
 	Tile(glm::vec3 translation);
 	
 	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
-
 	void setTranslation(glm::vec3 translation) { this->translation = translation; };
 
 private:
 	Model platform;
-	Model occupant; 
+	Model* occupant; 
 	Firefly firefly;
 	glm::vec3 translation = glm::vec3(0.0f, 0.0f, 0.0f);
 };

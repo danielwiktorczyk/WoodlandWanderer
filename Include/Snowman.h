@@ -1,6 +1,7 @@
 #pragma once
 #define M_PI 3.1415926535897932384626433832795
 
+#include "CollidableModel.h";
 #include <GL/glew.h>    // Include GLEW - OpenGL Extension Wrangler
 #include <GLFW/glfw3.h> // cross-platform interface for creating a graphical context,
 #include <glm/glm.hpp>  // GLM is an optimized math library with syntax to similar to OpenGL Shading Language
@@ -28,6 +29,10 @@ public:
 	void rotateSnowman(GLFWwindow* window, const bool& shift, bool& canRotateIncrement);
 	void translateSnowman(GLFWwindow* window, const bool& shift, bool& canMoveIncrement);
 	void randomTranslationSnowman(GLFWwindow* window, const bool& shift, bool& canRandomPlacement);
+
+	bool CheckCollision(glm::vec3 collider);
+	void CheckCollisionX(glm::vec3& collider, bool isColliding);
+	void CheckCollisionZ(glm::vec3& collider, bool isColliding);
 
 	glm::vec3 origin;
 	glm::vec3 offset;
@@ -79,4 +84,10 @@ public:
 
 	float animate;
 	float animateHat;
+
+	bool keyA;
+	bool keyD;
+	bool keyW;
+	bool keyS;
+
 };

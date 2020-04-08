@@ -21,6 +21,11 @@ Snowman::Snowman(GLuint worldMatrixColorLoc,
 	this->animate = 0.0f;
 	this->animateHat = 0.0f;
 
+	this->keyA = true;
+	this->keyD = true;
+	this->keyW = true;
+	this->keyS = true;
+
 	update();
 }
 
@@ -272,4 +277,11 @@ void Snowman::randomTranslationSnowman(GLFWwindow* window, const bool& shift, bo
 		}
 	}
 	canRandomPlacement = !randomPlacement;
+}
+
+/**
+* Check collision of the snowman to another collider object using its vec3
+*/
+bool Snowman::CheckCollision(glm::vec3 collider) {
+	return true;
 }

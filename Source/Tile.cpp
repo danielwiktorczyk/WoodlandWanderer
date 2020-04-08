@@ -22,17 +22,17 @@ Tile::Tile(glm::vec3 translation) {
 			colour += turquoise;
 			switch (subcategory) {
 			case 0:
-				this->occupant = Model(AssetsService::getInstance()->getBallTree().getVAO(), AssetsService::getInstance()->getBallTree().getVectorSize(), colour);
+				this->occupant = new Tree(AssetsService::getInstance()->getBallTree().getVAO(), AssetsService::getInstance()->getBallTree().getVectorSize(), colour);
 				break;
 			case 1: 
 				//this->occupant = Model(skinnyTreeAsset, turquoise); // TODO this breaks
-				this->occupant = Model(AssetsService::getInstance()->getBallTree().getVAO(), AssetsService::getInstance()->getBallTree().getVectorSize(), colour);
+				this->occupant = new Tree(AssetsService::getInstance()->getBallTree().getVAO(), AssetsService::getInstance()->getBallTree().getVectorSize(), colour);
 				break;
 			case 2: 
-				this->occupant = Model(AssetsService::getInstance()->getPineTree().getVAO(), AssetsService::getInstance()->getPineTree().getVectorSize(), colour);
+				this->occupant = new Tree(AssetsService::getInstance()->getPineTree().getVAO(), AssetsService::getInstance()->getPineTree().getVectorSize(), colour);
 				break;
 			case 3: 
-				this->occupant = Model(AssetsService::getInstance()->getPetalTree().getVAO(), AssetsService::getInstance()->getPetalTree().getVectorSize(), colour);
+				this->occupant = new Tree(AssetsService::getInstance()->getPetalTree().getVAO(), AssetsService::getInstance()->getPetalTree().getVectorSize(), colour);
 				break;
 			}
 			break;
@@ -40,16 +40,16 @@ Tile::Tile(glm::vec3 translation) {
 			colour += green;
 			switch (subcategory) {
 			case 0:
-				this->occupant = Model(AssetsService::getInstance()->getGrass1().getVAO(), AssetsService::getInstance()->getGrass1().getVectorSize(), colour);
+				this->occupant = new Model(AssetsService::getInstance()->getGrass1().getVAO(), AssetsService::getInstance()->getGrass1().getVectorSize(), colour);
 				break;
 			case 1:
-				this->occupant = Model(AssetsService::getInstance()->getGrass2().getVAO(), AssetsService::getInstance()->getGrass2().getVectorSize(), colour);
+				this->occupant = new Model(AssetsService::getInstance()->getGrass2().getVAO(), AssetsService::getInstance()->getGrass2().getVectorSize(), colour);
 				break;
 			case 2:
-				this->occupant = Model(AssetsService::getInstance()->getGrass3().getVAO(), AssetsService::getInstance()->getGrass3().getVectorSize(), colour);
+				this->occupant = new Model(AssetsService::getInstance()->getGrass3().getVAO(), AssetsService::getInstance()->getGrass3().getVectorSize(), colour);
 				break;
 			case 3:
-				this->occupant = Model(AssetsService::getInstance()->getGrass4().getVAO(), AssetsService::getInstance()->getGrass4().getVectorSize(), colour);
+				this->occupant = new Model(AssetsService::getInstance()->getGrass4().getVAO(), AssetsService::getInstance()->getGrass4().getVectorSize(), colour);
 				break;
 			}
 			break;
@@ -57,16 +57,16 @@ Tile::Tile(glm::vec3 translation) {
 			colour += glm::vec3(0.5f, 0.1f, 0.1f);
 			switch (subcategory) {
 			case 0:
-				this->occupant = Model(AssetsService::getInstance()->getBoulderBig().getVAO(), AssetsService::getInstance()->getBoulderBig().getVectorSize(), colour);
+				this->occupant = new Model(AssetsService::getInstance()->getBoulderBig().getVAO(), AssetsService::getInstance()->getBoulderBig().getVectorSize(), colour);
 				break;
 			case 1:
-				this->occupant = Model(AssetsService::getInstance()->getBoulderMed().getVAO(), AssetsService::getInstance()->getBoulderMed().getVectorSize(), colour);
+				this->occupant = new Model(AssetsService::getInstance()->getBoulderMed().getVAO(), AssetsService::getInstance()->getBoulderMed().getVectorSize(), colour);
 				break;
 			case 2:
-				this->occupant = Model(AssetsService::getInstance()->getBoulderSmall().getVAO(), AssetsService::getInstance()->getBoulderSmall().getVectorSize(), colour);
+				this->occupant = new Model(AssetsService::getInstance()->getBoulderSmall().getVAO(), AssetsService::getInstance()->getBoulderSmall().getVectorSize(), colour);
 				break;
 			case 3:
-				this->occupant = Model(AssetsService::getInstance()->getBoulderTiny().getVAO(), AssetsService::getInstance()->getBoulderTiny().getVectorSize(), colour);
+				this->occupant = new Model(AssetsService::getInstance()->getBoulderTiny().getVAO(), AssetsService::getInstance()->getBoulderTiny().getVectorSize(), colour);
 				break;
 			}
 			break;
@@ -84,7 +84,7 @@ Tile::Tile(glm::vec3 translation) {
 	occupantPosition = glm::scale(occupantPosition, glm::vec3(randScale, randScale, randScale));
 	occupantPosition = glm::rotate(occupantPosition, randRotate, glm::vec3(0.0f, 1.0f, 0.0f));
 
-	this->occupant.setModelTransformMatrix(occupantPosition);
+	this->occupant->setModelTransformMatrix(occupantPosition);
 
 	int fireflyChance = 100;
 	if (rand() % 100 <= fireflyChance) {
@@ -95,8 +95,10 @@ Tile::Tile(glm::vec3 translation) {
 	}
 }
 
+Tile::~Tile() { }
+
 void Tile::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
 	//this->platform.draw(worldMatrixLocation, colorLocation);
-	this->occupant.draw(worldMatrixLocation, colorLocation);
+	this->occupant->draw(worldMatrixLocation, colorLocation);
 	this->firefly.draw(worldMatrixLocation, colorLocation);
 }

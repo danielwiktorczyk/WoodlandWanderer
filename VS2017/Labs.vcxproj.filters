@@ -58,6 +58,9 @@
     <ClCompile Include="..\Source\Firefly.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\OBJloader.h">
@@ -97,6 +100,9 @@
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\Firefly.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Tree.h">
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>
