@@ -172,6 +172,10 @@ int main(int argc, char* argv[]) {
 		light.draw(worldMatrixLocation, colorLocation);
 
 		//Snowman
+		std::vector<Model> collidables = forest.getNearbyCollidables();
+		bool checker = snowman.CheckCollision(collidables);
+		snowman.CheckCollisionX(collidables, checker);
+		snowman.CheckCollisionZ(collidables, checker);
 		snowman.draw();
 		snowman.scaleSnowman(window, shift, canScaleIncrement);
 		snowman.rotateSnowman(window, shift, canRandomPlacement);

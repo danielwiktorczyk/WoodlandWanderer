@@ -19,7 +19,7 @@ public:
 	glm::mat4 getColliderTransformMatrix() { return colliderTransformMatrix; }
 	GLuint getColliderVAO() { return colliderVAO; }
 	glm::vec3 getColliderPosition() override;
-	glm::vec3 getColliderScale();
+	glm::vec3 getColliderScale() override;
 private:
 	GLuint colliderVAO;
 	glm::mat4 colliderTransformMatrix;

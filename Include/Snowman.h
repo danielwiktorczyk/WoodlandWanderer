@@ -30,9 +30,9 @@ public:
 	void translateSnowman(GLFWwindow* window, const bool& shift, bool& canMoveIncrement);
 	void randomTranslationSnowman(GLFWwindow* window, const bool& shift, bool& canRandomPlacement);
 
-	bool CheckCollision(CollidableModel collider);
-	void CheckCollisionX(CollidableModel collider, bool isColliding);
-	void CheckCollisionZ(CollidableModel collider, bool isColliding);
+	bool CheckCollision(std::vector<Model> colliders);
+	void CheckCollisionX(std::vector<Model> colliders, bool isColliding);
+	void CheckCollisionZ(std::vector<Model> colliders, bool isColliding);
 
 	glm::vec3 origin;
 	glm::vec3 offset;
