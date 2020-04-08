@@ -17,6 +17,7 @@ Snowman::Snowman(GLuint worldMatrixColorLoc,
 	this->cubeVAO = theCubeVAO;
 	this->sphereVAO = theSphereVAO;
 	this->globalSpeed = 5.0f;
+	this->chubbyFactor = 1.3f;
 
 	this->animate = 0.0f;
 	this->animateHat = 0.0f;
@@ -35,7 +36,6 @@ void Snowman::update() {
 	glm::mat4 groupTranslation = translate(glm::mat4(1.0f), origin);
 	glm::mat4 groupScaling = scale(glm::mat4(1.0f), glm::vec3(scaleFactor));
 
-	float chubbyFactor = 1.3f;
 	leftFoot = groupTranslation * groupScaling * partRotation * translate(glm::mat4(1.0f), scaleFactor * (glm::vec3(-1.0f, 0.25f, 0.5f * sin(animate)))) * rotate(glm::mat4(1.0f), 0.25f * sin(animate), glm::vec3(1.0f, 125.0f, 0.0f)) * scale(glm::mat4(1.0f), chubbyFactor * scaleFactor * glm::vec3(1.0, 0.5, 1.0));
 	rightFoot = groupTranslation * groupScaling * partRotation * translate(glm::mat4(1.0f), scaleFactor * (glm::vec3(+1.0f, 0.25f, 0.5f * -sin(animate)))) * rotate(glm::mat4(1.0f), 0.25f * -sin(animate), glm::vec3(1.0f, 125.0f, 0.0f)) * scale(glm::mat4(1.0f), chubbyFactor * scaleFactor * glm::vec3(1.0, 0.5, 1.0));
 
@@ -398,3 +398,11 @@ void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isCol
 	}
 }
 
+
+glm::vec3 Snowman::getDimensions()
+{
+	float width = scaleFactor * scaleFactor * chubbyFactor * 4.0;
+	float height = scaleFactor * scaleFactor * (2.0f + 9.5f - 0.5f * cos(2.0f * animate));
+
+	return glm::vec3(width, height, width);
+}
