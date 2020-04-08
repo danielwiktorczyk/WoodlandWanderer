@@ -282,9 +282,9 @@ void Snowman::randomTranslationSnowman(GLFWwindow* window, const bool& shift, bo
 /**
 * Check collision of the snowman to another collider object using its vec3
 */
-bool Snowman::CheckCollision(std::vector<Model> colliders) {
-	bool collisionX;
-	bool collisionZ;
+bool Snowman::CheckCollision(std::vector<CollidableModel> colliders) {
+ 	bool collisionX = false;
+	bool collisionZ = false;
 
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
@@ -304,20 +304,20 @@ bool Snowman::CheckCollision(std::vector<Model> colliders) {
 	return collisionX && collisionZ;
 }
 
-void Snowman::CheckCollisionX(std::vector<Model> colliders, bool isColliding) {
+void Snowman::CheckCollisionX(std::vector<CollidableModel> colliders, bool isColliding) {
 
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
 		glm::vec3 scaleCollider = collider.getColliderScale();
 		// keyA
 		if ((origin.x + (positionCollider.x * scaleCollider.x) - positionCollider.x) > 0 &&
-			((static_cast<double>(origin.x + (positionCollider.x * scaleCollider.x))) - positionCollider.x) < 0.1 && isColliding) {
+			(static_cast<double>(origin.x) + static_cast<double>(positionCollider.x) * scaleCollider.x - positionCollider.x) < 0.1 && isColliding) {
 			keyA = false;
 			keyD = true;
 		}
 		// keyD
 		if ((positionCollider.x + (positionCollider.x * scaleCollider.x) - origin.x) > 0 &&
-			((static_cast<double>(positionCollider.x + (positionCollider.x * scaleCollider.x))) - origin.x) < 0.1 && isColliding) {
+			(static_cast<double>(positionCollider.x) + static_cast<double>(positionCollider.x) * scaleCollider.x - origin.x) < 0.1 && isColliding) {
 			keyA = false;
 			keyD = true;
 		}
@@ -328,20 +328,20 @@ void Snowman::CheckCollisionX(std::vector<Model> colliders, bool isColliding) {
 	}
 }
 
-void Snowman::CheckCollisionZ(std::vector<Model> colliders, bool isColliding) {
+void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isColliding) {
 
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
 		glm::vec3 scaleCollider = collider.getColliderScale();
 		// keyA
 		if ((origin.z + (positionCollider.z * scaleCollider.z) - positionCollider.x) > 0 &&
-			((static_cast<double>(origin.z + (positionCollider.z * scaleCollider.z))) - positionCollider.z) < 0.1 && isColliding) {
+			(static_cast<double>(origin.z) + static_cast<double>(positionCollider.z) * scaleCollider.z - positionCollider.z) < 0.1 && isColliding) {
 			keyW = false;
 			keyS = true;
 		}
 		// keyD
 		if ((positionCollider.z + (positionCollider.z * scaleCollider.z) - origin.z) > 0 &&
-			((static_cast<double>(positionCollider.z + (positionCollider.z * scaleCollider.z))) - origin.z) < 0.1 && isColliding) {
+			(static_cast<double>(positionCollider.z) + static_cast<double>(positionCollider.z) * scaleCollider.z - origin.z) < 0.1 && isColliding) {
 			keyW = true;
 			keyS = false;
 		}
