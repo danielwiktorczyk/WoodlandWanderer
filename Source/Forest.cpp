@@ -44,8 +44,8 @@ void Forest::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation
 			acres[i][j].draw(worldMatrixLocation, colorLocation);
 }
 
-std::vector<CollidableModel> Forest::getNearbyCollidables() {
-	std::vector<CollidableModel> nearbyCollidables;
+std::vector<Model> Forest::getNearbyCollidables() {
+	std::vector<Model> nearbyCollidables;
 	
 	float snowmanX = this->snowman.origin.x;
 	float snowmanZ = this->snowman.origin.z;
@@ -57,7 +57,7 @@ std::vector<CollidableModel> Forest::getNearbyCollidables() {
 
 	for (int i = snowmanAcreInX - 1; i <= snowmanAcreInX + 1; i++) { // for the 3 acres from snowman's left to right 
 		for (int j = snowmanAcreInZ - 1; j <= snowmanAcreInZ + 1; j++) { // for the 3 acres from snowman's front to rear
-			std::vector<CollidableModel> collidablesInAcre = acres[i][j].getAllCollidables();
+			std::vector<Model> collidablesInAcre = acres[i][j].getAllCollidables();
 			for (auto collidable : collidablesInAcre) {
 				if (collidable.getColliderPosition().x - snowmanX <= 10.0f
 					&& collidable.getColliderPosition().z - snowmanZ <= 10.0f)

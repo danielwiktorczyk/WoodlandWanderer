@@ -13,11 +13,12 @@ public:
 	CollidableModel(GLuint VAO, GLuint colliderVAO, GLuint numVertices, glm::vec3 color);
 	virtual ~CollidableModel();
 
+	virtual bool isCollidable() override { return true; };
 	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) override;
 	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) override;
 	glm::mat4 getColliderTransformMatrix() { return colliderTransformMatrix; }
 	GLuint getColliderVAO() { return colliderVAO; }
-	glm::vec3 getColliderPosition();
+	glm::vec3 getColliderPosition() override;
 	glm::vec3 getColliderScale();
 private:
 	GLuint colliderVAO;

@@ -22,7 +22,7 @@ public:
 	bool isRendered() { return this->rendered; };
 	void setInitialized(bool initialized) { this->initialized = initialized; };
 	bool isInitialized() { return this->initialized; };
-	std::vector<CollidableModel> getAllCollidables();
+	std::vector<Model> getAllCollidables();
 
 private:
 	Model platform;
