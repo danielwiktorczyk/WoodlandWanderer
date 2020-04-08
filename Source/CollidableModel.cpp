@@ -67,5 +67,9 @@ glm::vec3 CollidableModel::getColliderScale() {
 	glm::vec4 perspective;
 	glm::decompose(this->colliderTransformMatrix, scale, rotation, translation, skew, perspective);
 
-	return { this->colliderTransformMatrix[0].x, 0, this->colliderTransformMatrix[0].z };
+	return scale;
+}
+
+glm::vec3 CollidableModel::getCollidableDimensions() {
+	return glm::vec3(this->getColliderScale().x, 0, this->getColliderScale().z);
 }

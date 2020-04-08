@@ -20,6 +20,7 @@ public:
 	GLuint getColliderVAO() { return colliderVAO; }
 	glm::vec3 getColliderPosition();
 	glm::vec3 getColliderScale();
+	glm::vec3 getCollidableDimensions();
 private:
 	GLuint colliderVAO;
 	glm::mat4 colliderTransformMatrix;

@@ -290,20 +290,11 @@ bool Snowman::CheckCollision(std::vector<CollidableModel> colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
 		glm::vec3 scaleCollider = collider.getColliderScale();
 
-		collisionX = origin.x >= positionCollider.x &&
-					 positionCollider.x >= origin.x;
+		collisionX = origin.x + this->getDimensions().x >= positionCollider.x &&
+					 positionCollider.x + collider.getCollidableDimensions().x >= origin.x;
 
-		if (collisionX) {
-			keyD = false;
-			keyA = false;
-		}
-		else {
-			keyD = true;
-			keyA = true;
-		}
-
-		collisionZ = origin.z >= positionCollider.z &&
-					 positionCollider.z >= origin.z;
+		collisionZ = origin.z + this->getDimensions().z >= positionCollider.z &&
+					 positionCollider.z + collider.getCollidableDimensions().z >= origin.z;
 
 		if (collisionX && collisionZ) {
 			break;
