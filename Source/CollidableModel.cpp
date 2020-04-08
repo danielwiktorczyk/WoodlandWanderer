@@ -47,3 +47,27 @@ void CollidableModel::draw(const GLuint& worldMatrixLocation, const GLuint& colo
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glEnable(GL_CULL_FACE);
 }
+
+glm::vec3 CollidableModel::getColliderPosition() {
+	glm::mat4 transformation;
+	glm::vec3 scale;
+	glm::quat rotation;
+	glm::vec3 translation;
+	glm::vec3 skew;
+	glm::vec4 perspective;
+	glm::decompose(transformation, scale, rotation, translation, skew, perspective);
+
+	return translation;
+}
+
+glm::vec3 CollidableModel::getColliderScale() {
+	glm::mat4 transformation;
+	glm::vec3 scale;
+	glm::quat rotation;
+	glm::vec3 translation;
+	glm::vec3 skew;
+	glm::vec4 perspective;
+	glm::decompose(transformation, scale, rotation, translation, skew, perspective);
+
+	return scale;
+}

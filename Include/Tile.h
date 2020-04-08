@@ -4,6 +4,10 @@
 #include "../Include/Colours.h"
 #include "../Include/Assets.h"
 #include "Tree.h"
+#include "Grass.h"
+#include "BigRock.h"
+#include "SmallRock.h"
+
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

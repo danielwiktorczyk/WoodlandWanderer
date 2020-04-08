@@ -282,6 +282,58 @@ void Snowman::randomTranslationSnowman(GLFWwindow* window, const bool& shift, bo
 /**
 * Check collision of the snowman to another collider object using its vec3
 */
-bool Snowman::CheckCollision(glm::vec3 collider) {
-	return true;
+bool Snowman::CheckCollision(CollidableModel collider) {
+	glm::vec3 positionCollider = collider.getColliderPosition();
+	glm::vec3 scaleCollider = collider.getColliderScale();
+
+	bool collisionX = origin.x + (positionCollider.x * scaleCollider.x) >= positionCollider.x &&
+		positionCollider.x + (positionCollider.x * scaleCollider.x) >= origin.x;
+	
+	bool collisionZ = origin.z + (positionCollider.z * scaleCollider.z) >= positionCollider.z &&
+		positionCollider.z + (positionCollider.z * scaleCollider.z) >= origin.z;
+
+	return collisionX && collisionZ;
 }
+
+void Snowman::CheckCollisionX(CollidableModel collider, bool isColliding) {
+	glm::vec3 positionCollider = collider.getColliderPosition();
+	glm::vec3 scaleCollider = collider.getColliderScale();
+	// keyA
+	if ((origin.x + (positionCollider.x * scaleCollider.x) - positionCollider.x) > 0 &&
+		((static_cast<double>(origin.x + (positionCollider.x * scaleCollider.x))) - positionCollider.x) < 0.1 && isColliding) {
+		keyA = false;
+		keyD = true;
+	}
+	// keyD
+	if ((positionCollider.x + (positionCollider.x * scaleCollider.x) - origin.x) > 0 &&
+		((static_cast<double>(positionCollider.x + (positionCollider.x * scaleCollider.x))) - origin.x) < 0.1 && isColliding) {
+		keyA = false;
+		keyD = true;
+	}
+	else {
+		keyA = true;
+		keyD = true;
+	}
+}
+
+void Snowman::CheckCollisionZ(CollidableModel collider, bool isColliding) {
+	glm::vec3 positionCollider = collider.getColliderPosition();
+	glm::vec3 scaleCollider = collider.getColliderScale();
+	// keyA
+	if ((origin.z + (positionCollider.z * scaleCollider.z) - positionCollider.x) > 0 &&
+		((static_cast<double>(origin.z + (positionCollider.z * scaleCollider.z))) - positionCollider.z) < 0.1 && isColliding) {
+		keyW = false;
+		keyS = true;
+	}
+	// keyD
+	if ((positionCollider.z + (positionCollider.z * scaleCollider.z) - origin.z) > 0 &&
+		((static_cast<double>(positionCollider.z + (positionCollider.z * scaleCollider.z))) - origin.z) < 0.1 && isColliding) {
+		keyW = true;
+		keyS = false;
+	}
+	else {
+		keyW = true;
+		keyS = true;
+	}
+}
+

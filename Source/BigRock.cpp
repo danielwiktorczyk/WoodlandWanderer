@@ -1,0 +1,12 @@
+#include "../Include/BigRock.h";
+
+/**
+* BigRock constructor
+*/
+BigRock::BigRock(GLuint VAO, GLuint numVertices, glm::vec3 color)
+	: CollidableModel(VAO, AssetsService::getInstance()->getCube().getVAO(), numVertices, color) { }
+
+/**
+* BigRock destructor
+*/
+BigRock::~BigRock() {}
