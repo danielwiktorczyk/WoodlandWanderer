@@ -15,8 +15,8 @@ public:
 
 	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 	
-	glm::mat4 getPosition() { return this->modelTransformMatrix; };
 	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->modelTransformMatrix = modelTransformMatrix; };
+	glm::mat4 getModelTransformMatrix() { return this->modelTransformMatrix; };
 	glm::vec3 getColor() { return this->color; };
 	void setColor(glm::vec3 color) { this->color = color; };
 
@@ -24,6 +24,6 @@ private:
 	GLuint VAO;
 	GLuint numVertices;
 	glm::vec3 color;
-	glm::mat4 modelTransformMatrix = glm::mat4(1.0f);
+	glm::mat4 modelTransformMatrix;
 };
 

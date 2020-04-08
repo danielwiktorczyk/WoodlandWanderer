@@ -55,6 +55,9 @@
     <ClCompile Include="..\Source\Assets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Firefly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\OBJloader.h">
@@ -91,6 +94,9 @@
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\Assets.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Firefly.h">
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>

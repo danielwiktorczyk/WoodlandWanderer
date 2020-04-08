@@ -33,6 +33,7 @@ public:
 	glm::vec3 offset;
 	float scaleFactor;
 	float rotation; // degrees
+	float globalSpeed;
 
 	glm::vec3 const snowmanColor = glm::vec3(0.97, 0.97, 1.0);
 	glm::vec3 const snowmanBranchColor = glm::vec3(0.87f, 0.72f, 0.53f);
