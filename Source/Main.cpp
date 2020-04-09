@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 #endif
 
-	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeigth, "Comp371 - Final Project", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "Comp371 - Final Project - Woodland Wanderer", glfwGetPrimaryMonitor(), NULL);
 	if (window == NULL) {
 		std::cerr << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
 	glfwMakeContextCurrent(window);
 	glfwSetCursorPosCallback(window, mouseCallback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glViewport(0, 0, windowWidth, windowHeigth);
+	glViewport(0, 0, windowWidth, windowHeight);
 
 	// Initialize GLEW
 	glewExperimental = GL_TRUE; // Needed for core profile
@@ -319,7 +319,7 @@ GLuint setupModelVBO_OLD(std::string path, int& vertexCount) {
 }
 
 void setProjectionMatrix(const int& shaderProgram) {
-	projectionMatrix = glm::perspective(fov, windowWidth / windowHeigth, 0.01f, 100.0f);
+	projectionMatrix = glm::perspective(fov, windowWidth / windowHeight, 0.01f, 100.0f);
 	glUseProgram(shaderProgram);
 	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
 	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);

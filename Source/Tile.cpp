@@ -16,7 +16,7 @@ Tile::Tile(glm::vec3 translation) {
 	// TODO trivial now, need more flexible weighting
 	int category = rand() % 3;
 	int subcategory = rand() % 4;
-	glm::vec3 colour = glm::vec3(rand() % 20 / 100.0f - 0.3f, rand() % 20 / 100.0f - 0.3f, rand() % 20 / 100.0f - 0.3f);
+	glm::vec3 colour = glm::vec3(rand() % 50 / 100.0f - 0.3f, rand() % 50 / 100.0f - 0.3f, rand() % 50 / 100.0f - 0.3f);
 	switch (category) {
 		case 0: // Tree
 			colour += darkBlue;
@@ -36,7 +36,7 @@ Tile::Tile(glm::vec3 translation) {
 			}
 			break;
 		case 1: // Grass
-			colour += green;
+			colour += orange;
 			switch (subcategory) {
 			case 0:
 				this->occupant = new Grass(AssetsService::getInstance()->getGrass1().getVAO(), AssetsService::getInstance()->getGrass1().getVectorSize(), colour);
