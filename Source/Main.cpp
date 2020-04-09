@@ -145,7 +145,7 @@ int main(int argc, char* argv[]) {
 		glUseProgram(shaderProgram);
 
 		// Can remove grid lines soon
-		glm::mat4 gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
+		/*glm::mat4 gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
 		glm::mat4 currentGridLineMatrix;
 		for (int i = -ForestWidth * AcreWidth; i < ForestWidth * AcreWidth; i++) {
 			currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, 5.0f + i * 10.0f)) * gridLineMatrix;
@@ -161,7 +161,7 @@ int main(int argc, char* argv[]) {
 			glUniform3fv(colorLocation, 1, value_ptr(gridColor));
 			glDrawArrays(GL_TRIANGLES, 12, 18);
 			glDrawArrays(GL_TRIANGLES, 30, 36);
-		}
+		}*/
 
 		// Abstractions
 		forest.draw(worldMatrixLocation, colorLocation);

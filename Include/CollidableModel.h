@@ -12,7 +12,7 @@
 class CollidableModel : public Model {
 public:
 	CollidableModel(GLuint VAO, GLuint colliderVAO, GLuint numVertices, glm::vec3 color);
-	virtual ~CollidableModel();
+	~CollidableModel();
 
 	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) override;
 	glm::mat4 getColliderTransformMatrix() { return colliderTransformMatrix; }

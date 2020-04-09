@@ -11,4 +11,5 @@ class Grass : public NonCollidableModel {
 public:
 	Grass() = default;
 	Grass(GLuint VAO, GLuint numVertices, glm::vec3 color);
+	~Grass();
 };

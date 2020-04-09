@@ -19,7 +19,7 @@ Tile::Tile(glm::vec3 translation) {
 	glm::vec3 colour = glm::vec3(rand() % 20 / 100.0f - 0.3f, rand() % 20 / 100.0f - 0.3f, rand() % 20 / 100.0f - 0.3f);
 	switch (category) {
 		case 0: // Tree
-			colour += turquoise;
+			colour += darkBlue;
 			switch (subcategory) {
 			case 0:
 				this->occupant = new Tree(AssetsService::getInstance()->getBallTree().getVAO(), AssetsService::getInstance()->getBallTree().getVectorSize(), colour);

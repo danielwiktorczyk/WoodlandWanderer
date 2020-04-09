@@ -6,6 +6,10 @@
 Model::Model(GLuint VAO, GLuint numVertices, glm::vec3 color) 
 	: VAO(VAO), numVertices(numVertices), color(color) { }
 
+/**
+* Model destructor
+*/
+
 Model::~Model() { }
 
 /**

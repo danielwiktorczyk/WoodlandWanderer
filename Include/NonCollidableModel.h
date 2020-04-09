@@ -11,4 +11,5 @@ class NonCollidableModel : public Model {
 public:
 	NonCollidableModel() = default;
 	NonCollidableModel(GLuint VAO, GLuint numVertices, glm::vec3 color);
+	~NonCollidableModel();
 };

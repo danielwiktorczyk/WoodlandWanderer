@@ -11,4 +11,5 @@ class SmallRock : public NonCollidableModel {
 public:
 	SmallRock() = default;
 	SmallRock(GLuint VAO, GLuint numVertices, glm::vec3 color);
+	~SmallRock();
 };
