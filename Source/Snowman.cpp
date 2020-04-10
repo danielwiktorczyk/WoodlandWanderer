@@ -76,9 +76,8 @@ void Snowman::update() {
 }
 
 void Snowman::draw() {
-
-	// draw collider for debug purposes
-	//drawHelper(colliderTransformMatrix, orange);
+	if(DebugMode && DrawCollisionBoxes)
+		drawHelper(colliderTransformMatrix, orange);
 
 	drawHelper(leftArm, snowmanBranchColor);
 	drawHelper(leftArmBranch1, snowmanBranchColor);
@@ -105,7 +104,6 @@ void Snowman::draw() {
 	drawHelper(hatBody, hatColor);
 
 	drawHelper(carrot, carrotColor);
-
 }
 
 void Snowman::drawHelper(glm::mat4 part, glm::vec3 color) {
