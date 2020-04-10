@@ -403,19 +403,19 @@ void Snowman::adjustKeysToRotation() {
 	bool defaultD = collideRightToLeft;
 	bool defaultW = collideForward;
 
-	if (this->rotation >= M_PI / 2 && this->rotation < M_PI) {
+	if (this->rotation >= M_PI / 4 && this->rotation < 3 * M_PI / 4) { // shift one key CCW
 		collideForward = defaultA;
 		collideLeftToRight = defaultS;
 		collideBackwards = defaultD;
 		collideRightToLeft = defaultW;
 	}
-	else if (this->rotation >= M_PI && this->rotation < 3 * M_PI / 2) {
+	else if (this->rotation >= 3 * M_PI / 4 && this->rotation < 5 * M_PI / 4) { // shift two keys CCW
 		collideForward = defaultS;
-		collideLeftToRight = defaultD;
+		collideLeftToRight = defaultA;
 		collideBackwards = defaultW;
-		collideRightToLeft = defaultA;
+		collideRightToLeft = defaultD;
 	}
-	else if (this->rotation >= 3 * M_PI / 2) {
+	else if (this->rotation >= 5 * M_PI / 4 && this->rotation < 7 * M_PI / 4) { // shift three keys CCW
 		collideForward = defaultD;
 		collideLeftToRight = defaultW;
 		collideBackwards = defaultA;
