@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
 		windowHeight = 768.0f;
 	}
 
-	if (StartInFullScreen) {
+	if (StartInFullScreen && !DebugMode) {
 		window = glfwCreateWindow(windowWidth, windowHeight, "Comp371 - Final Project - Woodland Wanderer", glfwGetPrimaryMonitor(), NULL);
 	}
 	else {
