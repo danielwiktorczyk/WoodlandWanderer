@@ -34,7 +34,7 @@ void Commands::processCameraDirection(GLFWwindow* window, glm::vec3& cameraPos, 
 		cameraSpeed = 0.5;
 	}
 	else {
-		cameraSpeed = 0.1;
+		cameraSpeed = 0.5;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
