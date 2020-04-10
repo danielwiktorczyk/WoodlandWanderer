@@ -59,15 +59,12 @@ glm::vec3 CollidableModel::getColliderScale() {
 	return scale;
 }
 
-/**
-* DEBUG: Overloading Model::draw() to draw the collider box
-*/
 void CollidableModel::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
 	// This is for drawing collidable object
 	Model::draw(worldMatrixLocation, colorLocation);
 
 	// This is for drawing the collider box for Debugging
-	if (DebugMode) {
+	if (DebugMode && DrawCollisionBoxes) {
 		glBindVertexArray(this->getColliderVAO());
 		glBindBuffer(GL_ARRAY_BUFFER, this->getColliderVAO());
 
