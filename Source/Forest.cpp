@@ -2,13 +2,15 @@
 
 Forest::Forest(Snowman& snowman)
 	: snowman(snowman) {
-	this->platform = Model(AssetsService::getInstance()->getCube().getVAO(), AssetsService::getInstance()->getCube().getVectorSize(), green);
+	if (DebugMode) {
+		this->platform = Model(AssetsService::getInstance()->getCube().getVAO(), AssetsService::getInstance()->getCube().getVectorSize(), green);
 
-	glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
-	platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -3.0f, 0.0f));
-	platformTransformMatrix = glm::scale(platformTransformMatrix, glm::vec3(1000.0f, 3.0f, 1000.0f));
-	this->platform.setModelTransformMatrix(platformTransformMatrix);
-
+		glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
+		platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -3.0f, 0.0f));
+		platformTransformMatrix = glm::scale(platformTransformMatrix, glm::vec3(1000.0f, 3.0f, 1000.0f));
+		this->platform.setModelTransformMatrix(platformTransformMatrix);
+	}
+	
 	this->acres.resize(ForestWidth);
 	for (int i = 0; i < ForestWidth; ++i) {
 		this->acres[i].resize(ForestWidth);
@@ -16,7 +18,8 @@ Forest::Forest(Snowman& snowman)
 }
 
 void Forest::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
-	//this->platform.draw(worldMatrixLocation, colorLocation);
+	if (DebugMode) 
+		this->platform.draw(worldMatrixLocation, colorLocation);
 
 	for (int i = 0; i < ForestWidth; i++) {
 		for (int j = 0; j < ForestWidth; j++) {

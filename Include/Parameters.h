@@ -9,6 +9,20 @@
 // Fireflies
 #define FireflyChance 100 // int from 0 to 100, likeliness for a Tile to spawn a Firefly
 
+#define StartInFullScreen true
+#define HD true
+#define WindowWidthHD 1920.0f
+#define WindowHeightHD 1080.0f
+#define WindowWidth 1024.0f
+#define WindowHeight 768.0f
+
+#define DebugMode true
+#define DrawGridLines false
+
+
+
+
+
 
 
 

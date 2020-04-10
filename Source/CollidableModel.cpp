@@ -62,18 +62,20 @@ glm::vec3 CollidableModel::getColliderScale() {
 /**
 * DEBUG: Overloading Model::draw() to draw the collider box
 */
-//void CollidableModel::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
-//	// This is for drawing collidable object
-//	Model::draw(worldMatrixLocation, colorLocation);
-//
-//	// This is for drawing the collider box for Debugging
-//
-//	glBindVertexArray(this->getColliderVAO());
-//	glBindBuffer(GL_ARRAY_BUFFER, this->getColliderVAO());
-//
-//	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &(this->getColliderTransformMatrix())[0][0]);
-//	glUniform3fv(colorLocation, 1, value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
-//
-//	glDrawArrays(GL_TRIANGLES, 0, 36);
-//	glEnable(GL_CULL_FACE);
-//}
+void CollidableModel::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
+	// This is for drawing collidable object
+	Model::draw(worldMatrixLocation, colorLocation);
+
+	// This is for drawing the collider box for Debugging
+	if (DebugMode) {
+		glBindVertexArray(this->getColliderVAO());
+		glBindBuffer(GL_ARRAY_BUFFER, this->getColliderVAO());
+
+		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &(this->getColliderTransformMatrix())[0][0]);
+		glUniform3fv(colorLocation, 1, value_ptr(glm::vec3(1.0f, 1.0f, 1.0f)));
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glEnable(GL_CULL_FACE);
+	}
+
+}

@@ -1,6 +1,7 @@
 #pragma once
 #define GLM_ENABLE_EXPERIMENTAL
 #include "Model.h"
+#include "Parameters.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -20,7 +21,7 @@ public:
 	glm::vec3 getColliderPosition();
 	glm::vec3 getColliderScale();
 	glm::vec3 getCollidableDimensions() { return glm::vec3(this->getColliderScale().x, 0, this->getColliderScale().z); };
-	//void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) override;
+	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) override;
 
 private:
 	GLuint colliderVAO;

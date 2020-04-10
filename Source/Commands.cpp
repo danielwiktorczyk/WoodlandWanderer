@@ -30,8 +30,9 @@ void Commands::setRenderingMode(GLFWwindow* window) {
 */
 void Commands::processCameraDirection(GLFWwindow* window, glm::vec3& cameraPos, glm::vec3& cameraLookAt, glm::vec3& cameraUp, float deltaTime) {
 	float cameraSpeed;
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-		cameraSpeed = 0.5;
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS 
+		|| glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+		cameraSpeed = 2.5;
 	}
 	else {
 		cameraSpeed = 0.5;

@@ -2,18 +2,20 @@
 #include <time.h>
 
 Tile::Tile(glm::vec3 translation) {
-	//this->platform = Model(cubeAsset, red);
+	if (DebugMode) {
+		this->platform = Model(AssetsService::getInstance()->getCube().getVAO(), AssetsService::getInstance()->getCube().getVectorSize(), red);
+		
+		glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
+		platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -0.4f, 0.0f));
+		platformTransformMatrix = glm::translate(platformTransformMatrix, translation);
+		platformTransformMatrix = glm::scale(platformTransformMatrix, glm::vec3(10.0f, 1.0f, 10.0f));
+
+		this->platform.setModelTransformMatrix(platformTransformMatrix);
+	}
+
 	this->translation = translation;
 
-	/*glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
-	platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -0.4f, 0.0f));
-	platformTransformMatrix = glm::translate(platformTransformMatrix, translation);
-	platformTransformMatrix = glm::scale(platformTransformMatrix, glm::vec3(10.0f, 1.0f, 10.0f));*/
-
-	//this->platform.setModelTransformMatrix(platformTransformMatrix);
-
 	// Select Occupant:
-	// TODO trivial now, need more flexible weighting
 	int category = rand() % 3;
 	int subcategory = rand() % 4;
 	glm::vec3 colour = glm::vec3(rand() % 50 / 100.0f - 0.3f, rand() % 50 / 100.0f - 0.3f, rand() % 50 / 100.0f - 0.3f);
@@ -96,7 +98,8 @@ Tile::Tile(glm::vec3 translation) {
 Tile::~Tile() { }
 
 void Tile::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) {
-	//this->platform.draw(worldMatrixLocation, colorLocation);
+	if (DebugMode)
+		this->platform.draw(worldMatrixLocation, colorLocation);
 	this->occupant->draw(worldMatrixLocation, colorLocation);
 	this->firefly.draw(worldMatrixLocation, colorLocation);
 }
