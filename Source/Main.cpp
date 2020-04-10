@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 #endif
 
-	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "Comp371 - Final Project - Woodland Wanderer", glfwGetPrimaryMonitor(), NULL);
+	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "Comp371 - Final Project - Woodland Wanderer", NULL, NULL);
 	if (window == NULL) {
 		std::cerr << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();

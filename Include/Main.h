@@ -41,8 +41,8 @@ void mouseCallback(GLFWwindow* window, double xPos, double yPos);
 ////////////////////////// Variables //////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-extern const float windowWidth = 1920.0f;
-extern const float windowHeight = 1080.0f;
+extern const float windowWidth = 1024.0f;
+extern const float windowHeight = 768.0f;
 
 
 // Camera parameters for view transform

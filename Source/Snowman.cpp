@@ -7,6 +7,9 @@ Snowman::Snowman(GLuint worldMatrixColorLoc,
 	GLuint theCubeVAO,
 	GLuint theSphereVAO) {
 
+
+	this->colliderVAO = AssetsService::getInstance()->getCube().getVAO();
+	this->colliderTransformMatrix = glm::mat4{ 1.0f };
 	this->origin = glm::vec3(0.0f, 0.0f, 0.0f);
 	this->scaleFactor = 0.85f;
 	this->rotation = 0.0f;
@@ -35,6 +38,9 @@ void Snowman::update() {
 	glm::mat4 partRotation = rotate(glm::mat4(1.0f), rotation, glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 groupTranslation = translate(glm::mat4(1.0f), origin);
 	glm::mat4 groupScaling = scale(glm::mat4(1.0f), glm::vec3(scaleFactor));
+
+
+	colliderTransformMatrix = groupTranslation * partRotation * scale(glm::mat4(1.0f), { 4.0f, 2.0f, 4.0f });
 
 	leftFoot = groupTranslation * groupScaling * partRotation * translate(glm::mat4(1.0f), scaleFactor * (glm::vec3(-1.0f, 0.25f, 0.5f * sin(animate)))) * rotate(glm::mat4(1.0f), 0.25f * sin(animate), glm::vec3(1.0f, 125.0f, 0.0f)) * scale(glm::mat4(1.0f), chubbyFactor * scaleFactor * glm::vec3(1.0, 0.5, 1.0));
 	rightFoot = groupTranslation * groupScaling * partRotation * translate(glm::mat4(1.0f), scaleFactor * (glm::vec3(+1.0f, 0.25f, 0.5f * -sin(animate)))) * rotate(glm::mat4(1.0f), 0.25f * -sin(animate), glm::vec3(1.0f, 125.0f, 0.0f)) * scale(glm::mat4(1.0f), chubbyFactor * scaleFactor * glm::vec3(1.0, 0.5, 1.0));
@@ -67,6 +73,15 @@ void Snowman::update() {
 }
 
 void Snowman::draw() {
+
+	glBindVertexArray(this->colliderVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, this->colliderVAO);
+
+	glUniformMatrix4fv(worldMatrixLocationColor, 1, GL_FALSE, &(this->colliderTransformMatrix)[0][0]);
+	glUniform3fv(colorLocation, 1, value_ptr(glm::vec3(0.5f, 0.5f, 1.0f)));
+
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glEnable(GL_CULL_FACE);
 
 	drawHelper(leftArm, snowmanBranchColor);
 	drawHelper(leftArmBranch1, snowmanBranchColor);
@@ -283,26 +298,37 @@ void Snowman::randomTranslationSnowman(GLFWwindow* window, const bool& shift, bo
 * Check collision of the snowman to another collider object using its vec3
 * @return true if the object is colliding & false otherwise.
 */
-bool Snowman::CheckCollision(std::vector<CollidableModel> colliders) {
+bool Snowman::CheckCollision(std::vector<CollidableModel>& colliders) {
 	bool collisionX = false;
 	bool collisionZ = false;
+	bool firstCollision = false;
 
 	for (auto& collider : colliders) {
 		glm::vec3 positionCollider = collider.getColliderPosition();
 		glm::vec3 scaleCollider = collider.getColliderScale();
 
-		collisionX = origin.x + this->getDimensions().x >= positionCollider.x &&
-					 positionCollider.x + collider.getCollidableDimensions().x >= origin.x;
+		collisionX = (origin.x + this->getDimensions().x >= positionCollider.x && // snowman going from right to left is colliding
+					  positionCollider.x + collider.getCollidableDimensions().x >= origin.x) ||
+					 (origin.x - this->getDimensions().x <= positionCollider.x && // snowman going from left to right is colliding
+					  positionCollider.x - collider.getCollidableDimensions().x <= origin.x);
 
-		collisionZ = origin.z + this->getDimensions().z >= positionCollider.z &&
-					 positionCollider.z + collider.getCollidableDimensions().z >= origin.z;
+		collisionZ = (origin.z + this->getDimensions().z >= positionCollider.z && // snowman going forward is colliding
+					  positionCollider.z + collider.getCollidableDimensions().z >= origin.z) ||
+					 (origin.z - this->getDimensions().z <= positionCollider.z && // snowman going backwards is colliding
+					  positionCollider.z - collider.getCollidableDimensions().z <= origin.z);
 
 		if (collisionX && collisionZ) {
+			colliders = { collider }; // only keep the colliding object
 			break;
 		}
 	}
 
-	//std::cout << collisionX << " " << collisionZ << std::endl; --> uncomment for debug purpose. 
+	keyA = true; // for some reason it breaks if i don't add these lines
+	keyS = true;
+	keyD = true;
+	keyW = true;
+
+	std::cout << collisionX << " " << collisionZ << std::endl;
 	return collisionX && collisionZ;
 }
 
@@ -316,14 +342,14 @@ void Snowman::CheckCollisionX(std::vector<CollidableModel> colliders, bool isCol
 		glm::vec3 positionCollider = collider.getColliderPosition();
 
 		// keyA
-		if ((origin.x - positionCollider.x) > -10.f &&
-			(origin.x - positionCollider.x) < -1.0f && isColliding) {
+		if (origin.x <= positionCollider.x && // check if the snowman is colliding with the right side (between origin and half its width)
+			origin.x + this->getDimensions().x / 2 >= positionCollider.x - collider.getCollidableDimensions().x / 2 && isColliding) {
 			keyA = false;
 			keyD = true;
 		}
 		// keyD
-		else if ((positionCollider.x - origin.x) > -10.0f &&
-				 (positionCollider.x - origin.x) <  0.0f  && isColliding) {
+		else if (origin.x >= positionCollider.x && //check if the snowman is colliding on the left side
+				 origin.x - this->getDimensions().x / 2 <= positionCollider.x + collider.getCollidableDimensions().x / 2 && isColliding) {
 			keyA = true;
 			keyD = false;
 		}
@@ -344,15 +370,15 @@ void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isCol
 		glm::vec3 positionCollider = collider.getColliderPosition();
 
 		// keyW
-		if ((origin.z - positionCollider.z) > -10.0f &&
-			(origin.z - positionCollider.z) < -1.0f  && isColliding) {
+		if (origin.z <= positionCollider.z  && // activates in the top half of the collider
+			origin.z + this->getDimensions().z / 2 >= positionCollider.z - collider.getCollidableDimensions().z / 2 && isColliding) {
 
 			keyW = false;
 			keyS = true;
 		}
 		// keyS
-		else if (((positionCollider.z + collider.getCollidableDimensions().z) - origin.z) > 0 &&
-				 ((positionCollider.z + collider.getCollidableDimensions().z) - origin.z) < 1.0f && isColliding) {
+		else if (origin.z >= positionCollider.z && // activates in the bottom half of the collider
+				 origin.z - this->getDimensions().z / 2 <= positionCollider.z + collider.getCollidableDimensions().z / 2 && isColliding) {
 			keyW = true;
 			keyS = false;
 		}
@@ -368,8 +394,10 @@ void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isCol
 * @return snowman dimensions
 */
 glm::vec3 Snowman::getDimensions() {
-	float width = scaleFactor * chubbyFactor * 4.0;
+	/*float width = scaleFactor * chubbyFactor * 4.0;
 	float height = scaleFactor * (2.0f + 9.5f - 0.5f * cos(2.0f * animate));
 
-	return glm::vec3(width, height, width);
+	return glm::vec3(width, height, width);*/
+
+	return { 4.0f, 2.0f, 4.0f };
 }

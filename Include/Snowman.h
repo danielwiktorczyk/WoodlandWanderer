@@ -8,6 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp> // include this to create transformation matrices
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Assets.h"
 
 class Snowman {
 public:
@@ -30,11 +31,14 @@ public:
 	void translateSnowman(GLFWwindow* window, const bool& shift, bool& canMoveIncrement);
 	void randomTranslationSnowman(GLFWwindow* window, const bool& shift, bool& canRandomPlacement);
 
-	bool CheckCollision(std::vector<CollidableModel> colliders);
+	bool CheckCollision(std::vector<CollidableModel>& colliders);
 	void CheckCollisionX(std::vector<CollidableModel> colliders, bool isColliding);
 	void CheckCollisionZ(std::vector<CollidableModel> colliders, bool isColliding);
 
 	glm::vec3 getDimensions();
+
+	GLuint colliderVAO;
+	glm::mat4 colliderTransformMatrix = glm::mat4(1.0f);
 
 	glm::vec3 origin;
 	glm::vec3 offset;
