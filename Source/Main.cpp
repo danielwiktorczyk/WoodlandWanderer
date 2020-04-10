@@ -196,7 +196,7 @@ int main(int argc, char* argv[]) {
 		snowman.CheckCollisionZ(collidables, checker);
 		snowman.draw();
 		snowman.scaleSnowman(window, shift, canScaleIncrement);
-		snowman.rotateSnowman(window, shift, canRandomPlacement);
+		snowman.rotateSnowman(window, shift, canRotateIncrement);
 		snowman.translateSnowman(window, shift, canMoveIncrement);
 		snowman.randomTranslationSnowman(window, shift, canRandomPlacement);
 		snowman.update();
