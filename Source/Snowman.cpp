@@ -211,7 +211,7 @@ void Snowman::translateSnowman(GLFWwindow* window, const bool& shift, bool& canM
 	adjustKeysToRotation();
 
 	// Move snowman left (+ x direction)
-	if (moveLeft && isFreeRight) {
+	if (moveLeft && isFreeLeft) {
 		if (!shift) {
 			this->origin.x += cos(this->rotation) * snowmanTranslationSpeed;
 			this->origin.z -= sin(this->rotation) * snowmanTranslationSpeed;
@@ -229,7 +229,7 @@ void Snowman::translateSnowman(GLFWwindow* window, const bool& shift, bool& canM
 	}
 
 	// Move snowman right (- x direction)
-	if (moveRight && isFreeLeft) {
+	if (moveRight && isFreeRight) {
 		if (!shift) {
 			this->origin.x -= cos(this->rotation) * snowmanTranslationSpeed;
 			this->origin.z += sin(this->rotation) * snowmanTranslationSpeed;
@@ -319,9 +319,9 @@ bool Snowman::CheckCollision(std::vector<CollidableModel>& colliders) {
 		}
 	}
 
-	isFreeRight      = true; // for some reason it breaks if i don't add these lines
+	isFreeRight     = true; // for some reason it breaks if i don't add these lines
 	isFreeBackwards = true;
-	isFreeLeft     = true;
+	isFreeLeft      = true;
 	isFreeForwards  = true;
 
 	//std::cout << collisionX << " " << collisionZ << std::endl;
@@ -338,16 +338,16 @@ void Snowman::CheckCollisionX(std::vector<CollidableModel> colliders, bool isCol
 		glm::vec3 positionCollider = collider.getColliderPosition();
 
 		// keyA
-		if (origin.x <= positionCollider.x && // check if the snowman is colliding with the right side (between origin and half its width)
+		if (origin.x <= positionCollider.x && // check if the snowman is colliding with the left side (between origin and half its width)
 			origin.x + this->getDimensions().x / 2 >= positionCollider.x - collider.getCollidableDimensions().x / 2 && isColliding) {
-			isFreeRight = false;
-			isFreeLeft  = true;
+			isFreeLeft  = false;
+			isFreeRight = true;
 		}
 		// keyD
-		else if (origin.x >= positionCollider.x && //check if the snowman is colliding on the left side
+		else if (origin.x >= positionCollider.x && //check if the snowman is colliding on the right side
 				 origin.x - this->getDimensions().x / 2 <= positionCollider.x + collider.getCollidableDimensions().x / 2 && isColliding) {
-			isFreeRight = true;
-			isFreeLeft  = false;
+			isFreeLeft  = true;
+			isFreeRight = false;
 		}
 		else {
 			isFreeRight = true;
