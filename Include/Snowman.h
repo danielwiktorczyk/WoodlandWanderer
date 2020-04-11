@@ -95,8 +95,8 @@ public:
 	float animate;
 	float animateHat;
 
-	bool isFreeLeft;
 	bool isFreeRight;
+	bool isFreeLeft;
 	bool isFreeForwards;
 	bool isFreeBackwards;
 

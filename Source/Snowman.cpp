@@ -28,8 +28,8 @@ Snowman::Snowman(GLuint worldMatrixLoc,
 	this->animate    = 0.0f;
 	this->animateHat = 0.0f;
 
-	this->isFreeLeft  = true;
 	this->isFreeRight = true;
+	this->isFreeLeft  = true;
 	this->isFreeForwards  = true;
 	this->isFreeBackwards = true;
 
@@ -211,7 +211,7 @@ void Snowman::translateSnowman(GLFWwindow* window, const bool& shift, bool& canM
 	adjustKeysToRotation();
 
 	// Move snowman left (+ x direction)
-	if (moveLeft && isFreeLeft) {
+	if (moveLeft && isFreeRight) {
 		if (!shift) {
 			this->origin.x += cos(this->rotation) * snowmanTranslationSpeed;
 			this->origin.z -= sin(this->rotation) * snowmanTranslationSpeed;
@@ -229,7 +229,7 @@ void Snowman::translateSnowman(GLFWwindow* window, const bool& shift, bool& canM
 	}
 
 	// Move snowman right (- x direction)
-	if (moveRight && isFreeRight) {
+	if (moveRight && isFreeLeft) {
 		if (!shift) {
 			this->origin.x -= cos(this->rotation) * snowmanTranslationSpeed;
 			this->origin.z += sin(this->rotation) * snowmanTranslationSpeed;
@@ -319,9 +319,9 @@ bool Snowman::CheckCollision(std::vector<CollidableModel>& colliders) {
 		}
 	}
 
-	isFreeLeft      = true; // for some reason it breaks if i don't add these lines
+	isFreeRight      = true; // for some reason it breaks if i don't add these lines
 	isFreeBackwards = true;
-	isFreeRight     = true;
+	isFreeLeft     = true;
 	isFreeForwards  = true;
 
 	//std::cout << collisionX << " " << collisionZ << std::endl;
@@ -340,18 +340,18 @@ void Snowman::CheckCollisionX(std::vector<CollidableModel> colliders, bool isCol
 		// keyA
 		if (origin.x <= positionCollider.x && // check if the snowman is colliding with the right side (between origin and half its width)
 			origin.x + this->getDimensions().x / 2 >= positionCollider.x - collider.getCollidableDimensions().x / 2 && isColliding) {
-			isFreeLeft  = false;
-			isFreeRight = true;
+			isFreeRight = false;
+			isFreeLeft  = true;
 		}
 		// keyD
 		else if (origin.x >= positionCollider.x && //check if the snowman is colliding on the left side
 				 origin.x - this->getDimensions().x / 2 <= positionCollider.x + collider.getCollidableDimensions().x / 2 && isColliding) {
-			isFreeLeft  = true;
-			isFreeRight = false;
+			isFreeRight = true;
+			isFreeLeft  = false;
 		}
 		else {
-			isFreeLeft  = true;
 			isFreeRight = true;
+			isFreeLeft  = true;
 		}
 	}
 }
@@ -398,27 +398,27 @@ glm::vec3 Snowman::getDimensions() {
 * Adjusts the keys that collider with a side of the box depending on the snowman's rotation
 */
 void Snowman::adjustKeysToRotation() {
-	bool defaultA = isFreeLeft;
+	bool defaultA = isFreeRight;
 	bool defaultS = isFreeBackwards;
-	bool defaultD = isFreeRight;
+	bool defaultD = isFreeLeft;
 	bool defaultW = isFreeForwards;
 
 	if (this->rotation >= M_PI / 4 && this->rotation < 3 * M_PI / 4) { // shift one key CCW
 		isFreeForwards  = defaultA;
-		isFreeLeft      = defaultS;
+		isFreeRight     = defaultS;
 		isFreeBackwards = defaultD;
-		isFreeRight     = defaultW;
+		isFreeLeft      = defaultW;
 	}
 	else if (this->rotation >= 3 * M_PI / 4 && this->rotation < 5 * M_PI / 4) { // shift two keys CCW
 		isFreeForwards  = defaultS;
-		isFreeLeft      = defaultA;
+		isFreeRight     = defaultA;
 		isFreeBackwards = defaultW;
-		isFreeRight     = defaultD;
+		isFreeLeft      = defaultD;
 	}
 	else if (this->rotation >= 5 * M_PI / 4 && this->rotation < 7 * M_PI / 4) { // shift three keys CCW
 		isFreeForwards  = defaultD;
-		isFreeLeft      = defaultW;
+		isFreeRight     = defaultW;
 		isFreeBackwards = defaultA;
-		isFreeRight     = defaultS;
+		isFreeLeft      = defaultS;
 	}
 }
