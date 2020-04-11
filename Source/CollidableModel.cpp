@@ -3,8 +3,8 @@
 /**
 * CollidableModel Constructor
 */
-CollidableModel::CollidableModel(GLuint VAO, GLuint colliderVAO, GLuint numVertices, glm::vec3 color) 
-	: Model(VAO, numVertices, color), colliderVAO(colliderVAO), colliderTransformMatrix(colliderTransformMatrix) { }
+CollidableModel::CollidableModel(GLuint VAO,GLuint numVertices, glm::vec3 color) 
+	: Model(VAO, numVertices, color), colliderTransformMatrix(colliderTransformMatrix) { }
 
 /**
 * CollidableModel destructor

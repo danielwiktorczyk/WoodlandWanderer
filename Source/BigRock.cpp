@@ -4,7 +4,7 @@
 * BigRock constructor
 */
 BigRock::BigRock(GLuint VAO, GLuint numVertices, glm::vec3 color)
-	: CollidableModel(VAO, AssetsService::getInstance()->getCube().getVAO(), numVertices, color) { }
+	: CollidableModel(VAO, numVertices, color) { }
 
 /**
 * BigRock destructor

@@ -95,9 +95,9 @@ public:
 	float animate;
 	float animateHat;
 
-	bool collideLeftToRight;
-	bool collideRightToLeft;
-	bool collideForward;
-	bool collideBackwards;
+	bool isFreeLeft;
+	bool isFreeRight;
+	bool isFreeForwards;
+	bool isFreeBackwards;
 
 };

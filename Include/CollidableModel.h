@@ -1,5 +1,6 @@
 #pragma once
 #define GLM_ENABLE_EXPERIMENTAL
+#include "Assets.h"
 #include "Model.h"
 #include "Parameters.h"
 #include <GL/glew.h>
@@ -12,7 +13,7 @@
 
 class CollidableModel : public Model {
 public:
-	CollidableModel(GLuint VAO, GLuint colliderVAO, GLuint numVertices, glm::vec3 color);
+	CollidableModel(GLuint VAO, GLuint numVertices, glm::vec3 color);
 	~CollidableModel();
 
 	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) override;
@@ -24,6 +25,6 @@ public:
 	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) override;
 
 private:
-	GLuint colliderVAO;
+	GLuint colliderVAO = AssetsService::getInstance()->getCube().getVAO();
 	glm::mat4 colliderTransformMatrix = glm::mat4(1.0f);
 };
