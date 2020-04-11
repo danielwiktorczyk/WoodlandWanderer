@@ -331,6 +331,7 @@ bool Snowman::CheckCollision(std::vector<CollidableModel>& colliders) {
 /**
 * If the snowman is colliding, check if it is colliding on the x axis
 * Disabled the key associated that is going in the direction of the collision
+* Note that left is the positive x direction ; right is the negative x direction
 */
 void Snowman::CheckCollisionX(std::vector<CollidableModel> colliders, bool isColliding) {
 
@@ -359,6 +360,7 @@ void Snowman::CheckCollisionX(std::vector<CollidableModel> colliders, bool isCol
 /**
 * If the snowman is colliding, check if it is colliding on the z axis
 * Disabled the key associated that is going in the direction of the collision
+* Note that forward is the positive z direction ; backward is the negative z direction
 */
 void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isColliding) {
 
@@ -368,7 +370,6 @@ void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isCol
 		// keyW
 		if (origin.z <= positionCollider.z  && // activates in the top half of the collider
 			origin.z + this->getDimensions().z / 2 >= positionCollider.z - collider.getCollidableDimensions().z / 2 && isColliding) {
-
 			isFreeForwards  = false;
 			isFreeBackwards = true;
 		}
