@@ -1,5 +1,6 @@
 #pragma once
-#include "Model.h"
+
+#include <cmath>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -9,14 +10,15 @@
 #include <vector>
 #include "Acre.h"
 #include "Snowman.h"
+#include "Model.h"
+#include "Parameters.h"
 #include "Assets.h"
-
-#define ForestWidth 169
 
 class Forest {
 public: 
 	Forest(Snowman& snowman);
 	void draw(const GLuint& worldMatrixLocationColor, const GLuint& colorLocation);
+	std::vector<CollidableModel> Forest::getNearbyCollidables();
 private:
 	Model platform;
 	Snowman& snowman;

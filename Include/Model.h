@@ -12,13 +12,18 @@ class Model {
 public:
 	Model() = default;
 	Model(GLuint VAO, GLuint numVertices, glm::vec3 color);
+	virtual ~Model();
 
-	void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
+	virtual void draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation);
 	
-	void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->modelTransformMatrix = modelTransformMatrix; };
+	virtual void setModelTransformMatrix(glm::mat4 modelTransformMatrix) { this->modelTransformMatrix = modelTransformMatrix; };
+	void setColor(glm::vec3 color) { this->color = color; };
+	
 	glm::mat4 getModelTransformMatrix() { return this->modelTransformMatrix; };
 	glm::vec3 getColor() { return this->color; };
-	void setColor(glm::vec3 color) { this->color = color; };
+	
+	GLuint getVAO() { return VAO; }
+	GLuint getNumVertices() { return numVertices; }
 
 private:
 	GLuint VAO;

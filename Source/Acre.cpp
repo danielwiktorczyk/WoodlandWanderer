@@ -5,7 +5,7 @@ Acre::Acre(glm::vec3 translation) {
 	this->rendered = false;
 	this->initialized = false;
 
-	this->platform = Model(AssetsService::getInstance()->getCube().getVAO(), AssetsService::getInstance()->getCube().getVectorSize(), darkPurple);
+	this->platform = Model(AssetsService::getInstance()->getCube().getVAO(), AssetsService::getInstance()->getCube().getVectorSize(), forestGreen);
 	glm::mat4 platformTransformMatrix = glm::mat4(1.0f);
 	platformTransformMatrix = glm::translate(platformTransformMatrix, glm::vec3(0.0f, -0.5f, 0.0f));
 	platformTransformMatrix = glm::translate(platformTransformMatrix, translation);
@@ -30,4 +30,19 @@ void Acre::draw(const GLuint& worldMatrixLocation, const GLuint& colorLocation) 
 			for (int j = 0; j < AcreWidth; j++)
 				tiles[i][j].draw(worldMatrixLocation, colorLocation);
 	}
+}
+
+std::vector<CollidableModel> Acre::getAllCollidables() {
+	std::vector<CollidableModel> collidables;
+	
+	for (int i = 0; i < AcreWidth; i++) {
+		for (int j = 0; j < AcreWidth; j++) {
+			Model* occupant = tiles[i][j].getOccupant();
+			if (dynamic_cast<CollidableModel*>(occupant)) {
+				collidables.emplace_back(*(dynamic_cast<CollidableModel*>(occupant)));
+			}
+		}
+	}
+		
+	return collidables;
 }

@@ -1,5 +1,8 @@
 #pragma once
 #include "Model.h"
+#include "Tile.h"
+#include "Assets.h"
+#include "Parameters.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -7,11 +10,7 @@
 #include <glm/common.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
-#include "Tile.h"
-#include "../Include/Assets.h"
-
-//#define AcreWidth 3 // for testing and visualizing
-#define AcreWidth 9 // for production
+#include <typeinfo>
 
 class Acre {
 public:
@@ -23,6 +22,7 @@ public:
 	bool isRendered() { return this->rendered; };
 	void setInitialized(bool initialized) { this->initialized = initialized; };
 	bool isInitialized() { return this->initialized; };
+	std::vector<CollidableModel> getAllCollidables();
 
 private:
 	Model platform;

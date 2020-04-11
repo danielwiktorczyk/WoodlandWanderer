@@ -11,7 +11,7 @@
 * Daniel  Wiktorczyk - 40060894
 *
 *
-* SOURCES
+* RESOURCES
 * - Lab tutorials & learnopengl.com
 * - Simple grass:        https://www.blendswap.com/blend/24539
 * - Low Poly trees pack: https://www.blendswap.com/blend/23720
@@ -39,8 +39,25 @@ int main(int argc, char* argv[]) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 #endif
+	GLFWwindow* window;
+	float windowWidth;
+	float windowHeight;
+	if (HD) {
+		windowWidth = 1920.0f;
+		windowHeight = 1080.0f;
+	}
+	else {
+		windowWidth = 1024;
+		windowHeight = 768.0f;
+	}
 
-	GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeigth, "Comp371 - Final Project", NULL, NULL);
+	if (StartInFullScreen && !DebugMode) {
+		window = glfwCreateWindow(windowWidth, windowHeight, "Comp371 - Final Project - Woodland Wanderer", glfwGetPrimaryMonitor(), NULL);
+	}
+	else {
+		window = glfwCreateWindow(windowWidth, windowHeight, "Comp371 - Final Project - Woodland Wanderer", NULL, NULL);
+	}
+
 	if (window == NULL) {
 		std::cerr << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -50,7 +67,7 @@ int main(int argc, char* argv[]) {
 	glfwMakeContextCurrent(window);
 	glfwSetCursorPosCallback(window, mouseCallback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glViewport(0, 0, windowWidth, windowHeigth);
+	glViewport(0, 0, windowWidth, windowHeight);
 
 	// Initialize GLEW
 	glewExperimental = GL_TRUE; // Needed for core profile
@@ -144,25 +161,26 @@ int main(int argc, char* argv[]) {
 		
 		glUseProgram(shaderProgram);
 
-		// Can remove grid lines soon
-		//glm::mat4 gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
-		//glm::mat4 currentGridLineMatrix;
-		//for (int i = -ForestWidth * AcreWidth; i < ForestWidth * AcreWidth; i++) {
-		//	currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, 5.0f + i * 10.0f)) * gridLineMatrix;
-		//	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
-		//	glUniform3fv(colorLocation, 1, value_ptr(gridColor));
-		//	glDrawArrays(GL_TRIANGLES, 12, 18);
-		//	glDrawArrays(GL_TRIANGLES, 30, 36);
-		//}
-		//gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.02f, 100.0f));
-		//for (int i = -ForestWidth * AcreWidth; i < ForestWidth * AcreWidth; i++) {
-		//	currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(5.0f + i * 10.0f, -0.01f, 0.0f)) * gridLineMatrix;
-		//	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
-		//	glUniform3fv(colorLocation, 1, value_ptr(gridColor));
-		//	glDrawArrays(GL_TRIANGLES, 12, 18);
-		//	glDrawArrays(GL_TRIANGLES, 30, 36);
-		//}
-
+		if (DebugMode && DrawGridLines) {
+			glm::mat4 gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * glm::scale(glm::mat4(1.0f), glm::vec3(100.0f, 0.02f, 0.05f));
+			glm::mat4 currentGridLineMatrix;
+			for (int i = -ForestWidth * AcreWidth; i < ForestWidth * AcreWidth; i++) {
+				currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.01f, 5.0f + i * TileWidth)) * gridLineMatrix;
+				glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
+				glUniform3fv(colorLocation, 1, value_ptr(gridColor));
+				glDrawArrays(GL_TRIANGLES, 12, 18);
+				glDrawArrays(GL_TRIANGLES, 30, 36);
+			}
+			gridLineMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.10f, 0.00f)) * scale(glm::mat4(1.0f), glm::vec3(0.05f, 0.02f, 100.0f));
+			for (int i = -ForestWidth * AcreWidth; i < ForestWidth * AcreWidth; i++) {
+				currentGridLineMatrix = translate(glm::mat4(1.0f), glm::vec3(5.0f + i * TileWidth, -0.01f, 0.0f)) * gridLineMatrix;
+				glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &currentGridLineMatrix[0][0]);
+				glUniform3fv(colorLocation, 1, value_ptr(gridColor));
+				glDrawArrays(GL_TRIANGLES, 12, 18);
+				glDrawArrays(GL_TRIANGLES, 30, 36);
+			}
+		}
+		
 		// Abstractions
 		forest.draw(worldMatrixLocation, colorLocation);
 
@@ -172,9 +190,13 @@ int main(int argc, char* argv[]) {
 		light.draw(worldMatrixLocation, colorLocation);
 
 		//Snowman
+		std::vector<CollidableModel> collidables = forest.getNearbyCollidables();
+		bool checker = snowman.CheckCollision(collidables);
+		snowman.CheckCollisionX(collidables, checker);
+		snowman.CheckCollisionZ(collidables, checker);
 		snowman.draw();
 		snowman.scaleSnowman(window, shift, canScaleIncrement);
-		snowman.rotateSnowman(window, shift, canRandomPlacement);
+		snowman.rotateSnowman(window, shift, canRotateIncrement);
 		snowman.translateSnowman(window, shift, canMoveIncrement);
 		snowman.randomTranslationSnowman(window, shift, canRandomPlacement);
 		snowman.update();
@@ -315,7 +337,7 @@ GLuint setupModelVBO_OLD(std::string path, int& vertexCount) {
 }
 
 void setProjectionMatrix(const int& shaderProgram) {
-	projectionMatrix = glm::perspective(fov, windowWidth / windowHeigth, 0.01f, 100.0f);
+	projectionMatrix = glm::perspective(fov, (HD ? WindowWidthHD : WindowWidth) / (HD ? WindowHeightHD : WindowHeight), 0.01f, 100.0f);
 	glUseProgram(shaderProgram);
 	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
 	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);

@@ -13,31 +13,40 @@
   <ItemGroup>
     <ClCompile Include="..\Source\Acre.cpp" />
     <ClCompile Include="..\Source\Assets.cpp" />
+    <ClCompile Include="..\Source\BigRock.cpp" />
     <ClCompile Include="..\Source\CollidableModel.cpp" />
     <ClCompile Include="..\Source\Commands.cpp" />
     <ClCompile Include="..\Source\Firefly.cpp" />
     <ClCompile Include="..\Source\Forest.cpp" />
+    <ClCompile Include="..\Source\Grass.cpp" />
     <ClCompile Include="..\Source\Model.cpp" />
     <ClCompile Include="..\Source\Main.cpp" />
     <ClCompile Include="..\Source\NonCollidableModel.cpp" />
     <ClCompile Include="..\Source\OBJloader.cpp" />
+    <ClCompile Include="..\Source\SmallRock.cpp" />
     <ClCompile Include="..\Source\Snowman.cpp" />
     <ClCompile Include="..\Source\Tile.cpp" />
+    <ClCompile Include="..\Source\Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Acre.h" />
     <ClInclude Include="..\Include\Assets.h" />
+    <ClInclude Include="..\Include\BigRock.h" />
     <ClInclude Include="..\Include\CollidableModel.h" />
     <ClInclude Include="..\Include\Colours.h" />
     <ClInclude Include="..\Include\Commands.h" />
     <ClInclude Include="..\Include\Firefly.h" />
     <ClInclude Include="..\Include\Forest.h" />
+    <ClInclude Include="..\Include\Grass.h" />
     <ClInclude Include="..\Include\Model.h" />
     <ClInclude Include="..\Include\Main.h" />
     <ClInclude Include="..\Include\NonCollidableModel.h" />
     <ClInclude Include="..\Include\OBJloader.h" />
+    <ClInclude Include="..\Include\Parameters.h" />
+    <ClInclude Include="..\Include\SmallRock.h" />
     <ClInclude Include="..\Include\Snowman.h" />
     <ClInclude Include="..\Include\Tile.h" />
+    <ClInclude Include="..\Include\Tree.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\References\Shaders\3.3.shader.fs" />
