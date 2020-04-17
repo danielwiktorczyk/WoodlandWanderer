@@ -88,14 +88,14 @@ AssetsService::AssetsService() {
 	std::cout <<           "////////////////////////////////////\u001b[0m\n\n";
 
 	this->ballTree      = Asset(ballTreeAsset);
-	this->curvyPineTree = Asset(curvyPineTreeAsset);
-	this->petalTree     = Asset(petalTreeAsset);
-	this->pineTree      = Asset(pineTreeAsset);
+	this->edgyPineTree = Asset(edgyPineTreeAsset);
+	this->stumpyPineTree     = Asset(stumpyPineTreeAsset);
+	this->seussBallTree      = Asset(seussBallTreeAsset);
 
 	std::cout << "Ball Tree vertices: "       << ballTree.getVectorSize()      << "\n";
-	std::cout << "Curvy Pine Tree vertices: " << curvyPineTree.getVectorSize() << "\n";
-	std::cout << "Petal Tree vertices: "      << petalTree.getVectorSize()     << "\n";
-	std::cout << "Pine Tree vertices: "       << pineTree.getVectorSize()      << "\n\n";
+	std::cout << "Curvy Pine Tree vertices: " << edgyPineTree.getVectorSize() << "\n";
+	std::cout << "Petal Tree vertices: "      << stumpyPineTree.getVectorSize()     << "\n";
+	std::cout << "Pine Tree vertices: "       << seussBallTree.getVectorSize()      << "\n\n";
 
 	std::cout << "\u001b[33m////////////////////////////////////\n";
 	std::cout <<           "//////// Miscellaneous Assets //////\n";

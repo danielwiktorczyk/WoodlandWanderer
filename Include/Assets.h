@@ -44,9 +44,9 @@ public:
 	Asset getGrass4() { return this->grass4; };
 
 	Asset getBallTree()      { return this->ballTree;      };
-	Asset getCurvyPineTree() { return this->curvyPineTree; };
-	Asset getPetalTree()     { return this->petalTree;     };
-	Asset getPineTree()      { return this->pineTree;      };
+	Asset getEdgyPineTree() { return this->edgyPineTree; };
+	Asset getStumpyPineTree()     { return this->stumpyPineTree;     };
+	Asset getSeussBallTree()      { return this->seussBallTree; };
 
 	Asset getCube()   { return this->cube;   };
 	Asset getSphere() { return this->sphere; };
@@ -65,9 +65,9 @@ private:
 	Asset grass4;
 
 	Asset ballTree;
-	Asset curvyPineTree;
-	Asset petalTree;
-	Asset pineTree;
+	Asset edgyPineTree;
+	Asset stumpyPineTree;
+	Asset seussBallTree;
 
 	Asset cube;
 	Asset sphere;
@@ -87,10 +87,9 @@ const std::string grass4Asset = basePath + grassPath + "/grass-4.obj";
 
 const std::string treePath = "/Trees";
 const std::string ballTreeAsset = basePath + treePath + "/ball-tree.obj";
-const std::string curvyPineTreeAsset = basePath + treePath + "/curvy-pine-tree.obj";
-const std::string petalTreeAsset = basePath + treePath + "/petal-tree.obj";
-const std::string pineTreeAsset = basePath + treePath + "/pine-tree.obj";
-const std::string skinnyTreeAsset = basePath + treePath + "/skinny-tree.obj";
+const std::string edgyPineTreeAsset = basePath + treePath + "/edgy-pine-tree.obj";
+const std::string seussBallTreeAsset = basePath + treePath + "/seuss-ball-tree.obj";
+const std::string stumpyPineTreeAsset = basePath + treePath + "/stumpy-pine-tree.obj";
 
 const std::string cubeAsset = basePath + "/cube.obj";
 const std::string sphereAsset = basePath + "/sphere.obj";

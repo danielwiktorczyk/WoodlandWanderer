@@ -18,22 +18,25 @@ Tile::Tile(glm::vec3 translation) {
 	// Select Occupant:
 	int category = rand() % 3;
 	int subcategory = rand() % 4;
+	glm::mat4 optionalScaling = glm::mat4(1.0f);
 	glm::vec3 colour = glm::vec3(rand() % 50 / 100.0f - 0.3f, rand() % 50 / 100.0f - 0.3f, rand() % 50 / 100.0f - 0.3f);
 	switch (category) {
 		case 0: // Tree
+			optionalScaling = scale(glm::mat4(1.0f), glm::vec3(0.64f, 0.64f, 0.64f));
 			colour += darkBlue;
 			switch (subcategory) {
 			case 0:
-				this->occupant = new Tree(AssetsService::getInstance()->getBallTree().getVAO(), AssetsService::getInstance()->getBallTree().getVectorSize(), colour);
+				this->occupant = new Tree(AssetsService::getInstance()->getEdgyPineTree().getVAO(), AssetsService::getInstance()->getEdgyPineTree().getVectorSize(), colour);
 				break;
 			case 1: 
 				this->occupant = new Tree(AssetsService::getInstance()->getBallTree().getVAO(), AssetsService::getInstance()->getBallTree().getVectorSize(), colour);
 				break;
 			case 2: 
-				this->occupant = new Tree(AssetsService::getInstance()->getPineTree().getVAO(), AssetsService::getInstance()->getPineTree().getVectorSize(), colour);
+				this->occupant = new Tree(AssetsService::getInstance()->getSeussBallTree().getVAO(), AssetsService::getInstance()->getSeussBallTree().getVectorSize(), colour);
 				break;
 			case 3: 
-				this->occupant = new Tree(AssetsService::getInstance()->getPetalTree().getVAO(), AssetsService::getInstance()->getPetalTree().getVectorSize(), colour);
+				optionalScaling = scale(glm::mat4(1.0f), glm::vec3(0.50f, 0.64f, 0.50f));
+				this->occupant = new Tree(AssetsService::getInstance()->getStumpyPineTree().getVAO(), AssetsService::getInstance()->getStumpyPineTree().getVectorSize(), colour);
 				break;
 			}
 			break;
@@ -85,7 +88,7 @@ Tile::Tile(glm::vec3 translation) {
 	occupantPosition = glm::scale(occupantPosition, glm::vec3(randScale, randScale, randScale));
 	occupantPosition = glm::rotate(occupantPosition, randRotate, glm::vec3(0.0f, 1.0f, 0.0f));
 
-	this->occupant->setModelTransformMatrix(occupantPosition);
+	this->occupant->setModelTransformMatrix(occupantPosition * optionalScaling);
 
 	if (rand() % 100 <= FireflyChance) {
 		this->firefly = Firefly(AssetsService::getInstance()->getSphere().getVAO(), AssetsService::getInstance()->getSphere().getVectorSize(), yellow);
