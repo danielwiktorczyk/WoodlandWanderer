@@ -17,7 +17,6 @@
 *_p.c
 *.ilk
 *.meta
-*.obj
 *.pch
 *.pdb
 *.pgc
