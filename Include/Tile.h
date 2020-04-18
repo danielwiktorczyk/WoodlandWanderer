@@ -4,6 +4,7 @@
 #include "../Include/Assets.h"
 #include "Firefly.h"
 #include "Parameters.h"
+#include "CollidableModel.h"
 #include "Tree.h"
 #include "Grass.h"
 #include "BigRock.h"
