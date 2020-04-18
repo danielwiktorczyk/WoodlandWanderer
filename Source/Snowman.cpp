@@ -23,7 +23,7 @@ Snowman::Snowman(GLuint worldMatrixLoc,
 	this->sphereVertices = sphereVerts;
 	this->cubeVAO        = cubeVAO;
 	this->sphereVAO      = sphereVAO;
-	this->globalSpeed    = 5.0f;
+	this->globalSpeed    = 7.0f;
 	this->chubbyFactor   = 1.3f;
 
 	this->animate    = 0.0f;
