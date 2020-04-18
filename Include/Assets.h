@@ -36,12 +36,10 @@ public:
 	Asset getBoulderBig()   { return this->boulderBig;   };
 	Asset getBoulderMed()   { return this->boulderMed;   };
 	Asset getBoulderSmall() { return this->boulderSmall; };
-	Asset getBoulderTiny()  { return this->boulderTiny;  };
 
 	Asset getGrass1() { return this->grass1; };
 	Asset getGrass2() { return this->grass2; };
 	Asset getGrass3() { return this->grass3; };
-	Asset getGrass4() { return this->grass4; };
 
 	Asset getBallTree()      { return this->ballTree;      };
 	Asset getEdgyPineTree() { return this->edgyPineTree; };
@@ -57,7 +55,6 @@ private:
 	Asset boulderBig;
 	Asset boulderMed;
 	Asset boulderSmall;
-	Asset boulderTiny;
 
 	Asset grass1;
 	Asset grass2;
@@ -74,16 +71,14 @@ private:
 };
 
 const std::string boulderPath = "/Boulders";
-const std::string boulderBigAsset = basePath + boulderPath + "/boulder-big.obj";
-const std::string boulderMedAsset = basePath + boulderPath + "/boulder-med.obj";
-const std::string boulderSmallAsset = basePath + boulderPath + "/boulder-small.obj";
-const std::string boulderTinyAsset = basePath + boulderPath + "/boulder-tiny.obj";
+const std::string boulderBigAsset = basePath + boulderPath + "/boulders_big.obj";
+const std::string boulderMedAsset = basePath + boulderPath + "/boulders_medium.obj";
+const std::string boulderSmallAsset = basePath + boulderPath + "/boulders_small.obj";
 
 const std::string grassPath = "/Grass";
 const std::string grass1Asset = basePath + grassPath + "/grass-1.obj";
 const std::string grass2Asset = basePath + grassPath + "/grass-2.obj";
 const std::string grass3Asset = basePath + grassPath + "/grass-3.obj";
-const std::string grass4Asset = basePath + grassPath + "/grass-4.obj";
 
 const std::string treePath = "/Trees";
 const std::string ballTreeAsset = basePath + treePath + "/ball-tree.obj";

@@ -62,12 +62,10 @@ AssetsService::AssetsService() {
 	this->boulderBig    = Asset(boulderBigAsset);
 	this->boulderMed    = Asset(boulderMedAsset);
 	this->boulderSmall  = Asset(boulderSmallAsset);
-	this->boulderTiny   = Asset(boulderTinyAsset);
 
 	std::cout << "Big Bolder vertices: "    << boulderBig.getVectorSize()   << "\n";
 	std::cout << "Medium Bolder vertices: " << boulderMed.getVectorSize()   << "\n";
 	std::cout << "Small Bolder vertices: "  << boulderSmall.getVectorSize() << "\n";
-	std::cout << "Tiny Bolder vertices: "   << boulderTiny.getVectorSize()  << "\n";
 
 	std::cout << "\u001b[32m////////////////////////////////////\n";
 	std::cout <<           "//////////// Grass Assets //////////\n";
@@ -76,7 +74,6 @@ AssetsService::AssetsService() {
 	this->grass1        = Asset(grass1Asset);
 	this->grass2        = Asset(grass2Asset);
 	this->grass3        = Asset(grass3Asset);
-	this->grass4        = Asset(grass4Asset);
 
 	std::cout << "Grass 1 vertices: " << grass1.getVectorSize() << "\n";
 	std::cout << "Grass 2 vertices: " << grass2.getVectorSize() << "\n";

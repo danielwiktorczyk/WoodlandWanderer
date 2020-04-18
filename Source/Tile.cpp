@@ -17,12 +17,14 @@ Tile::Tile(glm::vec3 translation) {
 
 	// Select Occupant:
 	int category = rand() % 3;
-	int subcategory = rand() % 4;
-	glm::mat4 optionalScaling = glm::mat4(1.0f);
+	int subcategory;
+	glm::mat4 assetScaling = glm::mat4(1.0f);
 	glm::vec3 colour = glm::vec3(rand() % 50 / 100.0f - 0.3f, rand() % 50 / 100.0f - 0.3f, rand() % 50 / 100.0f - 0.3f);
+	BigRock* bigRock;
 	switch (category) {
 		case 0: // Tree
-			optionalScaling = scale(glm::mat4(1.0f), glm::vec3(0.64f, 0.64f, 0.64f));
+			subcategory = rand() % 4;
+			assetScaling = scale(glm::mat4(1.0f), glm::vec3(0.64f, 0.64f, 0.64f));
 			colour += darkBlue;
 			switch (subcategory) {
 			case 0:
@@ -35,13 +37,15 @@ Tile::Tile(glm::vec3 translation) {
 				this->occupant = new Tree(AssetsService::getInstance()->getSeussBallTree().getVAO(), AssetsService::getInstance()->getSeussBallTree().getVectorSize(), colour);
 				break;
 			case 3: 
-				optionalScaling = scale(glm::mat4(1.0f), glm::vec3(0.50f, 0.64f, 0.50f));
+				assetScaling = scale(glm::mat4(1.0f), glm::vec3(0.50f, 0.64f, 0.50f));
 				this->occupant = new Tree(AssetsService::getInstance()->getStumpyPineTree().getVAO(), AssetsService::getInstance()->getStumpyPineTree().getVectorSize(), colour);
 				break;
 			}
 			break;
 		case 1: // Grass
+			subcategory = rand() % 3;
 			colour += orange;
+			assetScaling = scale(glm::mat4(1.0f), glm::vec3(0.44f, 0.44f, 0.44f));
 			switch (subcategory) {
 			case 0:
 				this->occupant = new Grass(AssetsService::getInstance()->getGrass1().getVAO(), AssetsService::getInstance()->getGrass1().getVectorSize(), colour);
@@ -52,25 +56,23 @@ Tile::Tile(glm::vec3 translation) {
 			case 2:
 				this->occupant = new Grass(AssetsService::getInstance()->getGrass3().getVAO(), AssetsService::getInstance()->getGrass3().getVectorSize(), colour);
 				break;
-			case 3:
-				this->occupant = new Grass(AssetsService::getInstance()->getGrass4().getVAO(), AssetsService::getInstance()->getGrass4().getVectorSize(), colour);
-				break;
 			}
 			break;
 		case 2: // Boulder
+			subcategory = rand() % 3;
 			colour += glm::vec3(0.5f, 0.1f, 0.1f);
 			switch (subcategory) {
 			case 0:
-				this->occupant = new BigRock(AssetsService::getInstance()->getBoulderBig().getVAO(), AssetsService::getInstance()->getBoulderBig().getVectorSize(), colour);
+				bigRock = new BigRock(AssetsService::getInstance()->getBoulderBig().getVAO(), AssetsService::getInstance()->getBoulderBig().getVectorSize(), colour);
+				this->occupant = bigRock;
 				break;
 			case 1:
-				this->occupant = new BigRock(AssetsService::getInstance()->getBoulderMed().getVAO(), AssetsService::getInstance()->getBoulderMed().getVectorSize(), colour);
+				bigRock = new BigRock(AssetsService::getInstance()->getBoulderMed().getVAO(), AssetsService::getInstance()->getBoulderMed().getVectorSize(), colour);
+				this->occupant = bigRock;
 				break;
 			case 2:
 				this->occupant = new SmallRock(AssetsService::getInstance()->getBoulderSmall().getVAO(), AssetsService::getInstance()->getBoulderSmall().getVectorSize(), colour);
-				break;
-			case 3:
-				this->occupant = new SmallRock(AssetsService::getInstance()->getBoulderTiny().getVAO(), AssetsService::getInstance()->getBoulderTiny().getVectorSize(), colour);
+				assetScaling = scale(glm::mat4(1.0f), glm::vec3(1.85f, 1.85f, 1.85f));
 				break;
 			}
 			break;
@@ -88,7 +90,7 @@ Tile::Tile(glm::vec3 translation) {
 	occupantPosition = glm::scale(occupantPosition, glm::vec3(randScale, randScale, randScale));
 	occupantPosition = glm::rotate(occupantPosition, randRotate, glm::vec3(0.0f, 1.0f, 0.0f));
 
-	this->occupant->setModelTransformMatrix(occupantPosition * optionalScaling);
+	this->occupant->setModelTransformMatrix(occupantPosition * assetScaling);
 
 	if (rand() % 100 <= FireflyChance) {
 		this->firefly = Firefly(AssetsService::getInstance()->getSphere().getVAO(), AssetsService::getInstance()->getSphere().getVectorSize(), yellow);
