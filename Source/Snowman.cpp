@@ -7,6 +7,7 @@ Snowman::Snowman(GLuint worldMatrixLoc,
 	GLuint cubeVAO,
 	GLuint sphereVAO) {
 
+	this->canRender = true;
 
 	this->colliderVAO = AssetsService::getInstance()->getCube().getVAO();
 	this->colliderTransformMatrix = glm::mat4{ 1.0f };
@@ -76,34 +77,36 @@ void Snowman::update() {
 }
 
 void Snowman::draw() {
-	if(DebugMode && DrawCollisionBoxes)
-		drawHelper(colliderTransformMatrix, orange);
+	if (this->canRender) {
+		if (DebugMode && DrawCollisionBoxes)
+			drawHelper(colliderTransformMatrix, orange);
 
-	drawHelper(leftArm, snowmanBranchColor);
-	drawHelper(leftArmBranch1, snowmanBranchColor);
-	drawHelper(leftArmBranch2, snowmanBranchColor);
-	drawHelper(rightArm, snowmanBranchColor);
-	drawHelper(rightArmBranch1, snowmanBranchColor);
-	drawHelper(rightArmBranch2, snowmanBranchColor);
+		drawHelper(leftArm, snowmanBranchColor);
+		drawHelper(leftArmBranch1, snowmanBranchColor);
+		drawHelper(leftArmBranch2, snowmanBranchColor);
+		drawHelper(rightArm, snowmanBranchColor);
+		drawHelper(rightArmBranch1, snowmanBranchColor);
+		drawHelper(rightArmBranch2, snowmanBranchColor);
 
-	drawHelper(button1, buttonColor);
-	drawHelper(button2, buttonColor);
-	drawHelper(button3, buttonColor);
+		drawHelper(button1, buttonColor);
+		drawHelper(button2, buttonColor);
+		drawHelper(button3, buttonColor);
 
-	drawHelper(leftEye, hatColor);
-	drawHelper(rightEye, hatColor);
-	drawHelper(mouth, hatColor);
+		drawHelper(leftEye, hatColor);
+		drawHelper(rightEye, hatColor);
+		drawHelper(mouth, hatColor);
 
-	drawBody(leftFoot, snowmanColor);
-	drawBody(rightFoot, snowmanColor);
-	drawBody(base, snowmanColor);
-	drawBody(middle, snowmanColor);
-	drawBody(head, snowmanColor);
+		drawBody(leftFoot, snowmanColor);
+		drawBody(rightFoot, snowmanColor);
+		drawBody(base, snowmanColor);
+		drawBody(middle, snowmanColor);
+		drawBody(head, snowmanColor);
 
-	drawHelper(hatBrim, hatColor);
-	drawHelper(hatBody, hatColor);
+		drawHelper(hatBrim, hatColor);
+		drawHelper(hatBody, hatColor);
 
-	drawHelper(carrot, carrotColor);
+		drawHelper(carrot, carrotColor);
+	}
 }
 
 void Snowman::drawHelper(glm::mat4 part, glm::vec3 color) {
@@ -154,7 +157,7 @@ void Snowman::scaleSnowman(GLFWwindow* window, const bool& shift, bool& canScale
 * Rotate the snowman using the Q and E keys
 */
 void Snowman::rotateSnowman(GLFWwindow* window, const bool& shift, bool& canRotateIncrement) {
-	float snowmanRotationSpeed = globalSpeed * 0.0064f; // degrees
+	float snowmanRotationSpeed = globalSpeed * 0.0064f;
 	bool rotateLeft = glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS;
 	bool rotateRight = glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS;
 
@@ -180,14 +183,14 @@ void Snowman::rotateSnowman(GLFWwindow* window, const bool& shift, bool& canRota
 	if (rotateRight) {
 		if (!shift) {
 			this->rotation -= snowmanRotationSpeed;
-			if (this->rotation <= 2 * M_PI) {
+			if (this->rotation <= 0.0f) {
 				this->rotation += 2 * M_PI;
 			}
 			this->animateHat += globalSpeed * 0.01f;
 		}
 		else if (canRotateIncrement) {
 			this->rotation -= 10 * snowmanRotationSpeed;
-			if (this->rotation <= 2 * M_PI) {
+			if (this->rotation <= 0.0f) {
 				this->rotation += 2 * M_PI;
 			}
 			this->animateHat += globalSpeed * 0.01f;
@@ -384,6 +387,16 @@ void Snowman::CheckCollisionZ(std::vector<CollidableModel> colliders, bool isCol
 			isFreeBackwards = true;
 		}
 	}
+}
+
+void Snowman::enableRendering()
+{
+	canRender = true;
+}
+
+void Snowman::disableRendering()
+{
+	canRender = false;
 }
 
 /**

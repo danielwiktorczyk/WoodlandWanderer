@@ -19,11 +19,3 @@
 #define DebugMode true
 #define DrawGridLines false
 #define DrawCollisionBoxes true
-
-
-
-
-
-
-
-
