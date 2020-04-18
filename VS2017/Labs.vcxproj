@@ -14,6 +14,7 @@
     <ClCompile Include="..\Source\Acre.cpp" />
     <ClCompile Include="..\Source\Assets.cpp" />
     <ClCompile Include="..\Source\BigRock.cpp" />
+    <ClCompile Include="..\Source\Camera.cpp" />
     <ClCompile Include="..\Source\CollidableModel.cpp" />
     <ClCompile Include="..\Source\Commands.cpp" />
     <ClCompile Include="..\Source\Firefly.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="..\Include\Acre.h" />
     <ClInclude Include="..\Include\Assets.h" />
     <ClInclude Include="..\Include\BigRock.h" />
+    <ClInclude Include="..\Include\Camera.h" />
     <ClInclude Include="..\Include\CollidableModel.h" />
     <ClInclude Include="..\Include\Colours.h" />
     <ClInclude Include="..\Include\Commands.h" />

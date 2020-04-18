@@ -78,7 +78,6 @@ AssetsService::AssetsService() {
 	std::cout << "Grass 1 vertices: " << grass1.getVectorSize() << "\n";
 	std::cout << "Grass 2 vertices: " << grass2.getVectorSize() << "\n";
 	std::cout << "Grass 3 vertices: " << grass3.getVectorSize() << "\n";
-	std::cout << "Grass 4 vertices: " << grass4.getVectorSize() << "\n\n";
 
 	std::cout << "\u001b[35m////////////////////////////////////\n";
 	std::cout <<           "//////////// Trees Assets //////////\n";

@@ -16,14 +16,6 @@
 #define WindowWidth 1024.0f
 #define WindowHeight 768.0f
 
-#define DebugMode true
+#define DebugMode false
 #define DrawGridLines false
 #define DrawCollisionBoxes true
-
-
-
-
-
-
-
-

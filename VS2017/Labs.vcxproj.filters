@@ -70,6 +70,9 @@
     <ClCompile Include="..\Source\SmallRock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\OBJloader.h">
@@ -111,9 +114,6 @@
     <ClInclude Include="..\Include\Firefly.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Include\Camera.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\Parameters.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -127,6 +127,9 @@
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\SmallRock.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Camera.h">
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>

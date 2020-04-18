@@ -28,6 +28,7 @@
 #include "../Include/Tile.h"
 #include "../Include/Assets.h"
 #include "../Include/Parameters.h"
+#include "../Include/Camera.h";
  
 int compileAndLinkShaders(const std::string vertexShaderSource, const std::string fragmentShaderSource);
 

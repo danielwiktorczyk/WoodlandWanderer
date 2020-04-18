@@ -36,6 +36,9 @@ public:
 	void CheckCollisionX(std::vector<CollidableModel> colliders, bool isColliding);
 	void CheckCollisionZ(std::vector<CollidableModel> colliders, bool isColliding);
 
+	void Snowman::enableRendering();
+	void Snowman::disableRendering();
+
 	glm::vec3 getDimensions();
 	void adjustKeysToRotation();
 
@@ -99,5 +102,8 @@ public:
 	bool isFreeLeft;
 	bool isFreeForwards;
 	bool isFreeBackwards;
+
+private:
+	bool canRender = true;
 
 };

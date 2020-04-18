@@ -99,6 +99,8 @@ int main(int argc, char* argv[]) {
 	setViewMatrix(shaderProgram);
 	setProjectionMatrix(shaderProgram);
 
+	Camera camera = Camera();
+
 	///////////////////////////////////////////////////////////////////
 	/////////////////////////// Uniforms //////////////////////////////
 	///////////////////////////////////////////////////////////////////
@@ -140,7 +142,7 @@ int main(int argc, char* argv[]) {
 	///////////////////////////////////////////////////////////////////
 	///////////////////////// Render Loop /////////////////////////////
 	///////////////////////////////////////////////////////////////////
-
+	
 	while (!glfwWindowShouldClose(window)) {
 		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &glm::mat4(1.0f)[0][0]);
 
@@ -155,7 +157,7 @@ int main(int argc, char* argv[]) {
 
 		Commands::closeWindow(window);
 		Commands::setRenderingMode(window);
-		Commands::processCameraDirection(window, cameraPosition, cameraLookAt, cameraUp, deltaTime);
+		camera.process(window, cameraPosition, cameraLookAt, cameraUp, snowman);
 		
 		glUseProgram(shaderProgram);
 
