@@ -51,41 +51,6 @@ void Camera::processFirstPersonCamera(GLFWwindow* window, glm::vec3& cameraPos, 
 
 	cameraPos = glm::vec3(snowman.origin.x, 5.0f, snowman.origin.z);
 
-	// WIP for getting look-around capability while in first / third person modes
-	//// Get the two vectors
-	//glm::vec2 snowmanLookat = glm::vec2(-sin(snowman.rotation), -cos(snowman.rotation));
-	//glm::vec2 desiredLookat = glm::vec2(cameraLookAt.x, cameraLookAt.z);
-
-	//// Center at origin
-	//snowmanLookat = snowmanLookat - glm::vec2(snowman.origin.x, snowman.origin.z);
-	//desiredLookat = desiredLookat - glm::vec2(snowman.origin.x, snowman.origin.z);
-	//
-	//// Normalize them
-	//snowmanLookat = glm::normalize(snowmanLookat);
-	//desiredLookat = glm::normalize(desiredLookat);
-
-	//// Dot product
-	//float dotProduct = glm::dot(snowmanLookat, desiredLookat);
-	//float angle = acos(dotProduct);
-
-	//// Depending on the angle, constrain the lookat view!
-	//if (angle < M_PI / 3 || angle > 5 * M_PI / 3) {
-	//	return;
-	//}
-	//else if (angle < M_PI) { // clamp left side
-	//	cameraLookAt = glm::vec3(
-	//		snowmanLookat.x * cos(M_PI / 3) + snowmanLookat.y * sin(M_PI / 3),
-	//		cameraLookAt.y,
-	//		snowmanLookat.x * sin(M_PI / 3) - snowmanLookat.y * cos(M_PI / 3));
-	//}
-	//else {
-	//	cameraLookAt = glm::vec3(
-	//		snowmanLookat.x * cos(5 * M_PI / 3) + snowmanLookat.y * sin(5 * M_PI / 3),
-	//		cameraLookAt.y,
-	//		snowmanLookat.x * sin(5 * M_PI / 3) - snowmanLookat.y * cos(5 * M_PI / 3));
-	//}
-
-	//angle = angle;
 }
 
 void Camera::process(GLFWwindow* window, glm::vec3& cameraPos, glm::vec3& cameraLookAt, glm::vec3& cameraUp, Snowman& snowman)
